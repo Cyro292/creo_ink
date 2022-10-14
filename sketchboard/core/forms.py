@@ -9,3 +9,7 @@ class AddBoardFrom(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput(),
         }
+
+class CreateGuestUserForm(forms.Form):
+    username = forms.CharField(max_length=64)
+    

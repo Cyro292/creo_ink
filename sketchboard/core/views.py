@@ -2,17 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_http_methods
-from guest_user.decorators import allow_guest_user
+from django.core.exceptions import PermissionDenied
+from allauth import app_settings
+from .functions import has_access
 from . import models, forms
 # Create your views here.
 
-@allow_guest_user
+@login_required()
 def index_view(request):
     return render(request, 'core/index.html')
 
-@login_required(login_url="signin")
-@require_http_methods(["POST", "GET"])
+@login_required()
 def add_board_view(request):
     form = forms.AddBoardFrom()
     if request.method == "POST":
@@ -26,28 +26,34 @@ def add_board_view(request):
 
             return redirect('boards')
     
-    return render(request, "core/addBoard.html", {'form': form})
+    return render(request, "core/add_board.html", {'form': form})
       
-@require_http_methods(["GET"])
-@login_required(login_url="signin")
+@login_required()
 def boards_view(request: HttpRequest):
     board_list = []
     for board in request.user.boards.all():
         dic = {}
+        dic['pk'] = board.pk
         dic['name'] = board.name
         dic['permission'] = board.get_permission_label(request.user)
         board_list.append(dic)
     
     return render(request, "core/boards.html", {"boards" : str(board_list)})  
 
-@require_http_methods(["GET"])
-@login_required(login_url="signin")
-def board_view(request: HttpRequest, id):
+@login_required()
+def board_view(request: HttpRequest, key):
 
-    obj = get_object_or_404(request.user.boards, pk=id)
-    return HttpResponse(f"worked {obj}")
+    board = get_object_or_404(request.user.boards, pk=key)
     
-@allow_guest_user
+    if not has_access(board=board, user=request.user):
+        raise PermissionDenied()
+    
+    return render(request, 'core/board.html', {"board":board})
+    
+def create_guest_user_view(request):
+    form = forms.CreateGuestUserForm()
+    return render(request, "core/create_guest_user.html", {'form':form, 'login_url': app_settings.LOGIN_REDIRECT_URL})
+    
+@login_required()
 def invite_view(request: HttpRequest, code):
-    
-    return HttpResponse(code)
+    return HttpResponse(str(request.user))

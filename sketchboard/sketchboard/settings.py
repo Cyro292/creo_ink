@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -69,7 +70,7 @@ ROOT_URLCONF = 'sketchboard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,11 +138,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+# general
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     "guest_user.backends.GuestBackend",
 ]
+
+LOGIN_REDIRECT_URL = '/'
 
 #allauth
 
@@ -151,4 +158,5 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #guest-user
+
 
