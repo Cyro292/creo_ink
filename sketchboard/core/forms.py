@@ -12,4 +12,3 @@ class AddBoardFrom(forms.ModelForm):
 
 class CreateGuestUserForm(forms.Form):
     username = forms.CharField(max_length=64)
-    

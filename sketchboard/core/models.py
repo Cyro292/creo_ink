@@ -1,7 +1,5 @@
-from datetime import timedelta
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.timezone import now
 
 # Create your models here.
 
@@ -22,46 +20,13 @@ class Board(models.Model):
     users = models.ManyToManyField(to=MyUserModel, related_name="boards", through="Participation")
     
     objects = BoardManager()
-     
+
     @property
     def owner(self):
         try:
             return self.participation_set.filter(permission=Participation.OWNER)
         except self.DoesNotExist:
-            return None
-    
-    def add_user(self, user, permission=None):
-        
-        if permission is None:
-            permission = Participation.READER
-            
-        if permission == Participation.OWNER:
-            ValueError("cannot add new Owner")
-
-        return Participation.objects.create(
-                board=self, 
-                user=user, 
-                permission=permission)        
-    
-    def get_permission_label(self, user):
-        return self.participation_set.get(user=user).get_permission_display()
-    
-    def get_permission(self, user):
-
-        return self.participation_set.get(user=user).permission    
-        
-    def set_permission(self, user, permission):
-        
-        if permission > Participation.OWNER:
-            
-            self.participation_set.get(user=user).permission = permission
-                
-        elif permission is Participation.OWNER: 
-            self.owner.t.get(permission=Participation.OWNER).permission = Participation.ADMIN
-        
-            self.participation_set.get(user=user).permission = Participation.OWNER
-        else:
-            raise ValueError("unknown permission " + permission)
+            return None         
         
     def __str__(self) -> str:
         return f"{self.name}"
