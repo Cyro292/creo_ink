@@ -1,4 +1,6 @@
 from django import forms
+from .utils import get_changeable_permission_list, get_changeable_user_list, create_invite_link
+from django.forms import formset_factory
 from . import models
         
 class AddBoardFrom(forms.ModelForm):
@@ -12,3 +14,19 @@ class AddBoardFrom(forms.ModelForm):
 
 class CreateGuestUserForm(forms.Form):
     username = forms.CharField(max_length=64)
+
+def make_change_board_permission_form(board, user_permission):
+    
+    class ChangeBoardPermissionForm(forms.Form):
+        permission = forms.ChoiceField(choices=get_changeable_permission_list(user_permission))
+    
+        user = forms.ModelMultipleChoiceField(queryset=get_changeable_user_list(board, user_permission))
+        
+    return ChangeBoardPermissionForm
+
+def make_invitation_link_form(board):
+    
+    class InvitationLinkForm(forms.Form):
+        url = forms.URLField(max_length=64, disabled=True, initial=create_invite_link(board))
+        
+    return InvitationLinkForm

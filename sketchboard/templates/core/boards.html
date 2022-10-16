@@ -11,8 +11,9 @@
 		<p>{{message}}</p>
 		{% endfor %}
       {% for board in boards %}
-        <p>{{board}}</p>
-        <a href="{% url 'board' board.pk %}">view</a>
+        <p>{{board}}
+          <a href="{% url 'board' board.pk %}">view</a>
+        </p>
       {% endfor %}
       
     <a href="{% url 'add_board' %}">add a board</a>
