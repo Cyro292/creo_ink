@@ -49,6 +49,12 @@ class Board(models.Model):
             user=user, 
             permission=permission)
    
+    def has_user(self, user):
+        if self.users.all().filter(pk=user.pk).exists():
+            return True
+        
+        return False
+   
     def set_permission(self, user, permission):
         
 

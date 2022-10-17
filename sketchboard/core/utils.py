@@ -1,6 +1,6 @@
 import random
-from . import models
-from django.core.mail import send_mail
+
+from . import app_settings, models
 from django.core.cache import cache
 import secrets
 
@@ -41,8 +41,13 @@ def get_changeable_user_list(board, user_permission):
         
     return users
 
-def create_invite_link(board):
-    token = secrets.token_urlsafe(nbytes=32)
+def get_invite_data(token=None):
+    if token is None:
+        token = secrets.token_urlsafe(nbytes=32)
+        
     link = f"http://127.0.0.1:8000/invite/{token}"
-    cache.set(token, board, timeout=40 * 60)
-    return link
+    return {"link":link, "token":token}
+
+def create_invite_link(board, token, **kwargs):
+    cache.set(key=token, value={"board": board, **kwargs}, timeout=app_settings.CORE_INVITE_LINK_MAX_AGE)
+    

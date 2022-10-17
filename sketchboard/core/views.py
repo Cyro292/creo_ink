@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from guest_user.functions import maybe_create_guest_user
 from django.core.cache import cache
 from allauth import app_settings
-from .utils import has_access, generate_numbered_username, create_invite_link
+from .utils import has_access, generate_numbered_username, get_invite_data, create_invite_link
 from .exceptions import NoOwnerException
 from . import models, forms
 # Create your views here.
@@ -61,24 +61,32 @@ def board_view(request, key):
 def board_settings_view(request, key):
     
     board = get_object_or_404(request.user.boards, pk=key)
-
+    invite_data = get_invite_data()
+    invite_link = invite_data["link"]
+    invite_form = forms.InvitationLinkForm(initial={'url':invite_link})
     
     if request.method == "POST":
+        invite_form = forms.InvitationLinkForm(request.POST)
         user_permission = board.get_permission(user=request.user)
         change_user_permission_form = forms.make_change_board_permission_form(board, user_permission)(request.POST)
         
-        if form.is_valid():
-            user_pk = form.cleaned_data['user'][0]
-            permission = int(form.cleaned_data['permission'])
+        if change_user_permission_form.is_valid():
+            user_pk = change_user_permission_form.cleaned_data['user'][0]
+            permission = int(change_user_permission_form.cleaned_data['permission'])
             
             try:
                 board.set_permission(user_pk, permission)
             except NoOwnerException:
-                messages.info(request, "You are not able to have no Owner")
-      
+                messages.info(request, "You can not set permission if you are the only Owner")
+                
+        if invite_form.is_valid():
+            max_usages = invite_form.cleaned_data['max_usages']
+            create_invite_link(board=board, token=invite_data["token"], max_usages=max_usages)
+
+        
     user_permission = board.get_permission(user=request.user)          
     change_user_permission_form = forms.make_change_board_permission_form(board, user_permission)()
-    invite_form = forms.make_invitation_link_form(board)()
+    
     
     content = {}
     content['board'] = board
@@ -101,24 +109,28 @@ def create_guest_user_view(request):
             return redirect('index')
         
     return render(request, "core/create_guest_user.html", {'form':form, 'login_url': app_settings.LOGIN_REDIRECT_URL})
-    
-def invite_view(request: HttpRequest, code):
-    return HttpResponse("")
 
-@login_required
+@login_required(login_url="create_guest_user")
 def autheticate_via_link_view(request, token):
-    board = cache.get(token)
-    if board is None:
+    
+    data = cache.get(token)
+    if data is None:
         return HttpResponse("Link invalid/expired")
     
-    print(board.users.all(), request.user)
+    board = data['board']
     
-    
-    try:
-        board.add_user(request.user)
-        cache.delete(token)
-    except:
+    if board.has_user(request.user):
         return HttpResponse(f"same user {request.user}")
         
+    board.add_user(request.user)
+    
+    if hasattr(data, 'max_usages'):
+        max_usages = data['max_usages']
+        data['max_usages'] = max_usages-1
+        
+        if max_usages == 0:
+            cache.delete(token)
+    else:    
+        cache.delete(token)
     
     return HttpResponse("Nice")

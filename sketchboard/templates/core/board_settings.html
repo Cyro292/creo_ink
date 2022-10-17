@@ -16,6 +16,7 @@
 		</form>
 		<form action="{% url 'board_settings' board.pk %}" method="post">
 			{% csrf_token %} {{invite_form.as_p}}
+			<input type="submit" value="publish" />
 		</form>
 	</body>
 </html>

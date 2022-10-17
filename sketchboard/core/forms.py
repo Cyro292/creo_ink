@@ -24,9 +24,8 @@ def make_change_board_permission_form(board, user_permission):
         
     return ChangeBoardPermissionForm
 
-def make_invitation_link_form(board):
     
-    class InvitationLinkForm(forms.Form):
-        url = forms.URLField(max_length=64, disabled=True, initial=create_invite_link(board))
+class InvitationLinkForm(forms.Form):
+    url = forms.URLField(max_length=128, disabled=True)
+    max_usages = forms.IntegerField(min_value=1, max_value=100, initial=1)
         
-    return InvitationLinkForm
