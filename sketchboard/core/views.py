@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from guest_user.functions import maybe_create_guest_user
 from django.core.cache import cache
 from allauth import app_settings
-from .utils import has_access, generate_numbered_username, get_invite_data, create_invite_link
+from .utils import has_access, generate_numbered_username, get_invite_data, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
 from . import models, forms
 # Create your views here.
@@ -61,10 +61,11 @@ def board_view(request, key):
 def board_settings_view(request, key):
     
     board = get_object_or_404(request.user.boards, pk=key)
-    invite_data = get_invite_data()
-    invite_link = invite_data["link"]
-    invite_form = forms.InvitationLinkForm(initial={'url':invite_link})
     
+    if request.method == "GET":
+        invite_data = get_invite_data()
+        invite_link = invite_data["link"]
+        invite_form = forms.InvitationLinkForm(initial={'url':invite_link}) 
     if request.method == "POST":
         invite_form = forms.InvitationLinkForm(request.POST)
         user_permission = board.get_permission(user=request.user)
@@ -81,8 +82,9 @@ def board_settings_view(request, key):
                 
         if invite_form.is_valid():
             max_usages = invite_form.cleaned_data['max_usages']
-            create_invite_link(board=board, token=invite_data["token"], max_usages=max_usages)
-
+            url = invite_form.cleaned_data['url']
+            token = url.rsplit('/', 1)[-1]
+            create_invite_link(board=board, token=token, max_usages=max_usages)
         
     user_permission = board.get_permission(user=request.user)          
     change_user_permission_form = forms.make_change_board_permission_form(board, user_permission)()
@@ -95,8 +97,13 @@ def board_settings_view(request, key):
     
     return render(request, "core/board_settings.html", content)
     
-def create_guest_user_view(request):
+def create_guest_user_view(request: HttpRequest):
+    
     form = forms.CreateGuestUserForm()
+
+    
+    redirect_field_name = 'next'
+    redirect_field_value = get_redirect_value(request)
     
     if request.method == "POST":
         form = forms.CreateGuestUserForm(request.POST)
@@ -105,10 +112,18 @@ def create_guest_user_view(request):
             username = form.cleaned_data['username']
             maybe_create_guest_user(request)
             generate_numbered_username(username, request.user)
-            
+            redirect_field_value = get_redirect_value(request)
+
+            if redirect_field_value:
+                return redirect(redirect_field_value)
             return redirect('index')
         
-    return render(request, "core/create_guest_user.html", {'form':form, 'login_url': app_settings.LOGIN_REDIRECT_URL})
+    
+    return render(request, "core/create_guest_user.html", 
+            {'form':form, 
+            'login_url':app_settings.LOGIN_REDIRECT_URL, 
+            'redirect_field_value':redirect_field_value,
+            'redirect_field_name':redirect_field_name})
 
 @login_required(login_url="create_guest_user")
 def autheticate_via_link_view(request, token):
@@ -120,11 +135,11 @@ def autheticate_via_link_view(request, token):
     board = data['board']
     
     if board.has_user(request.user):
-        return HttpResponse(f"same user {request.user}")
+        return HttpResponse(f"{request.user} is already member of Board ({board.name})")
         
     board.add_user(request.user)
     
-    if hasattr(data, 'max_usages'):
+    if 'max_usages' in data.keys():
         max_usages = data['max_usages']
         data['max_usages'] = max_usages-1
         

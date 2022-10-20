@@ -49,5 +49,11 @@ def get_invite_data(token=None):
     return {"link":link, "token":token}
 
 def create_invite_link(board, token, **kwargs):
+    if '/' in token:
+        token = token.rsplit('/', 1)[-1]
+        
     cache.set(key=token, value={"board": board, **kwargs}, timeout=app_settings.CORE_INVITE_LINK_MAX_AGE)
     
+def get_redirect_value(request, parm='next'):
+    return request.GET.get(parm) or request.POST.get(parm)
+

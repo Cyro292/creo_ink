@@ -26,6 +26,6 @@ def make_change_board_permission_form(board, user_permission):
 
     
 class InvitationLinkForm(forms.Form):
-    url = forms.URLField(max_length=128, disabled=True)
+    url = forms.URLField(max_length=128, widget=forms.TextInput(attrs={'readonly': True}))
     max_usages = forms.IntegerField(min_value=1, max_value=100, initial=1)
         
