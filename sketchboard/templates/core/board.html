@@ -7,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h1>{{board.name}}</h1>
+
+    <p>You are currently {{permission}}</p>
+    <a href="{% url 'boards' %}">boards</a>
+    <a href="{% url 'board_settings' board.pk %}">settings</a>
 </body>
 </html>

@@ -10,7 +10,12 @@
     {% for message in messages %}
 		<p>{{message}}</p>
 		{% endfor %}
-    {{boards}}
+      {% for board in boards %}
+        <p>{{board}}
+          <a href="{% url 'board' board.pk %}">view</a>
+        </p>
+      {% endfor %}
+      
     <a href="{% url 'add_board' %}">add a board</a>
 </body>
 </html>

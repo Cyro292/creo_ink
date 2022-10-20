@@ -153,9 +153,9 @@ LOGIN_REDIRECT_URL = '/'
 #allauth
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 
 #guest-user
 
