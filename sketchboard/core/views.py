@@ -135,7 +135,7 @@ def autheticate_via_link_view(request, token):
     board = data['board']
     
     if board.has_user(request.user):
-        return HttpResponse(f"{request.user} is already member of Board ({board.name})")
+        return HttpResponse(f"{request.user} is already member of {board.name}(board))")
         
     board.add_user(request.user)
     
@@ -143,7 +143,7 @@ def autheticate_via_link_view(request, token):
         max_usages = data['max_usages']
         data['max_usages'] = max_usages-1
         
-        if max_usages == 0:
+        if max_usages <= 0:
             cache.delete(token)
     else:    
         cache.delete(token)

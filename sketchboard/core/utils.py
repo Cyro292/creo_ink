@@ -16,7 +16,7 @@ def generate_numbered_username(username, user, iteration=0) -> str:
 
     digits = 3 + int(iteration/5)
     number = random.randint(1, (10 ** digits) - 1)
-    new_username = f"{username}#G{number}"
+    new_username = f"{username}#{number}"
     
     if models.get_user_model().objects.filter(username=new_username).exists():        
         return generate_numbered_username(username, user, iteration+1)
@@ -56,4 +56,3 @@ def create_invite_link(board, token, **kwargs):
     
 def get_redirect_value(request, parm='next'):
     return request.GET.get(parm) or request.POST.get(parm)
-
