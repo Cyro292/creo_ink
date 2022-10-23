@@ -1,6 +1,5 @@
 from django import forms
-from .utils import get_changeable_permission_list, get_changeable_user_list, create_invite_link
-from django.forms import formset_factory
+from .utils import get_changeable_permission_list, get_changeable_user_list
 from . import models
         
 class AddBoardFrom(forms.ModelForm):
@@ -8,9 +7,6 @@ class AddBoardFrom(forms.ModelForm):
     class Meta:
         model = models.Board
         fields = ['name', 'password']
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
 
 class CreateGuestUserForm(forms.Form):
     username = forms.CharField(max_length=64)

@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.dispatch import Signal
+from django.db.models.signals import post_delete
 from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException
+from django.forms import PasswordInput
 
 # Create your models here.
 
@@ -11,18 +14,18 @@ class BoardManager(models.Manager):
     def create(self, name, owner, password, *args, **kwargs):
         board = Board(name=name, password=password, *args, **kwargs)
         board.save()
-        Participation.objects.create(board=board, user=owner, permission=Participation.OWNER)
+        board._set_owner(owner)
         
         return self
     
 class Board(models.Model):
     name = models.CharField(max_length=64, blank=False, null=False)
-    password = models.CharField(max_length=64)
-    creation_date = models.DateTimeField(auto_now=True, null=False)
+    password = models.CharField(max_length=128)
+    creation_date = models.DateTimeField(auto_now_add=True, null=False)
     users = models.ManyToManyField(to=MyUserModel, related_name="boards", through="Participation")
     
     objects = BoardManager()
-
+    
     @property
     def owner(self):
         try:
@@ -41,10 +44,10 @@ class Board(models.Model):
             raise MultipleIdenticalUserException
         
         if permission is Participation.OWNER:
-            old_owner_participation = self.participation_set(user=user.pk)
-            old_owner_participation.permission = Participation.ADMIN
+            self._set_owner(user)
+            return
     
-        return Participation.objects.create(
+        Participation.objects.create(
             board=self, 
             user=user, 
             permission=permission)
@@ -55,8 +58,7 @@ class Board(models.Model):
         
         return False
    
-    def set_permission(self, user, permission):
-        
+    def set_permission(self, user, permission):   
 
         owner = self.owner
         
@@ -66,22 +68,48 @@ class Board(models.Model):
             except ObjectDoesNotExist:
                 raise NoOwnerException
         
-        
         if permission is Participation.OWNER:
-            old_owner_participation = self.participation_set.get(user=owner.pk)
-            old_owner_participation.permission = Participation.ADMIN
-            old_owner_participation.save()
-            
-        participation = self.participation_set.get(user=user.pk)
+            self._set_owner(user)
         
-        participation.permission = permission
-        participation.save()
+        else:
+            participation = self.participation_set.get(user=user.pk)
+            participation.permission = permission
+            participation.save()
     
     def get_permission_label(self, user):
         return self.participation_set.get(user=user.pk).get_permission_display()
         
-    def get_permission(self, user):
+    def get_permission(self, user): 
         return self.participation_set.get(user=user.pk).permission
+    
+    def _delete_on_signal(self, sender, instance, **kwargs):
+        self.delete()
+    
+    def _set_owner(self, user):
+        
+        owner = self.owner
+        
+        if owner is not None:
+            old_owner_participation = self.participation_set.get(user=owner.pk)
+            old_owner_participation.permission = Participation.ADMIN
+            Signal.connect(post_delete, receiver=self._delete_on_signal(), sender=owner)
+            old_owner_participation.save()
+        
+        try:
+            user_participation = self.participation_set.get(user=user.pk)
+        except Participation.DoesNotExist:
+            user_participation = None
+        
+        if user_participation is None:
+            Participation.objects.create(
+                    board=self, 
+                    user=user, 
+                    permission=Participation.OWNER)
+            Signal.connect(post_delete, receiver=self._delete_on_signal, sender=user)
+        else:   
+            user_participation.permission = Participation.OWNER
+            Signal.connect(post_delete, receiver=self._delete_on_signal, sender=user)
+            user_participation.save()
     
     def _change_random_owner(self, depth=1, iteration=0):
         
@@ -128,11 +156,8 @@ class Participation(models.Model):
 
     board = models.ForeignKey(Board, on_delete=models.CASCADE, blank=False, null=False)
     user = models.ForeignKey(MyUserModel, on_delete=models.CASCADE, blank=False, null=False)
-    join_date = models.DateTimeField(auto_now=True)
+    join_date = models.DateTimeField(auto_now_add=True)
     permission = models.IntegerField(choices=permissions, default=READER, blank=False, null=False)
     
     class Meta:
-        unique_together = [["user", "board"]]
-        
-
-    
+        unique_together = [["user", "board"]] 

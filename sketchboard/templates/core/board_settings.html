@@ -18,5 +18,7 @@
 			{% csrf_token %} {{invite_form.as_p}}
 			<input type="submit" value="publish" />
 		</form>
+
+		<a href="{% url 'board' board.pk %}">board</a>
 	</body>
 </html>
