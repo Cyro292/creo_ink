@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from guest_user.functions import maybe_create_guest_user
 from django.core.cache import cache
 from allauth import app_settings
-from .utils import has_access, generate_numbered_username, get_invite_data, create_invite_link, get_redirect_value
+from .utils import generate_numbered_username, get_invite_data, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
 from . import models, forms
 # Create your views here.
@@ -49,7 +49,7 @@ def board_view(request, key):
 
     board = get_object_or_404(request.user.boards, pk=key)
 
-    if not has_access(board=board, user=request.user):
+    if not board.has_access(user=request.user):
         raise PermissionDenied()
     
     user_permission = board.get_permission_label(user=request.user)
@@ -66,21 +66,28 @@ def board_settings_view(request, key):
         invite_data = get_invite_data()
         invite_link = invite_data["link"]
         invite_form = forms.InvitationLinkForm(initial={'url':invite_link}) 
+        
     if request.method == "POST":
-        invite_form = forms.InvitationLinkForm(request.POST)
         user_permission = board.get_permission(user=request.user)
         change_user_permission_form = forms.make_change_board_permission_form(board, user_permission)(request.POST)
+        invite_form = forms.InvitationLinkForm(request.POST)
         
         if change_user_permission_form.is_valid():
-            user_pk = change_user_permission_form.cleaned_data['user'][0]
-            permission = int(change_user_permission_form.cleaned_data['permission'])
+            target_user = change_user_permission_form.cleaned_data['user'][0]
+            target_permission = int(change_user_permission_form.cleaned_data['permission'])
             
-            try:
-                board.set_permission(user_pk, permission)
-            except NoOwnerException:
-                messages.info(request, "You can not set permission if you are the only Owner")
+            if not board.has_access(user=request.user, min_permission=models.Participation.ADMIN):            
+                messages.info(request, "you have to be at least admin in order to change permissions")
                 
-        if invite_form.is_valid():
+            if not target_permission >= user_permission:
+                messages.info(request, "you are not allowed to set higher positions then yourself")
+                
+            try:
+                board.set_permission(user=target_user, permission=target_permission)
+            except NoOwnerException:
+                messages.info(request, "You can not set permission if you are the only Owner") 
+                
+        elif invite_form.is_valid():
             max_usages = invite_form.cleaned_data['max_usages']
             url = invite_form.cleaned_data['url']
             token = url.rsplit('/', 1)[-1]
@@ -140,11 +147,12 @@ def autheticate_via_link_view(request, token):
     board.add_user(request.user)
     
     if 'max_usages' in data.keys():
-        max_usages = data['max_usages']
-        data['max_usages'] = max_usages-1
+        data['max_usages'] -= 1
         
-        if max_usages <= 0:
-            cache.delete(token)
+        if data['max_usages'] > 0:
+            cache.set(token, data)
+        else:
+            cache.delete(token) 
     else:    
         cache.delete(token)
     

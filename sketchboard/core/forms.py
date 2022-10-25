@@ -1,5 +1,5 @@
 from django import forms
-from .utils import get_changeable_permission_list, get_changeable_user_list
+from .utils import get_lower_permission_list
 from . import models
         
 class AddBoardFrom(forms.ModelForm):
@@ -14,12 +14,11 @@ class CreateGuestUserForm(forms.Form):
 def make_change_board_permission_form(board, user_permission):
     
     class ChangeBoardPermissionForm(forms.Form):
-        permission = forms.ChoiceField(choices=get_changeable_permission_list(user_permission))
+        permission = forms.ChoiceField(choices=get_lower_permission_list(user_permission))
     
-        user = forms.ModelMultipleChoiceField(queryset=get_changeable_user_list(board, user_permission))
+        user = forms.ModelMultipleChoiceField(queryset=board.users.all())
         
     return ChangeBoardPermissionForm
-
     
 class InvitationLinkForm(forms.Form):
     url = forms.URLField(max_length=128, widget=forms.TextInput(attrs={'readonly': True}))

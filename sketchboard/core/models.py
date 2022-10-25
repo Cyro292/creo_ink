@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.dispatch import Signal
 from django.db.models.signals import post_delete
-from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException
+from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException, NoOtherUserException
 from django.forms import PasswordInput
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -34,6 +34,17 @@ class Board(models.Model):
             return None       
         except MultipleObjectsReturned:
             raise MultipleOwnerException
+       
+    def has_access(self, user, min_permission=None):
+
+        if min_permission is None:
+            min_permission = Participation.READER
+
+        if self.users.filter(pk=user.pk).exists():
+            if min_permission >= self.get_permission(user=user):
+                return True
+                  
+        return False   
         
     def add_user(self, user, permission=None):
         
@@ -62,10 +73,10 @@ class Board(models.Model):
 
         owner = self.owner
         
-        if user.pk is owner.pk:
+        if user is owner:
             try:
                 self._change_random_owner()
-            except ObjectDoesNotExist:
+            except NoOtherUserException:
                 raise NoOwnerException
         
         if permission is Participation.OWNER:
@@ -81,9 +92,9 @@ class Board(models.Model):
         
     def get_permission(self, user): 
         return self.participation_set.get(user=user.pk).permission
-    
-    def _delete_on_signal(self, sender, instance, **kwargs):
-        self.delete()
+   
+    def _set_random_owner(self):
+        pass
     
     def _set_owner(self, user):
         
@@ -92,7 +103,6 @@ class Board(models.Model):
         if owner is not None:
             old_owner_participation = self.participation_set.get(user=owner.pk)
             old_owner_participation.permission = Participation.ADMIN
-            Signal.connect(post_delete, receiver=self._delete_on_signal(), sender=owner)
             old_owner_participation.save()
         
         try:
@@ -105,35 +115,33 @@ class Board(models.Model):
                     board=self, 
                     user=user, 
                     permission=Participation.OWNER)
-            Signal.connect(post_delete, receiver=self._delete_on_signal, sender=user)
         else:   
             user_participation.permission = Participation.OWNER
-            Signal.connect(post_delete, receiver=self._delete_on_signal, sender=user)
             user_participation.save()
     
     def _change_random_owner(self, depth=1, iteration=0):
         
         if self.users.count() <= 1:
-            raise ObjectDoesNotExist
+            raise NoOtherUserException
         
         if depth >= len(Participation.permissions):
-            raise ObjectDoesNotExist
+            raise NoOtherUserException
     
         if not self.participation_set.filter(permission=depth).exists():
-            self._change_random_owner(depth+1, 0)
+            return self._change_random_owner(depth+1, 0)
         
         participation = self.participation_set.filter(permission=depth)
 
         try:
             participation[iteration]
         except IndexError:
-            self._change_random_owner(depth+1, 0)
+            return self._change_random_owner(depth+1, 0)
            
         
         user = participation[iteration].user
 
-        if user.pk is self.owner.pk:
-            self._change_random_owner(depth, iteration+1)
+        if user is self.owner:
+            return self._change_random_owner(depth, iteration+1)
         
         self.set_permission(user, Participation.OWNER)
         return user
@@ -161,3 +169,12 @@ class Participation(models.Model):
     
     class Meta:
         unique_together = [["user", "board"]] 
+
+@receiver(post_delete, sender=Participation)
+def _handel_owner_delete(sender, instance, **kwargs):
+    if instance.permission is Participation.OWNER:
+        try:
+            instance.board._change_random_owner()
+        except NoOtherUserException:
+            instance.board.delete()
+    
