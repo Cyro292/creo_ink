@@ -27,6 +27,7 @@ jobs:
         python -m pip install django-allauth
         python -m pip install django-guest-user
         python -m pip install -U channels["daphne"]
+        python -m pip install channels_redis
     - name: Run Tests
       run: |
         python manage.py test
