@@ -36,14 +36,15 @@ INSTALLED_MY_APPS = [
 ]
 
 INSTALLED_EXTENSIONS = [
+    'daphne',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    "guest_user",
-    "guest_user.contrib.allauth",
+    'guest_user',
+    'guest_user.contrib.allauth',
 ]
 
-INSTALLED_APPS = [
+INSTALLED_APPS = INSTALLED_MY_APPS + INSTALLED_EXTENSIONS + [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-] + INSTALLED_EXTENSIONS + INSTALLED_MY_APPS
+]
 
 SITE_ID = 1
 
@@ -160,3 +161,14 @@ ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 #guest-user
 
 
+#daphne
+
+ASGI_APPLICATION = 'sketchboard.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}

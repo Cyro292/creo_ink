@@ -23,6 +23,7 @@ class Board(models.Model):
     password = models.CharField(max_length=128)
     creation_date = models.DateTimeField(auto_now_add=True, null=False)
     users = models.ManyToManyField(to=MyUserModel, related_name="boards", through="Participation")
+    elements = models.JSONField()
     
     objects = BoardManager()
     
