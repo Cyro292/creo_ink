@@ -22,6 +22,8 @@ def add_board_view(request):
     if request.method == "POST":
         form = forms.AddBoardFrom(request.POST)
         
+        
+        
         if form.is_valid():
             name = form.cleaned_data['name']
             password = form.cleaned_data['password']

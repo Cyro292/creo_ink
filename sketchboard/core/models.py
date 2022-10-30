@@ -23,7 +23,7 @@ class Board(models.Model):
     password = models.CharField(max_length=128)
     creation_date = models.DateTimeField(auto_now_add=True, null=False)
     users = models.ManyToManyField(to=MyUserModel, related_name="boards", through="Participation")
-    elements = models.JSONField()
+    elements = models.JSONField(null=True)
     
     objects = BoardManager()
     
@@ -93,9 +93,6 @@ class Board(models.Model):
         
     def get_permission(self, user): 
         return self.participation_set.get(user=user.pk).permission
-   
-    def _set_random_owner(self):
-        pass
     
     def _set_owner(self, user):
         
