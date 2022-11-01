@@ -1,5 +1,5 @@
 from django import forms
-from .utils import get_lower_permission_list
+from .utils import get_lower_permission_list, get_invite_link
 from . import models
         
 class AddBoardFrom(forms.ModelForm):
@@ -20,6 +20,9 @@ def make_change_board_permission_form(board, user_permission):
         
     return ChangeBoardPermissionForm
     
-class InvitationLinkForm(forms.Form):
-    url = forms.URLField(max_length=128, widget=forms.TextInput(attrs={'readonly': True}))
-    max_usages = forms.IntegerField(min_value=1, max_value=100, initial=1)
+def make_create_invitaion_link_form(init_token):
+    class InvitationLinkForm(forms.Form):
+        url = forms.URLField(max_length=128, widget=forms.TextInput(attrs={'readonly':'readonly'}), initial=get_invite_link(token=init_token))
+        max_usages = forms.IntegerField(min_value=1, max_value=100, initial=1)
+        
+    return InvitationLinkForm

@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from guest_user.functions import maybe_create_guest_user
 from allauth import app_settings
-from .utils import generate_numbered_username, get_invite_data, create_invite_link, get_redirect_value
+from .utils import generate_numbered_username, get_invite_token, get_invite_link, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
 from . import models, forms
 # Create your views here.
@@ -63,16 +63,13 @@ def board_view(request, key):
 def board_settings_view(request, key):
     
     board = get_object_or_404(request.user.boards, pk=key)
+    invite_token = get_invite_token()
+    invite_form = forms.make_create_invitaion_link_form(invite_token)()
     
-    if request.method == "GET":
-        invite_data = get_invite_data()
-        invite_link = invite_data["link"]
-        invite_form = forms.InvitationLinkForm(initial={'url':invite_link}) 
-        
     if request.method == "POST":
         user_permission = board.get_permission(user=request.user)
         change_user_permission_form = forms.make_change_board_permission_form(board, user_permission)(request.POST)
-        invite_form = forms.InvitationLinkForm(request.POST)
+        invite_form = forms.make_create_invitaion_link_form(invite_token)(request.POST)
         
         if change_user_permission_form.is_valid():
             target_user = change_user_permission_form.cleaned_data['user'][0]
@@ -92,7 +89,7 @@ def board_settings_view(request, key):
         elif invite_form.is_valid():
             max_usages = invite_form.cleaned_data['max_usages']
             url = invite_form.cleaned_data['url']
-            token = url.rsplit('/', 1)[-1]
+            token = get_invite_token(link=url)
             create_invite_link(board=board, token=token, max_usages=max_usages)
         
     user_permission = board.get_permission(user=request.user)          

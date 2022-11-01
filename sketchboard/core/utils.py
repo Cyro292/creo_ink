@@ -21,12 +21,20 @@ def generate_numbered_username(username, user, iteration=0) -> str:
 def get_lower_permission_list(user_permission):
     return list(filter(lambda t: t[0] >= user_permission, models.Participation.permissions))
 
-def get_invite_data(token=None):
+def get_invite_token(link=None):
+    if link is None:
+        token = secrets.token_urlsafe(nbytes=32)
+    else:
+        token = link.rsplit('/', 1)[-1]
+        
+    return token
+
+def get_invite_link(token=None):
     if token is None:
         token = secrets.token_urlsafe(nbytes=32)
         
     link = f"http://127.0.0.1:8000/invite/{token}"
-    return {"link":link, "token":token}
+    return link
 
 def create_invite_link(board, token, **kwargs):
     if '/' in token:
