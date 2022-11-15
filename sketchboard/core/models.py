@@ -1,10 +1,13 @@
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+from django.db import models
 from django.db.models.signals import post_delete
-from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException, NoOtherUserException
-from django.forms import PasswordInput
 from django.dispatch import receiver
+from django.forms import PasswordInput
+
+from .exceptions import (MultipleIdenticalUserException,
+                         MultipleOwnerException, NoOtherUserException,
+                         NoOwnerException)
 
 # Create your models here.
 
@@ -71,10 +74,19 @@ class Board(models.Model):
         return False
    
     def set_permission(self, user, permission):   
+        """sets permission
+
+        Args:
+            user (user): user to change permission
+            permission (int): permission
+
+        Raises:
+            NoOwnerException: if no other user exists who can be owner
+        """
 
         owner = self.owner
         
-        if user is owner:
+        if user.pk is owner.pk:
             try:
                 self._change_random_owner()
             except NoOtherUserException:
