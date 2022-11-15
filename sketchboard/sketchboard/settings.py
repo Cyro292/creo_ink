@@ -42,7 +42,20 @@ INSTALLED_EXTENSIONS = [
     'allauth.socialaccount',
     'guest_user',
     'guest_user.contrib.allauth',
+    'rest_framework',
+    'drf_multiple_model'
 ]
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
 
 INSTALLED_APPS = INSTALLED_MY_APPS + INSTALLED_EXTENSIONS + [
     'django.contrib.admin',
@@ -172,3 +185,4 @@ CHANNEL_LAYERS = {
         },
     },
 }
+

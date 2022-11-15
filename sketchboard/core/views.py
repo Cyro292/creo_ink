@@ -9,9 +9,17 @@ from guest_user.functions import maybe_create_guest_user
 from allauth import app_settings
 from .utils import generate_numbered_username, get_invite_token, get_invite_link, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
+from .models import Board, BoardManager
+from .serializers import BoardSerializer
+from rest_framework import viewsets
 from . import models, forms
-# Create your views here.
 
+# DRF
+class BoardViewSet(viewsets.ModelViewSet):
+        queryset = Board.objects.all()
+        serializer_class = BoardSerializer
+
+# Create your views here.
 @login_required
 def index_view(request):
     return render(request, 'core/index.html')
@@ -132,7 +140,7 @@ def create_guest_user_view(request: HttpRequest):
             'redirect_field_name':redirect_field_name})
 
 @login_required(login_url="create_guest_user")
-def autheticate_via_link_view(request, token):
+def authenticate_via_link_view(request, token):
     
     data = cache.get(token)
     if data is None:
