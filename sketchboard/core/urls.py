@@ -4,6 +4,7 @@ from . import views
 
 from rest_framework import routers
 
+# router
 router = routers.DefaultRouter()
 router.register(r'boards', views.BoardViewSet)
 

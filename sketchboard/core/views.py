@@ -9,10 +9,11 @@ from guest_user.functions import maybe_create_guest_user
 from allauth import app_settings
 from .utils import generate_numbered_username, get_invite_token, get_invite_link, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
-from .models import Board, BoardManager
+from .models import Board
+from . import models, forms
+
 from .serializers import BoardSerializer
 from rest_framework import viewsets
-from . import models, forms
 
 # DRF
 class BoardViewSet(viewsets.ModelViewSet):
