@@ -1,7 +1,7 @@
 import random
 
-from . import app_settings, models
 from django.core.cache import cache
+from . import app_settings, models
 import secrets
 
 def generate_numbered_username(username, user, iteration=0) -> str:

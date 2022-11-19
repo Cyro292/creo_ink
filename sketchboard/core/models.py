@@ -1,4 +1,6 @@
+import random
 from django.db import models
+from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.signals import post_delete
@@ -9,6 +11,55 @@ from django.dispatch import receiver
 # Create your models here.
 
 MyUserModel = get_user_model()
+  
+class CustomUser(AbstractUser):
+    config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.SET_DEFAULT, default=get_a_configuration_set())
+    
+    def get_a_configuration_set(self):
+        return ConfigurationSet.objects.order_by('?').first()
+    
+class ConfigurationSet(models.Model):
+    config = models.JSONField()
+    
+    def get_avarge_rating(self):
+        total_rating = Judgement.objects.filter(pk=self.pk).annotate(total_rating = 'rating')
+        number_of_judgements = Judgement.objects.annotate(total_users = Count('user'))
+        return total_rating/number_of_judgements
+    
+    def create_judgement(self, user, rating):
+        Judgement.objects.create(self, user, rating)
+    
+    def get_number_of_participents(self):
+        return Judgement.objects.filter(pk=self.pk).annotate(total_users = Count('user'))
+    
+    def get_number_of_boards(self):
+        pass
+    
+    def get_attr(self, attr):
+        # returns the attr from Json file
+        pass
+    
+    def set_attr(self, key, value):
+        # sets an attr
+        pass
+    
+    def get_all_attr(self):
+        # returns all attr
+        pass
+    
+class Judgement(models.Model):
+    RATING = [
+    (1, 'Bad'),
+    (2, 'Could be better'),
+    (3, 'Average'),
+    (4, 'Great'),
+    (5, 'Amazing'),
+    ]   
+    
+    config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.CASCADE)
+    user = models.ForeignKey(MyUserModel, on_delete=models.SET_NULL)
+    rating = models.IntegerField(choices=RATING)
+    creation_date = models.DateField(auto_now_add=True, null=False)
     
 class BoardManager(models.Manager):
     def create(self, name, owner, password, *args, **kwargs):
