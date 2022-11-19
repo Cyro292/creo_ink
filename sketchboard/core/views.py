@@ -100,7 +100,8 @@ def board_settings_view(request, key):
 def create_guest_user_view(request: HttpRequest):
     
     form = forms.CreateGuestUserForm()
-
+    
+    falsdfkjlajsldfjla.ansdofjalsdfj
     
     redirect_field_name = 'next'
     redirect_field_value = get_redirect_value(request)
