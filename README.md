@@ -1,5 +1,7 @@
 # SketchBoard - A collaborative web-platform for creativity and idea sharing
 ## About SketchBoard
+
+### What is it?
 Sketchbaord is an intuitive web-platform that enables people to collaborate with others and share ideas on a tool-rich sketchboard where the creativity is endless. Use Sketchboard to brainstorm, collaborate with others, or just have fun tinkering; whatever the goal, Sketchboard has the tools to achieve it, the possibilites are endless!
 
 And the best part? It's completely free!
