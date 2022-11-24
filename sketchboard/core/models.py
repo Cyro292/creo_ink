@@ -7,21 +7,24 @@ from django.db.models.signals import post_delete
 from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException, NoOtherUserException
 from django.forms import PasswordInput
 from django.dispatch import receiver
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-MyUserModel = get_user_model()
+
   
 class CustomUser(AbstractUser):
-    config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.SET_DEFAULT, default=get_a_configuration_set())
+    config_set = models.ForeignKey(to="ConfigurationSet", on_delete=models.SET_DEFAULT, default="self.get_a_configuration_set()")
     
     def get_a_configuration_set(self):
         return ConfigurationSet.objects.order_by('?').first()
     
+MyUserModel = CustomUser    
+
 class ConfigurationSet(models.Model):
     config = models.JSONField()
     
-    def get_avarge_rating(self):
+    def get_average_rating(self):
         total_rating = Judgement.objects.filter(pk=self.pk).annotate(total_rating = 'rating')
         number_of_judgements = Judgement.objects.annotate(total_users = Count('user'))
         return total_rating/number_of_judgements
@@ -33,19 +36,24 @@ class ConfigurationSet(models.Model):
         return Judgement.objects.filter(pk=self.pk).annotate(total_users = Count('user'))
     
     def get_number_of_boards(self):
-        pass
+        return Board.objects.count()
     
     def get_attr(self, attr):
+        #return ConfigurationSet.objects.get(attr)
+        return self.config[attr]
         # returns the attr from Json file
-        pass
     
     def set_attr(self, key, value):
-        # sets an attr
-        pass
+        config = {key:value}
+        set = ConfigurationSet(config=config)
+        set.save()
     
     def get_all_attr(self):
         # returns all attr
-        pass
+        field_values = []
+        for field in self._meta.get_fields():
+            field_values.append(str(getattr(self, field.name, '')))
+        return ' '.join(field_values)
     
 class Judgement(models.Model):
     RATING = [
@@ -57,7 +65,7 @@ class Judgement(models.Model):
     ]   
     
     config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.CASCADE)
-    user = models.ForeignKey(MyUserModel, on_delete=models.SET_NULL)
+    user = models.ForeignKey(MyUserModel, on_delete=models.SET_NULL, null=True)
     rating = models.IntegerField(choices=RATING)
     creation_date = models.DateField(auto_now_add=True, null=False)
     
