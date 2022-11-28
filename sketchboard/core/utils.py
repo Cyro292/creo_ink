@@ -2,6 +2,7 @@ import random
 
 from django.core.cache import cache
 from . import app_settings, models
+from django.contrib.auth import get_user_model
 import secrets
 
 def generate_numbered_username(username, user, iteration=0) -> str:
@@ -10,7 +11,7 @@ def generate_numbered_username(username, user, iteration=0) -> str:
     number = random.randint(1, (10 ** digits) - 1)
     new_username = f"{username}#{number}"
     
-    if models.get_user_model().objects.filter(username=new_username).exists():        
+    if get_user_model().objects.filter(username=new_username).exists():        
         return generate_numbered_username(username, user, iteration+1)
     
     user.username = new_username

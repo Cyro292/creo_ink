@@ -1,39 +1,37 @@
-import random
 from django.db import models
 from django.db.models import Count
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.signals import post_delete
 from .exceptions import NoOwnerException, MultipleOwnerException, MultipleIdenticalUserException, NoOtherUserException
-from django.forms import PasswordInput
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
+from .validators import username_validators
 
 # Create your models here.
 
-
-  
-class CustomUser(AbstractUser):
-    config_set = models.ForeignKey(to="ConfigurationSet", on_delete=models.SET_DEFAULT, default="self.get_a_configuration_set()")
-    
-    def get_a_configuration_set(self):
-        return ConfigurationSet.objects.order_by('?').first()
-    
-MyUserModel = CustomUser    
-
 class ConfigurationSet(models.Model):
+    name = models.CharField(max_length=64)
     config = models.JSONField()
     
     def get_average_rating(self):
-        total_rating = Judgement.objects.filter(pk=self.pk).annotate(total_rating = 'rating')
-        number_of_judgements = Judgement.objects.annotate(total_users = Count('user'))
-        return total_rating/number_of_judgements
+        judgments = self.get_judgements()
+        total_value = 0
+        for j in judgments:
+            total_value += j.rating
+            
+        num_of_values = judgments.count()
+        # annotate(total_rating = 'rating')
+        # number_of_judgements = Judgement.objects.annotate(total_users = Count('user'))
+        return total_value/num_of_values
+    
+    def get_judgements(self):
+        return Judgement.objects.filter(config_set__pk=self.pk)
     
     def create_judgement(self, user, rating):
-        Judgement.objects.create(self, user, rating)
+        Judgement.objects.create(user=user, config_set=self, rating=rating)
     
     def get_number_of_participents(self):
-        return Judgement.objects.filter(pk=self.pk).annotate(total_users = Count('user'))
+        return self.get_judgements().values('user').annotate(the_count=Count('user')).count()
     
     def get_number_of_boards(self):
         return Board.objects.count()
@@ -55,6 +53,24 @@ class ConfigurationSet(models.Model):
             field_values.append(str(getattr(self, field.name, '')))
         return ' '.join(field_values)
     
+    def __str__(self) -> str:
+        return self.name
+ 
+def get_a_configuration_set(): 
+    return ConfigurationSet.objects.order_by('?').first()
+    
+class CustomUser(AbstractUser):
+    config_set = models.ForeignKey(
+            to="ConfigurationSet", 
+            null=True, 
+            on_delete=models.CASCADE,
+            default=get_a_configuration_set
+            )
+    
+    username_validator = username_validators
+      
+MyUserModel = CustomUser   
+    
 class Judgement(models.Model):
     RATING = [
     (1, 'Bad'),
@@ -64,10 +80,13 @@ class Judgement(models.Model):
     (5, 'Amazing'),
     ]   
     
-    config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.CASCADE)
     user = models.ForeignKey(MyUserModel, on_delete=models.SET_NULL, null=True)
+    config_set = models.ForeignKey(to=ConfigurationSet, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=RATING)
     creation_date = models.DateField(auto_now_add=True, null=False)
+    
+    def __str__(self) -> str:
+        return f"{self.config_set} ({self.get_rating_display()}) by {self.user}"
     
 class BoardManager(models.Manager):
     def create(self, name, owner, password, *args, **kwargs):
