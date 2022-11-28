@@ -20,34 +20,33 @@ class ConfigurationSet(models.Model):
             total_value += j.rating
             
         num_of_values = judgments.count()
-        # annotate(total_rating = 'rating')
-        # number_of_judgements = Judgement.objects.annotate(total_users = Count('user'))
+        if num_of_values is 0:
+            return 0
+            
         return total_value/num_of_values
     
     def get_judgements(self):
         return Judgement.objects.filter(config_set__pk=self.pk)
     
     def create_judgement(self, user, rating):
-        Judgement.objects.create(user=user, config_set=self, rating=rating)
+        return Judgement.objects.create(user=user, config_set=self, rating=rating)
     
     def get_number_of_participents(self):
         return self.get_judgements().values('user').annotate(the_count=Count('user')).count()
     
-    def get_number_of_boards(self):
-        return Board.objects.count()
-    
-    def get_attr(self, attr):
+    def get_attr(self, key):
         #return ConfigurationSet.objects.get(attr)
-        return self.config[attr]
+        return self.config[key]
         # returns the attr from Json file
     
     def set_attr(self, key, value):
+        # key:value wird hinzugefügt
         config = {key:value}
         set = ConfigurationSet(config=config)
         set.save()
     
     def get_all_attr(self):
-        # returns all attr
+        # returns dict of all attr
         field_values = []
         for field in self._meta.get_fields():
             field_values.append(str(getattr(self, field.name, '')))
