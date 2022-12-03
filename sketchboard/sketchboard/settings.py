@@ -37,13 +37,14 @@ INSTALLED_MY_APPS = [
 
 INSTALLED_EXTENSIONS = [
     'daphne',
+    'channels',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'guest_user',
     'guest_user.contrib.allauth',
     'rest_framework',
-    'drf_multiple_model'
+    
 ]
 
 # DRF
@@ -97,6 +98,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'sketchboard.asgi.application'
 WSGI_APPLICATION = 'sketchboard.wsgi.application'
 
 
@@ -152,8 +154,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
 # general
 
 AUTHENTICATION_BACKENDS = [
@@ -176,13 +176,4 @@ ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 
 #daphne
 
-ASGI_APPLICATION = 'sketchboard.asgi.application'
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
 

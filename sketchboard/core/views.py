@@ -15,6 +15,8 @@ from . import models, forms
 from .serializers import BoardSerializer
 from rest_framework import viewsets
 
+from json import dumps
+
 # DRF
 class BoardViewSet(viewsets.ModelViewSet):
         queryset = Board.objects.all()
@@ -64,9 +66,10 @@ def board_view(request, key):
         raise PermissionDenied()
     
     user_permission = board.get_permission_label(user=request.user)
-    
+
+    key_py_to_json = dumps(board.pk)
     return render(request, 'core/board.html', 
-            {"board":board, "permission":user_permission})
+            {"board":board, "permission":user_permission, "key":key_py_to_json})
     
 @login_required
 def board_settings_view(request, key):
