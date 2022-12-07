@@ -19,3 +19,4 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
 
         self.send(text_data=json.dumps({"message": message}))
+        
