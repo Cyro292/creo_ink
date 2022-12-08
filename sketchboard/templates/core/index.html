@@ -1,4 +1,4 @@
-{% load i18n %} {% load account %}
+{% load i18n %} {% load account %} {% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -11,5 +11,10 @@
 		<h1>{% trans "Welcome" %} {% user_display user %}</h1>
 		<a href="{% url 'boards' %}">boards</a>
 		<a href="{% url 'account_logout' %}">Logout</a>
+
+		<div id="app">
+			<app></app>
+		</div>
+		{% render_bundle 'main_style' %}
 	</body>
 </html>
