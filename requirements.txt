@@ -6,3 +6,4 @@ django-guest-user==0.5.2
 django-webpack-loader==1.7.0
 djangorestframework==3.14.0
 pylint-django==2.5.3
+daphne==4.0.0
