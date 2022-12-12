@@ -46,7 +46,8 @@ INSTALLED_EXTENSIONS = [
     'guest_user',
     'guest_user.contrib.allauth',
     'rest_framework',
-    'webpack_loader'
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 # DRF
@@ -59,6 +60,10 @@ INSTALLED_APPS = INSTALLED_MY_APPS + INSTALLED_EXTENSIONS + [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
 ]
 
 SITE_ID = 1
@@ -178,16 +183,3 @@ ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 
 
 # daphne
-
-# webloader
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": not DEBUG,
-        "BUNDLE_DIR_NAME": "/",
-        "STATS_FILE": os.path.join(FRONTEND_DIR, "webpack-stats.json"),
-        "POLL_INTERVAL": 0.1,
-        "TIMEOUT": None,
-        "IGNORE": [".*\.hot-update.js", ".+\.map"]
-    }
-}
