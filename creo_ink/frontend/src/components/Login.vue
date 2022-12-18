@@ -90,7 +90,7 @@ export default {
 :root {
 	--text-clr: black;
 	--text-accent: grey;
-	--basic-clr: grey;
+	--basic-clr: #fffbd7;
 	--accent-clr1: #a9def9;
 	--accent-clr2: #ca72ff;
 }
