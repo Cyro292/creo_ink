@@ -47,7 +47,7 @@ INSTALLED_EXTENSIONS = [
     'guest_user.contrib.allauth',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
+    'dj_rest_auth',
 ]
 
 # DRF

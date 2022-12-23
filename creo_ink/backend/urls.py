@@ -21,6 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path("convert/", include("guest_user.urls")),
-    path("api/v1", include('djoser.urls')),
-    path("api/v1", include('djoser.urls.authtoken')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls'))
 ]
