@@ -55,7 +55,9 @@
 							<label for="remember-me">Remember-me</label>
 						</div>
 
-						<a class="forgot-pwd" href="">Forgot Password</a>
+						<div class="confirmation">
+							<router-link to="/resetPassword">Forgot Password</router-link>
+						</div>
 					</div>
 
 					<button class="log-in">Log in</button>
@@ -65,7 +67,7 @@
 			<div class="footer">
 				<div class="confirmation">
 					<p>Don't have an account yet?</p>
-					<router-link to="/signup">Sign up here</router-link> |
+					<router-link to="/signup">Sign up here</router-link>
 				</div>
 
 				<div class="or">
