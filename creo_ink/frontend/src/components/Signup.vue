@@ -30,7 +30,34 @@
 
 				<form action="">
 					<div class="type-area">
-						<div class="email">
+                        <div class="prename">
+							<input
+								type="text"
+								placeholder="Prename"
+								name="prename"
+								id="prename"
+							/>
+						</div>
+
+                        <div class="name">
+							<input
+								type="text"
+								placeholder="Surname"
+								name="surname"
+								id="surname"
+							/>
+						</div>
+
+                        <div class="name">
+							<input
+								type="text"
+								placeholder="Username"
+								name="username"
+								id="username"
+							/>
+						</div>
+
+						<div class="name">
 							<input
 								type="email"
 								placeholder="E-mail"
@@ -49,23 +76,16 @@
 						</div>
 					</div>
 
-					<div class="click-area">
-						<div class="remember-me">
-							<input type="checkbox" name="remember_me" id="remember_me" />
-							<label for="remember-me">Remember-me</label>
-						</div>
-
-						<a class="forgot-pwd" href="">Forgot Password</a>
-					</div>
-
-					<button class="log-in">Log in</button>
 				</form>
+
+                <button class="sign-up">Sign up</button>
+
 			</div>
 
 			<div class="footer">
 				<div class="confirmation">
-					<p>Don't have an account yet?</p>
-					<router-link to="/signup">Sign up here</router-link> |
+					<p>Already have an account?</p>
+					<router-link to="/login">Log in here</router-link> 
 				</div>
 
 				<div class="or">
@@ -207,6 +227,10 @@ form {
 	margin: 1em 0;
 }
 
+.name {
+	margin: 1em 0;
+}
+
 .type-area label {
 	display: block;
 }
@@ -258,7 +282,7 @@ button {
 	border: none;
 }
 
-.log-in {
+.sign-up {
 	width: 90%;
 	background-color: var(--accent-clr2);
 	color: white;
