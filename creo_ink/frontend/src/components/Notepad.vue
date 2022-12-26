@@ -1,21 +1,9 @@
-<template>
-	<body>
-		<header>
-			<a href="#">
-				<div class="image-logo">
-					<img
-						src="../assets/logo-transparent.png"
-						width="25"
-						height="25"
-						alt="image-logo"
-					/>
-				</div>
-				<div class="logo">Creo</div>
-			</a>
-		</header>
 
+Nur Anfang einer Idee
+
+<template>
+		
 		<body class="hero-bg">
-			<h1><span>Go</span> sketching!</h1>
 
 			<div class="notepad">
 				<div class="wire-spiral">
@@ -30,34 +18,7 @@
 
 				<form action="">
 					<div class="type-area">
-                        <div class="prename">
-							<input
-								type="text"
-								placeholder="Prename"
-								name="prename"
-								id="prename"
-							/>
-						</div>
-
-                        <div class="name">
-							<input
-								type="text"
-								placeholder="Surname"
-								name="surname"
-								id="surname"
-							/>
-						</div>
-
-                        <div class="name">
-							<input
-								type="text"
-								placeholder="Username"
-								name="username"
-								id="username"
-							/>
-						</div>
-
-						<div class="name">
+						<div>
 							<input
 								type="email"
 								placeholder="E-mail"
@@ -76,16 +37,25 @@
 						</div>
 					</div>
 
+					<div class="click-area">
+						<div class="remember-me">
+							<input type="checkbox" name="remember_me" id="remember_me" />
+							<label for="remember-me">Remember-me</label>
+						</div>
+
+						<div class="confirmation">
+							<router-link to="/resetPassword">Forgot Password</router-link>
+						</div>
+					</div>
+
+					<button class="log-in">Log in</button>
 				</form>
-
-                <button class="sign-up">Sign up</button>
-
 			</div>
 
 			<div class="footer">
 				<div class="confirmation">
-					<p>Already have an account?</p>
-					<router-link to="/login">Log in here</router-link> 
+					<p>Don't have an account yet?</p>
+					<router-link to="/signup">Sign up here</router-link>
 				</div>
 
 				<div class="or">
@@ -97,67 +67,11 @@
 				<button class="guest">Guest • Log in</button>
 			</div>
 		</body>
-	</body>
+	
 </template>
 
-<script>
-export default {
-	name: "Login",
-};
-</script>
-
-<style>
-:root {
-	--text-clr: black;
-	--text-accent: grey;
-	--basic-clr: #fffbd7;
-	--accent-clr1: #a9def9;
-	--accent-clr2: #ca72ff;
-}
-
-body {
-	font-family: "Gluten", cursive;
-	margin: 0;
-	background-color: var(--basic-clr);
-}
-</style>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
-
-header a {
-	display: flex;
-	text-align: center;
-	align-items: center;
-	gap: 0.6em;
-	text-decoration: none;
-	color: var(--text-clr);
-}
-
-header {
-	/* background-color: #A9DEF9; */
-	/* border-radius: .7em; */
-	margin: 1em 1em 0 1em;
-	/* width: 9rem; */
-	/* padding: .3em;  */
-}
-
-header:hover {
-	cursor: pointer;
-}
-
-.hero-bg {
-	text-align: center;
-}
-
-h1 {
-	font-size: 2.5rem;
-	margin: 2em 0 1.2em;
-}
-
-h1 span {
-	display: block;
-}
 
 /* !!------------------------ notepad -START ----------------------!! */
 /* ------------------------------------------------------------------ */
@@ -227,10 +141,6 @@ form {
 	margin: 1em 0;
 }
 
-.name {
-	margin: 1em 0;
-}
-
 .type-area label {
 	display: block;
 }
@@ -282,7 +192,7 @@ button {
 	border: none;
 }
 
-.sign-up {
+.log-in {
 	width: 90%;
 	background-color: var(--accent-clr2);
 	color: white;
