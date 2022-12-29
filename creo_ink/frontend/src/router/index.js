@@ -31,6 +31,11 @@ const routes = [
     path: '/newPassword',
     name: 'newPassword',
     component: () => import(/* webpackChunkName: "about" */ '../views/NewPasswordView.vue')
+  },
+  {
+    path: '/Landing-P',
+    name: 'Landing-P',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Landing-PView.vue')
   }
 ]
 

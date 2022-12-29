@@ -66,7 +66,18 @@
 						</div>
 					</div>
 
-					<button class="log-in">Log in</button>
+					<router-link
+						to="/Landing-P"
+						custom v-slot="{ navigate }"
+						>
+						<button
+							@click="navigate"
+							role="link"
+							class="log-in"
+						>
+							Log in
+						</button>
+					</router-link>
 				</form>
 			</div>
 
