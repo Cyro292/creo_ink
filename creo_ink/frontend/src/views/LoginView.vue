@@ -38,7 +38,7 @@
 					<div class="type-area">
 						<div class="email">
 							<input
-								type="email"
+								type="password"
 								placeholder="E-mail"
 								name="email-ad"
 								id="email-ad"

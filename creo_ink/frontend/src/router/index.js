@@ -36,6 +36,11 @@ const routes = [
     path: '/Landing-P',
     name: 'Landing-P',
     component: () => import(/* webpackChunkName: "about" */ '../views/Landing-PView.vue')
+  },
+  {
+    path: '/Notepadtest',
+    name: 'Notepadtest',
+    component: () => import(/* webpackChunkName: "about" */ '../views/NotepadView.vue')
   }
 ]
 
