@@ -29,7 +29,7 @@ export default {
 					<div class="type-area">
 						<div class="email">
 							<input
-								type="password"
+								type="email"
 								placeholder="E-mail"
 								name="email-ad"
 								id="email-ad"

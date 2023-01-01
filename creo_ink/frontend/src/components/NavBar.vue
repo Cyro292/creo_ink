@@ -14,12 +14,9 @@
 </template>
 
 <script>
-import { TopLogo } from "@/components/TopLogo.vue";
 export default {
 	name: "NavBar",
-	components: {
-		TopLogo,
-	},
+	components: {},
 };
 </script>
 
