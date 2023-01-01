@@ -1,5 +1,21 @@
-
-Nur Anfang einer Idee
+<script>
+	export default {
+		name: "Notepad",
+		props: ['note', 
+				'guest', 
+				'log', 
+				'prename', 
+				'surname',
+				'username',
+				'email',
+				'password',
+				'newpassword',
+				'confirmpassword',
+				'blue',
+				'violet',
+				'click']
+	};
+</script>
 
 <template>
 		
@@ -16,28 +32,62 @@ Nur Anfang einer Idee
 					</div>
 				</div>
 
+				<h2 v-if="note">{{ note }}</h2>
+
 				<form action="">
 					<div class="type-area">
-						<div>
-							<input
-								type="email"
-								placeholder="E-mail"
-								name="email-ad"
-								id="email-ad"
+
+						<div class="name">
+							<input v-if="prename"
+								type="text"
+								placeholder="Prename"
 							/>
 						</div>
 
-						<div class="password">
-							<input
+						<div class="name">
+							<input v-if="surname"
+								type="text"
+								placeholder="Surname"
+							/>
+						</div>
+						
+						<div class="name">
+							<input v-if="username"
+								type="text"
+								placeholder="Username"
+							/>
+						</div>
+
+						<div class="name">
+							<input v-if=email
+								type="email"
+								placeholder="E-mail"
+							/>
+						</div>
+
+						<div class="name">
+							<input v-if=password
 								type="password"
 								placeholder="Password"
-								name="password"
-								id="password"
+							/>
+						</div>
+
+						<div class="name">
+							<input v-if=newpassword
+								type="password"
+								placeholder="New Password"
+							/>
+						</div>
+
+						<div class="name">
+							<input v-if=confirmpassword
+								type="password"
+								placeholder="Confirm Password"
 							/>
 						</div>
 					</div>
 
-					<div class="click-area">
+					<div class="click-area" v-if="click">
 						<div class="remember-me">
 							<input type="checkbox" name="remember_me" id="remember_me" />
 							<label for="remember-me">Remember-me</label>
@@ -47,15 +97,21 @@ Nur Anfang einer Idee
 							<router-link to="/resetPassword">Forgot Password</router-link>
 						</div>
 					</div>
-
-					<button class="log-in">Log in</button>
 				</form>
+					
 			</div>
+			
+			
 
-			<div class="footer">
+			<div v-if="guest" class=footer>
+				
+				<button v-if=violet class="violetbutton">{{ violet }}</button>
+				<button v-if=blue class="bluebutton">{{ blue }}</button>
+
 				<div class="confirmation">
-					<p>Don't have an account yet?</p>
-					<router-link to="/signup">Sign up here</router-link>
+					<p>{{ guest }}</p>
+					<router-link v-if="log" to=/signup>Sign up here</router-link>
+					<router-link v-if=sign to="/login">Log in here</router-link>
 				</div>
 
 				<div class="or">
@@ -76,7 +132,10 @@ Nur Anfang einer Idee
 /* !!------------------------ notepad -START ----------------------!! */
 /* ------------------------------------------------------------------ */
 
+
+
 .notepad {
+	font-family: 'Gluten', cursive;
 	position: relative;
 	background-color: white;
 	padding: 2rem 0 3.5rem 0;
@@ -88,6 +147,10 @@ Nur Anfang einer Idee
 	border-right: solid var(--text-accent) 0.3rem;
 }
 
+h2{
+    font-size: 1.0rem;
+    color: var(--text-accent);
+}
 /* ------------------------ type-area ---------------------- */
 
 /* ----------------------- WIRE SPIRAL - START------------------------ */
@@ -137,8 +200,8 @@ form {
 	margin: 0 1em 1em 1em;
 }
 
-.password {
-	margin: 1em 0;
+.name {
+	margin: 0 0 1.4em;
 }
 
 .type-area label {
@@ -146,12 +209,15 @@ form {
 }
 
 .type-area input {
-	box-sizing: border-box;
-	/* border: 1.5px solid #D0F4DE; */
-	background-color: var(--accent-clr1);
-	border-radius: 0.5em;
-	width: 100%;
-	height: 2.3em;
+	font-family: 'Gluten', cursive;
+	font-size: 80%;
+    box-sizing: border-box;
+    background-color: var(--accent-clr1); 
+    color: var(--text-clr);
+    border-radius: .6em;
+    width: 100%; 
+    height: 2.9em;
+    padding: 0 .3rem;
 }
 
 /* ------------------------ click-area ---------------------- */
@@ -179,6 +245,29 @@ form {
 /* ----------------------------------------------------------- */
 /*!! ----------------- notepad - END ---------------------!! */
 
+.bluebutton {
+    background-color: var(--accent-clr1);
+    color: var(--text-accent);
+    font-family: 'Gluten', cursive;
+    font-size: 1.1rem;
+    
+    border-radius: .7em;
+    height: 2.2rem;
+
+    margin: 2em 2em;
+    margin-inline: auto;
+    padding: 0 2rem;
+    
+    cursor: pointer; 
+    display: block;
+    border: none;
+}
+
+
+.bluebutton:hover, button:focus {
+    background-color: var(--accent-clr1);
+}
+
 button {
 	font-family: "Gluten", cursive;
 	font-size: 1.1rem;
@@ -192,8 +281,8 @@ button {
 	border: none;
 }
 
-.log-in {
-	width: 90%;
+.violetbutton {
+	width: 80%;
 	background-color: var(--accent-clr2);
 	color: white;
 }
