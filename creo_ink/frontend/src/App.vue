@@ -1,32 +1,42 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/newPassword">Test</router-link>
-  </nav>
-  <router-view/>
+	<TopLogo />
+	<NavBar />
+	<router-view />
 </template>
+
+<script>
+import TopLogo from "@/components/TopLogo.vue";
+import NavBar from "@/components/NavBar.vue";
+
+export default {
+	name: "HomeView",
+	components: {
+		TopLogo,
+		NavBar,
+	},
+};
+</script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-align: center;
+	color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+:root {
+	--text-clr: black;
+	--text-accent: grey;
+	--basic-clr: #f2f2f2;
+	--accent-clr1: #b5bed2;
+	--accent-clr2: #f0cb5c;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+	font-family: "Gluten", cursive;
+	margin: 0;
+	background-color: var(--basic-clr);
 }
 </style>

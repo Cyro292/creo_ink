@@ -1,28 +1,19 @@
 <script>
-	// @ is an alias to /src
-	import TopLogo from "@/components/TopLogo.vue";
+// @ is an alias to /src
+import TopLogo from "@/components/TopLogo.vue";
+import NavBar from "@/components/NavBar.vue";
 
-	export default {
-		name: "Login",
-		components: {
-			TopLogo,
-		},
-	};
+export default {
+	name: "Login",
+	components: {},
+};
 </script>
 
-
 <template>
-
 	<body>
-		<div class="logo">
-			<TopLogo />
-		</div>
-		
 		<h1><span>Go</span> sketching!</h1>
 
 		<body class="hero-bg">
-			
-
 			<div class="notepad">
 				<div class="wire-spiral">
 					<div class="wires">
@@ -65,20 +56,8 @@
 							<router-link to="/resetPassword">Forgot Password</router-link>
 						</div>
 					</div>
-
-					<router-link
-						to="/Landing-P"
-						custom v-slot="{ navigate }"
-						>
-						<button
-							@click="navigate"
-							role="link"
-							class="log-in"
-						>
-							Log in
-						</button>
-					</router-link>
 				</form>
+				<button class="login">Login</button>
 			</div>
 
 			<div class="footer">
@@ -99,21 +78,7 @@
 	</body>
 </template>
 
-<style>
-:root {
-	--text-clr: black;
-	--text-accent: grey;
-	--basic-clr: #fffbd7;
-	--accent-clr1: #a9def9;
-	--accent-clr2: #ca72ff;
-}
-
-body {
-	font-family: "Gluten", cursive;
-	margin: 0;
-	background-color: var(--basic-clr);
-}
-</style>
+<style></style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
@@ -220,6 +185,12 @@ form {
 
 .forgot-pwd:hover {
 	text-decoration: underline;
+}
+
+.login {
+	width: 90%;
+	background-color: var(--accent-clr2);
+	color: white;
 }
 
 /* ----------------------------------------------------------- */

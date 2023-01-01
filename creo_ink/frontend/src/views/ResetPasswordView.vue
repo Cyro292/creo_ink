@@ -1,29 +1,22 @@
 <script>
-	// @ is an alias to /src
-	import TopLogo from "@/components/TopLogo.vue";
+// @ is an alias to /src
 
-	export default {
-		name: "ResetPasword",
-		components: {
-			TopLogo,
-		},
-	};
+export default {
+	name: "ResetPasword",
+	components: {},
+};
 </script>
 
-
 <template>
-
 	<body>
-		<div class="logo">
-			<TopLogo />
-		</div>
-
 		<body class="hero-bg">
 			<h1><span>Reset your</span> password</h1>
 
 			<div class="notepad">
-
-                <h3>Enter your email and we'll send you instructions on how to reset your password.</h3>
+				<h3>
+					Enter your email and we'll send you instructions on how to reset your
+					password.
+				</h3>
 
 				<form action="">
 					<div class="type-area">
@@ -35,156 +28,119 @@
 								id="email-id"
 							/>
 						</div>
-
 					</div>
-
 				</form>
 
-                <button class="send">Send</button>
-
+				<button class="send">Send</button>
 			</div>
-
 		</body>
 	</body>
 </template>
 
-<style>
-:root {
-	--text-clr: black;
-	--text-accent: grey;
-	--basic-clr: #fffbd7;
-	--accent-clr1: #a9def9;
-	--accent-clr2: #ca72ff;
-}
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
 
-body {
+* {
 	font-family: "Gluten", cursive;
 	margin: 0;
 	background-color: var(--basic-clr);
-}
-</style>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap');
-
-:root{
-    --text-clr: black;
-    --text-accent: grey;
-    --basic-clr: #FFFBD7;
-    --accent-clr1: #a9def9;
-    --accent-clr2: #CA72FF;
-
+	box-sizing: border-box;
 }
 
-* {
-    font-family: 'Gluten', cursive;
-    margin: 0;
-    background-color: var(--basic-clr);
-    box-sizing: border-box;
-}
-
-header a{
-    display: flex;
-    text-align: center;
-    align-items: center;
-    gap: .6em;
-    text-decoration: none;
-    color: var(--text-clr);
+header a {
+	display: flex;
+	text-align: center;
+	align-items: center;
+	gap: 0.6em;
+	text-decoration: none;
+	color: var(--text-clr);
 }
 
 header {
-    margin: 1em 1em 0 1em;
+	margin: 1em 1em 0 1em;
 }
 
-
-header:hover{
-    cursor: pointer;
+header:hover {
+	cursor: pointer;
 }
 
 .hero-bg {
-    text-align: center;
+	text-align: center;
 }
 
-
 h1 {
-    font-size: 2.5rem;
-    margin: 2em 0 1.2em;
+	font-size: 2.5rem;
+	margin: 2em 0 1.2em;
 }
 
 h1 span {
-    display: block;
+	display: block;
 }
 
-.notepad{
-    text-align: center;
+.notepad {
+	text-align: center;
 }
 
-h3{
-    font-weight: 200;
-    font-size: 1rem;
+h3 {
+	font-weight: 200;
+	font-size: 1rem;
 }
 
-form{       
-    margin: 0 1em 1em 1em;
+form {
+	margin: 0 1em 1em 1em;
 }
 
-.type-area input{
-    box-sizing: border-box;
-    background-color: transparent; 
+.type-area input {
+	box-sizing: border-box;
+	background-color: transparent;
 
-    border: solid var(--accent-clr1) .3rem;
-    border-radius: .5em;
-    width: 90%; 
-    height: 2.5em;
-} 
-
-.field_1{
-    margin-top: 1rem;
+	border: solid var(--accent-clr1) 0.3rem;
+	border-radius: 0.5em;
+	width: 90%;
+	height: 2.5em;
 }
 
+.field_1 {
+	margin-top: 1rem;
+}
 
 /* ----------------------------------------------------------- */
 /*!! ----------------- notepad - END ---------------------!! */
 
-
-
 button {
-    background-color: var(--accent-clr2);
-    color: white;
-    font-family: 'Gluten', cursive;
-    font-size: 1.1rem;
-    text-align: center;
-    
-    border-radius: .7em;
-    height: 2.2rem;
+	background-color: var(--accent-clr2);
+	color: white;
+	font-family: "Gluten", cursive;
+	font-size: 1.1rem;
+	text-align: center;
 
-    margin: 2rem 0;
-    
-    padding: 5px 50px;
-    
-    cursor: pointer; 
-    border: none;
+	border-radius: 0.7em;
+	height: 2.2rem;
+
+	margin: 2rem 0;
+
+	padding: 5px 50px;
+
+	cursor: pointer;
+	border: none;
 }
 
-
-button:hover, button:focus {
-    color: black;
+button:hover,
+button:focus {
+	color: black;
 }
 
-
-@media(min-width: 600px){
-
-    body{
-        background-color: var(--basic-clr);
-    }
-    .hero-bg {
-        margin-top: auto;
-        margin-bottom: auto;
-        background-color: var(--basic-clr);
-        margin-inline: auto;
-        max-width: 400px;
-
-    }
-
+@media (min-width: 600px) {
+	body {
+		background-color: var(--basic-clr);
+	}
+	.hero-bg {
+		margin-top: auto;
+		margin-bottom: auto;
+		background-color: var(--basic-clr);
+		margin-inline: auto;
+		max-width: 400px;
+	}
 }
 </style>

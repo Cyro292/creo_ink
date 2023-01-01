@@ -1,24 +1,15 @@
 <script>
-	// @ is an alias to /src
-	import TopLogo from "@/components/TopLogo.vue";
+// @ is an alias to /src
+import TopLogo from "@/components/TopLogo.vue";
 
-	export default {
-		name: "Signup",
-		components: {
-			TopLogo,
-		},
-	};
+export default {
+	name: "Signup",
+	components: {},
+};
 </script>
 
-
 <template>
-
 	<body>
-		<div class="logo">
-			<TopLogo />
-		</div>
-
-	
 		<body class="hero-bg">
 			<h1><span>Go</span> sketching!</h1>
 
@@ -35,7 +26,7 @@
 
 				<form action="">
 					<div class="type-area">
-                        <div class="prename">
+						<div class="prename">
 							<input
 								type="text"
 								placeholder="Prename"
@@ -44,7 +35,7 @@
 							/>
 						</div>
 
-                        <div class="name">
+						<div class="name">
 							<input
 								type="text"
 								placeholder="Surname"
@@ -53,7 +44,7 @@
 							/>
 						</div>
 
-                        <div class="name">
+						<div class="name">
 							<input
 								type="text"
 								placeholder="Username"
@@ -80,17 +71,15 @@
 							/>
 						</div>
 					</div>
-
 				</form>
 
-                <button class="sign-up">Sign up</button>
-
+				<button class="sign-up">Sign up</button>
 			</div>
 
 			<div class="footer">
 				<div class="confirmation">
 					<p>Already have an account?</p>
-					<router-link to="/login">Log in here</router-link> 
+					<router-link to="/login">Log in here</router-link>
 				</div>
 
 				<div class="or">
@@ -105,25 +94,9 @@
 	</body>
 </template>
 
-<style>
-:root {
-	--text-clr: black;
-	--text-accent: grey;
-	--basic-clr: #fffbd7;
-	--accent-clr1: #a9def9;
-	--accent-clr2: #ca72ff;
-}
-
-body {
-	font-family: "Gluten", cursive;
-	margin: 0;
-	background-color: var(--basic-clr);
-}
-</style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
-
 
 /* !!------------------------ notepad -START ----------------------!! */
 /* ------------------------------------------------------------------ */

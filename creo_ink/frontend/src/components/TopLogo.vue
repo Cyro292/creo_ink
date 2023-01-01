@@ -1,7 +1,7 @@
 <template>
 	<body>
 		<header>
-			<a href="#">
+			<router-link to="/">
 				<div class="image-logo">
 					<img
 						src="../assets/logo-transparent.png"
@@ -11,45 +11,47 @@
 					/>
 				</div>
 				<div class="logo">Creo</div>
-			</a>
+			</router-link>
 		</header>
-    </body>
+	</body>
 </template>
 
+<script>
+export default {
+	name: "TopLogo",
+};
+</script>
+
 <style scoped lang="scss">
+.logo {
+	font-family: "Gluten", cursive;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	margin-right: 100px;
+}
 
-    header a {
-        display: flex;
-        text-align: center;
-        align-items: center;
-        gap: 0.6em;
-        text-decoration: none;
-        color: var(--text-clr);
-    }
+.logo img {
+	margin-right: 0.5rem;
+}
+header a {
+	display: flex;
+	text-align: center;
+	align-items: center;
+	gap: 0.6em;
+	text-decoration: none;
+	color: var(--text-clr);
+}
 
-    header {
-        /* background-color: #A9DEF9; */
-        /* border-radius: .7em; */
-        margin: 1em 1em 0 1em;
-        /* width: 9rem; */
-        /* padding: .3em;  */
-    }
+header {
+	/* background-color: #A9DEF9; */
+	/* border-radius: .7em; */
+	margin: 1em 1em 0 1em;
+	/* width: 9rem; */
+	/* padding: .3em;  */
+}
 
-    header:hover {
-        cursor: pointer;
-    }
-
-    .hero-bg {
-        text-align: center;
-    }
-
-    h1 {
-        font-size: 2.5rem;
-        margin: 2em 0 1.2em;
-    }
-
-    h1 span {
-        display: block;
-    }
-
+header:hover {
+	cursor: pointer;
+}
 </style>
