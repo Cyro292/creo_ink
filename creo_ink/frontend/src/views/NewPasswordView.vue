@@ -29,7 +29,7 @@ export default {
 				</h2>
 				<!-- - passord recommendation checker(show what is not yet fullfilled)-->
 
-				<form action="">
+				<form mehtod="POST" action="accounts/login">
 					<div class="type-area">
 						<div class="new-password">
 							<input

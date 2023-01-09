@@ -32,8 +32,8 @@ const routes = [
 			import(/* webpackChunkName: "about" */ "../views/NewPasswordView.vue"),
 	},
 	{
-		path: "/drawBoard",
-		name: "DrawBoard",
+		path: "/drawboard",
+		name: "drawboard",
 		component: () =>
 			import(/* webpackChunkName: "about" */ "../views/DrawBoardView.vue"),
 	},
