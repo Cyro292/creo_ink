@@ -1,4 +1,5 @@
 <template>
+	<h1>afad</h1>
 	<div>
 		<DrawBoard />
 	</div>
@@ -7,12 +8,11 @@
 <script>
 // @ is an alias to /src
 import DrawBoard from "@/components/DrawBoard.vue";
-import MsDrawBoard from "msdrawboard";
 
 export default {
 	name: "DrawBoardView",
 	components: {
-		MsDrawBoard,
+		DrawBoard,
 	},
 };
 </script>

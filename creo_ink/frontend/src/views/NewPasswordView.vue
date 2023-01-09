@@ -14,6 +14,7 @@ export default {
 	<body>
 		<h1><span>Create new</span> password</h1>
 
+
 		<Notepad
 			note="Use 8 or more characters with a mix of letters, numbers & symbols."
 			confirmpassword="1"

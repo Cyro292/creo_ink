@@ -1,38 +1,31 @@
 <script>
-	// @ is an alias to /src
-	import TopLogo from "@/components/TopLogo.vue";
-    import Notepad from "@/components/Notepad.vue";
+// @ is an alias to /src
+import TopLogo from "@/components/TopLogo.vue";
+import Notepad from "@/components/Notepad.vue";
 
-	export default {
-		name: "Notepadtest",
-		components: {
-			TopLogo,
-            Notepad,
-		},
-	};
+export default {
+	name: "Notepadtest",
+	components: {},
+};
 </script>
 
-
 <template>
-
 	<body>
-
 		<TopLogo />
 
-        <h1><span>Go</span> sketching!</h1>
+		<h1><span>Go</span> sketching!</h1>
 
-        <Notepad
-        note = "Hallo"
-        guest = "Don't have an account yet?"
-        log = 1
-        prename = 1
-        surname = 1
-        click = 1
-		blue = "Log in"
-		violet = "Sign up"
-        />
-    </body>
-
+		<Notepad
+			note="Hallo"
+			guest="Don't have an account yet?"
+			log="1"
+			prename="1"
+			surname="1"
+			click="1"
+			blue="Log in"
+			violet="Sign up"
+		/>
+	</body>
 </template>
 
 <style>
