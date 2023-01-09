@@ -1,7 +1,7 @@
 <template>
 	<nav class="navbar">
-
-		<li class="logo"><router-link to="/">
+		<li class="logo">
+			<router-link to="/">
 				<div class="image-logo">
 					<img
 						src="../assets/logo-transparent-gelb.png"
@@ -14,17 +14,21 @@
 			</router-link>
 		</li>
 
-<ul class="nav-links">
-
-<div class="menu">
-
-	<li class="home"><router-link to="/">Home</router-link></li>
-	<li class="boards"><router-link to="/joinboard">Join Board</router-link></li>
-	<li class="boards"><router-link to="/boardcollection">Your Boards</router-link></li>
-	<li class="login"><router-link to="/login">Login</router-link></li>
-
-	</div>
-</ul>
+		<ul class="nav-links">
+			<div class="menu">
+				<li class="home"><router-link to="/">Home</router-link></li>
+				<li class="boards">
+					<router-link to="/drawboard">Sketchboard</router-link>
+				</li>
+				<li class="boards">
+					<router-link to="/joinboard">Join Board</router-link>
+				</li>
+				<li class="boards">
+					<router-link to="/boardcollection">Your Boards</router-link>
+				</li>
+				<li class="login"><router-link to="/login">Login</router-link></li>
+			</div>
+		</ul>
 	</nav>
 </template>
 
@@ -34,8 +38,8 @@ import TopLogo from "@/components/TopLogo.vue";
 export default {
 	name: "NavBar",
 	components: {
-    TopLogo,
-},
+		TopLogo,
+	},
 };
 </script>
 
@@ -43,22 +47,22 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
 
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 a {
-text-decoration: none;
+	text-decoration: none;
 }
 
 li {
-list-style: none;
+	list-style: none;
 }
 
 .text-logo {
 	font-family: "Gluten", cursive;
-	font-size: .7em;
+	font-size: 0.7em;
 	display: flex;
 	align-items: center;
 	cursor: pointer;
@@ -67,8 +71,8 @@ list-style: none;
 }
 
 .logo img {
-	height: .9em;
-	width: .9em
+	height: 0.9em;
+	width: 0.9em;
 }
 .logo a {
 	display: flex;
@@ -78,15 +82,13 @@ list-style: none;
 	text-decoration: none;
 }
 
-
-
 .logo:hover {
 	cursor: pointer;
 }
 
 .navbar {
-	font-family: 'Gluten', cursive;
-	position:fixed;
+	font-family: "Gluten", cursive;
+	position: fixed;
 	top: 0px;
 	width: 100%;
 	opacity: 82%;
@@ -99,14 +101,12 @@ list-style: none;
 	z-index: 10;
 }
 
-
 .nav-links a {
-color: var(--basic-clr);
+	color: var(--basic-clr);
 }
 
-
 .logo {
-font-size: 32px;
+	font-size: 32px;
 }
 
 .menu {
@@ -116,7 +116,7 @@ font-size: 32px;
 }
 
 .nav-links a:hover {
-	font-size:larger;
+	font-size: larger;
 }
 
 .menu li {
@@ -125,15 +125,15 @@ font-size: 32px;
 	text-align: center;
 }
 
-.home{
+.home {
 	width: 4em;
 }
 
-.boards{
+.boards {
 	width: 9em;
 }
 
-.login{
+.login {
 	width: 4.8em;
 }
 </style>

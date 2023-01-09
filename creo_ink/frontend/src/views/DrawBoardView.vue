@@ -1,5 +1,4 @@
 <template>
-	<h1>afad</h1>
 	<div>
 		<DrawBoard />
 	</div>
