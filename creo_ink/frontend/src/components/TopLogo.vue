@@ -4,7 +4,7 @@
 			<router-link to="/">
 				<div class="image-logo">
 					<img
-						src="../assets/logo-transparent.png"
+						src="../assets/logo-transparent-weiß.png"
 						width="25"
 						height="25"
 						alt="image-logo"
@@ -40,7 +40,6 @@ header a {
 	align-items: center;
 	gap: 0.6em;
 	text-decoration: none;
-	color: var(--text-clr);
 }
 
 header {

@@ -4,6 +4,7 @@
 		props: ['note', 
 				'guest', 
 				'log', 
+				'sign',
 				'prename', 
 				'surname',
 				'username',
@@ -13,13 +14,18 @@
 				'confirmpassword',
 				'blue',
 				'violet',
-				'click']
+				'click',
+				'green',
+				'boardname',
+				'pin',]
 	};
 </script>
 
 <template>
 		
 		<body class="hero-bg">
+
+			<h2 v-if="wrong" class="wrong">Invalid e-mail or password</h2>
 
 			<div class="notepad">
 				<div class="wire-spiral">
@@ -85,6 +91,22 @@
 								placeholder="Confirm Password"
 							/>
 						</div>
+
+						<div class="name" v-if=boardname>
+							<h2>Enter the board's name</h2>
+							<input 
+								type="text"
+								placeholder="Name"
+							/>
+						</div>
+
+						<div class="name" v-if=pin>
+							<h2>Enter the board's game pin</h2>
+							<input 
+								type="text"
+								placeholder="Game PIN"
+							/>
+						</div>
 					</div>
 
 					<div class="click-area" v-if="click">
@@ -101,12 +123,12 @@
 					
 			</div>
 			
-			
+			<button v-if=violet class="violetbutton">{{ violet }}</button>
+			<button v-if=blue class="bluebutton">{{ blue }}</button>
+			<button v-if=green class="greenbutton">Sketch!</button>
+
 
 			<div v-if="guest" class=footer>
-				
-				<button v-if=violet class="violetbutton">{{ violet }}</button>
-				<button v-if=blue class="bluebutton">{{ blue }}</button>
 
 				<div class="confirmation">
 					<p>{{ guest }}</p>
@@ -150,6 +172,10 @@
 h2{
     font-size: 1.0rem;
     color: var(--text-accent);
+}
+
+.wrong{
+	color: red;
 }
 /* ------------------------ type-area ---------------------- */
 
@@ -263,6 +289,27 @@ form {
     border: none;
 }
 
+.greenbutton {
+    background-color: rgb(48, 230, 87);
+    color: var(--text-accent);
+    font-family: 'Gluten', cursive;
+    font-size: 1.1rem;
+    
+    border-radius: .7em;
+    height: 2.2rem;
+
+    margin: 2em 2em;
+    margin-inline: auto;
+    padding: 0 2rem;
+    
+    cursor: pointer; 
+    display: block;
+    border: none;
+}
+
+.greenbutton:hover, button:focus {
+    background-color: rgb(48, 230, 87);
+}
 
 .bluebutton:hover, button:focus {
     background-color: var(--accent-clr1);

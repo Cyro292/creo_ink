@@ -3,7 +3,7 @@
     import Notepad from "@/components/Notepad.vue";
 
 	export default {
-		name: "Login",
+		name: "BoardJoinen",
 		components: {
             Notepad,
 		},
@@ -15,15 +15,13 @@
 
 	<body>
 
-        <h1><span>Go</span> sketching!</h1>
+        <h1><span>Join a new</span> whiteboard!</h1>
 
         <Notepad
-        guest = "Don't have an account yet?"
-        log = 1
-        click = 1
-		violet = "Log in"
-        email = 1
-        password = 1
+        boardname = 1
+        pin = 1
+        green = 1
+        
         />
     </body>
 
