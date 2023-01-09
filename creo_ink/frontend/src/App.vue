@@ -1,25 +1,26 @@
 <template>
-	<TopLogo />
 	<NavBar />
-	<router-view />
+	<div class="pad">
+		<router-view />
+	</div>
 </template>
 
 <script>
-import TopLogo from "@/components/TopLogo.vue";
 import NavBar from "@/components/NavBar.vue";
 
 export default {
 	name: "HomeView",
 	components: {
-		TopLogo,
 		NavBar,
 	},
 };
 </script>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
+
 #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+	font-family: 'Gluten', cursive;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
@@ -37,6 +38,20 @@ export default {
 body {
 	font-family: "Gluten", cursive;
 	margin: 0;
+	margin-top: 4em;
 	background-color: var(--basic-clr);
 }
+
+.pad{
+	padding: 3em;
+}
+
+:root {
+	--text-clr: black;
+	--text-accent: grey;
+	--basic-clr: #fffbd7;
+	--accent-clr1: #a9def9;
+	--accent-clr2: #ca72ff;
+}
+
 </style>

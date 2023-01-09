@@ -1,8 +1,4 @@
 <script>
-// @ is an alias to /src
-import TopLogo from "@/components/TopLogo.vue";
-import NavBar from "@/components/NavBar.vue";
-
 export default {
 	name: "HomeView",
 	components: {

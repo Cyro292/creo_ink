@@ -38,10 +38,22 @@ const routes = [
 			import(/* webpackChunkName: "about" */ "../views/DrawBoardView.vue"),
 	},
 	{
-		path: "/Notepadtest",
+		path: "/notepadtest",
 		name: "Notepadtest",
 		component: () =>
 			import(/* webpackChunkName: "about" */ "../views/NotepadView.vue"),
+	},
+	{
+		path: "/boardcollection",
+		name: "BoardCollection",
+		component: () =>
+			import(/* webpackChunkName: "about" */ "../views/BoardCollectionView.vue"),
+	},
+	{
+		path: "/joinboard",
+		name: "BoardJoinen",
+		component: () =>
+			import(/* webpackChunkName: "about" */ "../views/BoardJoinenView.vue"),
 	},
 ];
 

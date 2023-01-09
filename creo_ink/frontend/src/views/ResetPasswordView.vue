@@ -13,10 +13,10 @@ export default {
 			<h1><span>Reset your</span> password</h1>
 
 			<div class="notepad">
-				<h3>
+				<h5>
 					Enter your email and we'll send you instructions on how to reset your
 					password.
-				</h3>
+				</h5>
 
 				<form action="">
 					<div class="type-area">
@@ -97,7 +97,7 @@ form {
 
 	border: solid var(--accent-clr1) 0.3rem;
 	border-radius: 0.5em;
-	width: 90%;
+	width: 40%;
 	height: 2.5em;
 }
 
