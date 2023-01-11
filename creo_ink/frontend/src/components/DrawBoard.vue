@@ -6,7 +6,7 @@
 import VueDrawingCanvas from "vue-drawing-canvas";
 
 export default {
-	name: "MyComponent",
+	name: "DrawBoard",
 	components: {
 		VueDrawingCanvas,
 	},
