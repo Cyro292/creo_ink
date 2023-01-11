@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import VueDrawingCanvas from "vue-drawing-canvas";
+import VueDrawingCanvas from "./DrawingCanvas.ts";
 
 export default {
 	name: "DrawBoard",
