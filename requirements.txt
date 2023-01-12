@@ -6,5 +6,6 @@ django-guest-user==0.5.2
 djangorestframework==3.14.0
 pylint-django==2.5.3
 daphne==4.0.0
-djoser==2.1.0
+dj-rest-auth
+django-rest-auth
 stripe==5.0.0
