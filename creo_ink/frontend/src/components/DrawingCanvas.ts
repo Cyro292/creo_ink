@@ -33,7 +33,7 @@ interface DataInit {
 	context: any;
 	images: any;
 	strokes: any;
-  activity: any;
+	activity: any;
 	guides: any;
 	trash: any;
 }
@@ -63,11 +63,11 @@ export default /*#__PURE__*/ defineComponent({
 		},
 		width: {
 			type: [String, Number],
-			default: () => 600,
+			default: () => (70 * window.innerWidth) / 100,
 		},
 		height: {
 			type: [String, Number],
-			default: () => 400,
+			default: () => (70 * window.innerHeight) / 100,
 		},
 		image: {
 			type: String,
@@ -153,7 +153,7 @@ export default /*#__PURE__*/ defineComponent({
 			drawing: false,
 			context: null,
 			images: [],
-      activity: {
+			activity: {
 				traveledDistance: 0,
 				timeClicking: 0,
 			},
