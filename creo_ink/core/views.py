@@ -7,20 +7,44 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from guest_user.functions import maybe_create_guest_user
 from allauth import app_settings
+from rest_framework import viewsets
+from rest_framework.response import Response
 from .utils import generate_numbered_username, get_invite_token, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
 from .models import Board
 from . import models, forms
 from .serializers import BoardSerializer
-from rest_framework import viewsets
+from .serializers import UserBoardOverviewSerializer
 from json import dumps
 
+
+class UserBoardsViewSet(viewsets.ViewSet):
+    serializer_class = UserBoardOverviewSerializer
+
+    def list(self, request):
+        if request.user.is_authenticated:
+            user = request.user
+            serializer = self.serializer_class(user)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'User not authenticated'})
 # DRF
 
+class BoardResticedViewSet(viewsets.ModelViewSet):
+    serializer_class = BoardSerializer
 
 class BoardViewSet(viewsets.ModelViewSet):
-    queryset = Board.objects.all()
     serializer_class = BoardSerializer
+    
+    def list(self, request):
+        if request.user.is_authenticated:
+            user = request.user
+            serializer = self.serializer_class(user)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'User not authenticated'})
+        
+
 
 # Create your views here.
 
@@ -32,9 +56,9 @@ def index_view(request):
 
 @login_required
 def add_board_view(request):
-    form = forms.AddBoardFrom()
+    form = forms.BoardForm()
     if request.method == "POST":
-        form = forms.AddBoardFrom(request.POST)
+        form = forms.BoardForm(request.POST)
 
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -62,9 +86,9 @@ def boards_view(request):
 
 
 @login_required
-def board_view(request, key):
+def board_view(request, slug):
 
-    board = get_object_or_404(request.user.boards, pk=key)
+    board = get_object_or_404(request.user.boards, slug=slug)
 
     if not board.has_access(user=request.user):
         raise PermissionDenied()
@@ -77,9 +101,9 @@ def board_view(request, key):
 
 
 @login_required
-def board_settings_view(request, key):
+def board_settings_view(request, slug):
 
-    board = get_object_or_404(request.user.boards, pk=key)
+    board = get_object_or_404(request.user.boards, slug=slug)
     invite_token = get_invite_token()
     invite_form = forms.make_create_invitaion_link_form(invite_token)()
     user_permission = board.get_permission(user=request.user)
