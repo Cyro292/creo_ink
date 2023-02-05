@@ -38,6 +38,7 @@ INSTALLED_MY_APPS = [
 ]
 
 INSTALLED_EXTENSIONS = [
+    'guardian',
     'daphne',
     'channels',
     'allauth',
@@ -168,6 +169,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'guardian.backends.ObjectPermissionBackend',
     "guest_user.backends.GuestBackend",
 ]
 
