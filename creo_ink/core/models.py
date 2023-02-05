@@ -139,19 +139,19 @@ class Board(models.Model):
             raise NoOtherUserException
 
         if not self.participation_set.filter(permission=depth).exists():
-            return self._change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth+1, 0)
 
         participation = self.participation_set.filter(permission=depth)
 
         try:
             participation[iteration]
         except IndexError:
-            return self._change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth+1, 0)
 
         user = participation[iteration].user
 
         if user is self.owner:
-            return self._change_random_owner(depth, iteration+1)
+            return self.change_random_owner(depth, iteration+1)
 
         self.set_permission(user, Participation.OWNER)
         return user

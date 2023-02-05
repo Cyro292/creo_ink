@@ -30,20 +30,9 @@ class UserBoardsViewSet(viewsets.ViewSet):
             return Response({'error': 'User not authenticated'})
 # DRF
 
+
 class BoardResticedViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSerializer
-
-class BoardViewSet(viewsets.ModelViewSet):
-    serializer_class = BoardSerializer
-    
-    def list(self, request):
-        if request.user.is_authenticated:
-            user = request.user
-            serializer = self.serializer_class(user)
-            return Response(serializer.data)
-        else:
-            return Response({'error': 'User not authenticated'})
-        
 
 
 # Create your views here.
