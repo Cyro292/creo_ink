@@ -5,7 +5,9 @@ import Notepad from "@/components/Notepad.vue";
 
 export default {
 	name: "Notepadtest",
-	components: {},
+	components: {
+		Notepad
+	},
 };
 </script>
 

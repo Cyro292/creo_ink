@@ -1,6 +1,12 @@
+from django.db.models.signals import post_save
+import uuid
+from django.db.models.signals import post_delete, pre_save
+from core.exceptions import NoOtherUserException
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
+
 
 from .exceptions import (MultipleIdenticalUserException,
                          MultipleOwnerException, NoOtherUserException,
@@ -22,12 +28,12 @@ class BoardManager(models.Manager):
 
 class Board(models.Model):
     name = models.CharField(max_length=64, blank=False, null=False)
-    password = models.CharField(max_length=128)
     slug = models.SlugField(max_length=12, unique=True, null=True)
+    password = models.CharField(max_length=128)
     creation_date = models.DateTimeField(auto_now_add=True, null=False)
     users = models.ManyToManyField(
         to=MyUserModel, related_name="boards", through="Participation")
-    elements = models.JSONField(null=True)
+    elements = models.JSONField(blank=True)
 
     objects = BoardManager()
 
@@ -85,7 +91,7 @@ class Board(models.Model):
             NoOwnerException: if no other user exists who can be owner
         """
 
-        owner = self.owner
+        owner: MyUserModel = self.owner
 
         if user.pk is owner.pk:
             try:
@@ -139,19 +145,19 @@ class Board(models.Model):
             raise NoOtherUserException
 
         if not self.participation_set.filter(permission=depth).exists():
-            return self._change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth+1, 0)
 
         participation = self.participation_set.filter(permission=depth)
 
         try:
             participation[iteration]
         except IndexError:
-            return self._change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth+1, 0)
 
         user = participation[iteration].user
 
         if user is self.owner:
-            return self._change_random_owner(depth, iteration+1)
+            return self.change_random_owner(depth, iteration+1)
 
         self.set_permission(user, Participation.OWNER)
         return user
@@ -159,7 +165,7 @@ class Board(models.Model):
     def get_absolute_url(self):
         return self.slug
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.name}"
 
 
@@ -196,3 +202,19 @@ class BoardSession(models.Model):
         to=MyUserModel, on_delete=models.SET_NULL, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     data = models.JSONField()
+
+
+@receiver(post_delete, sender=Participation)
+def _handel_owner_delete(instance: Participation, **kwargs):
+    if instance.permission is Participation.OWNER:
+        try:
+            instance.board.change_random_owner()
+        except NoOtherUserException:
+            instance.board.delete()
+
+
+@receiver(post_save, sender=Board)
+def set_slug(sender, instance, created, **kwargs):
+    if created:
+        instance.slug = f"{instance.name}-{instance.pk}"
+        instance.save()

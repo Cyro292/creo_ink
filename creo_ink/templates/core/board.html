@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>{{board.name}}</h1>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>{{board.name}}</h1>
+        <p>{{board.slug}}</p>
+		<p>You are currently {{permission}}</p>
+		<a href="{% url 'boards' %}">boards</a>
+		<a href="{% url 'board_settings' board.slug %}">settings</a>
+		<a href="{% url 'index' %}">back to index</a>
 
-    <p>You are currently {{permission}}</p>
-    <a href="{% url 'boards' %}">boards</a>
-    <a href="{% url 'board_settings' board.pk %}">settings</a>
-    <a href="{% url 'index' %}">back to index</a>
+		<!--{{ board.pk|json_script:"key" }}-->
+		<script>
+			const key = JSON.parse("{{key|escapejs}}");
+			console.log(key);
 
-    <!--{{ board.pk|json_script:"key" }}-->
-    <script>
-        const key = JSON.parse("{{key|escapejs}}");
-        console.log(key);
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/board/'
-            + key
-            + '/'
-        );
-
-    </script>
-</body>
+			const chatSocket = new WebSocket(
+				"ws://" + window.location.host + "/ws/board/" + key + "/"
+			);
+		</script>
+	</body>
 </html>

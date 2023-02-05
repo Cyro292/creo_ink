@@ -1,6 +1,7 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from core.models import *
+from core.models import Participation, Board
+from core.exceptions import NoOtherUserException
 
 
 @receiver(post_delete, sender=Participation)
@@ -14,4 +15,5 @@ def _handel_owner_delete(instance: Participation, **kwargs):
 
 @receiver(post_save, sender=Board)
 def _set_board_slug(instance: Board, **kwargs):
+    print("hey")
     instance.slug = instance.name + instance.pk
