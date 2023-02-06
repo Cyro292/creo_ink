@@ -49,6 +49,7 @@ INSTALLED_EXTENSIONS = [
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'dj_rest_auth.registration',
 ]
 
 # DRF
@@ -183,6 +184,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 
 # guest-user
-
-
-# daphne

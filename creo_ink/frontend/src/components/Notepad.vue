@@ -17,7 +17,18 @@
 				'click',
 				'green',
 				'boardname',
-				'pin',]
+				'pin',],
+		methods: {
+			submitForm() {
+				this.$emit('submit', {
+        			email: this.email,
+        			username: this.username,
+					password: this.password,
+        			newpassword: this.newpassword,
+        			confirmpassword: this.confirmpassword,
+      			})
+			}
+		}		
 	};
 </script>
 
@@ -61,6 +72,7 @@
 							<input v-if="username"
 								type="text"
 								placeholder="Username"
+								v-bind="username"
 							/>
 						</div>
 
@@ -68,6 +80,7 @@
 							<input v-if=email
 								type="email"
 								placeholder="E-mail"
+								v-bind="email"
 							/>
 						</div>
 
@@ -75,6 +88,7 @@
 							<input v-if=password
 								type="password"
 								placeholder="Password"
+								v-bind="password"
 							/>
 						</div>
 
@@ -82,6 +96,7 @@
 							<input v-if=newpassword
 								type="password"
 								placeholder="New Password"
+								v-bind="newpassword"
 							/>
 						</div>
 
@@ -89,6 +104,7 @@
 							<input v-if=confirmpassword
 								type="password"
 								placeholder="Confirm Password"
+								v-bind="confirmpassword"
 							/>
 						</div>
 
