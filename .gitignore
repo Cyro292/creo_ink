@@ -1,3 +1,5 @@
 venv/pyvenv.cfg
-*.pyo 
-*.pyc
+
+pycache/
+*.py[cod]
+*$py.class
