@@ -14,6 +14,7 @@ MyUserModel = get_user_model()
 
 
 class BoardManager(models.Manager):
+    
     def create(self, name, owner, password, *args, **kwargs):
         board = Board(name=name, password=password, *args, **kwargs)
         board.save()

@@ -4,6 +4,9 @@
 	"python.linting.pylintEnabled": true,
 	"python.linting.flake8Enabled": false,
 	"python.linting.enabled": true,
+	"env": {
+		"PYTHONDONTWRITEBYTECODE": true
+	},
 	"python.linting.pylintArgs": [
 		"--load-plugins",
 		"pylint_django",
@@ -13,6 +16,6 @@
 		"--disable=imported-auth-user",
 		"--disable=invalid-name",
 		"--disable=line-too-long",
-		"--disable=django-not-configured",
+		"--disable=django-not-configured"
 	]
 }

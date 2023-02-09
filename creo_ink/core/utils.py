@@ -1,7 +1,7 @@
+import secrets, random, string
 from django.utils.text import slugify
 from . import app_settings, models
 from django.core.cache import cache
-import secrets, random, string
 
 
 def generate_numbered_username(username, user, iteration=0) -> str:
