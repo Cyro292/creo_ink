@@ -7,18 +7,18 @@
 		<title>Document</title>
 	</head>
 	<body>
-        {% for message in messages %}
+		{% for message in messages %}
 		<p>{{message}}</p>
 		{% endfor %}
-		<form action="{% url 'board_settings' board.pk %}" method="post">
+		<form action="{% url 'board_settings' board.slug %}" method="post">
 			{% csrf_token %} {{change_user_permission_form.as_p}}
 			<input type="submit" value="change" />
 		</form>
-		<form action="{% url 'board_settings' board.pk %}" method="post">
+		<form action="{% url 'board_settings' board.slug %}" method="post">
 			{% csrf_token %} {{invite_form.as_p}}
 			<input type="submit" value="publish" />
 		</form>
 
-		<a href="{% url 'board' board.pk %}">board</a>
+		<a href="{% url 'board' board.slug %}">board</a>
 	</body>
 </html>
