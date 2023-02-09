@@ -31,6 +31,10 @@ class Board(models.Model):
 
     objects = BoardManager()
 
+    def save(self, *args, **kwargs) -> None:
+        self.slug = self.name + self.pk
+        return super().save(*args, **kwargs)
+
     @property
     def owner(self):
         try:
@@ -183,6 +187,14 @@ class Participation(models.Model):
     join_date = models.DateTimeField(auto_now_add=True)
     permission = models.IntegerField(
         choices=permissions, default=READER, blank=False, null=False)
+
+    def delete(self, *args, **kwargs):
+        if self.permission is Participation.OWNER:
+            try:
+                self.board.change_random_owner()
+            except NoOtherUserException:
+                self.board.delete()
+        return super().delete(*args, **kwargs)
 
     class Meta:
         unique_together = [["user", "board"]]
