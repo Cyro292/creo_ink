@@ -9,6 +9,9 @@ class BoardForm(forms.ModelForm):
     class Meta:
         model = models.Board
         fields = ['name', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
 
     def clean_password(self):
         password = self.cleaned_data.get('password')

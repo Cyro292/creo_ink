@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
+from django.utils.text import slugify
 
 from .exceptions import (MultipleIdenticalUserException,
                          MultipleOwnerException, NoOtherUserException,
                          NoOwnerException)
+from .utils import unique_slug_generator
 
 # Create your models here.
 
@@ -32,7 +34,8 @@ class Board(models.Model):
     objects = BoardManager()
 
     def save(self, *args, **kwargs) -> None:
-        self.slug = self.name + self.pk
+        if not self.slug:
+            self.slug = unique_slug_generator(self)
         return super().save(*args, **kwargs)
 
     @property

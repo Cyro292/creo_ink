@@ -68,6 +68,7 @@ def boards_view(request):
         dic = {}
         dic['pk'] = board.pk
         dic['name'] = board.name
+        dic['slug'] = board.slug
         dic['permission'] = board.get_permission_label(user=request.user)
         board_list.append(dic)
 
@@ -86,7 +87,7 @@ def board_view(request, slug):
 
     key_py_to_json = dumps(board.pk)
     return render(request, 'core/board.html',
-                  {"board": board, "permission": user_permission, "key": key_py_to_json})
+                  {"board": board, "permission": user_permission, "key": key_py_to_json, "slug": slug})
 
 
 @login_required
