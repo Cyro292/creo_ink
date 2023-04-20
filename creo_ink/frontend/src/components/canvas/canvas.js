@@ -1,11 +1,3 @@
-
-
-//window.onload = function () { //Everything in here get's only executed after pageload.
-                            // Avoids crash when DOM is trying to be accessed before pageload.
-
-
-
-
 // Definitions
 
 
@@ -14,8 +6,8 @@ const canvas1 = document.querySelector('#canvas1');
 const ctx1 = canvas1.getContext('2d');
 const rc1 = rough.canvas(document.querySelector('#canvas1'));
 
-canvas1.width = window.innerWidth;
-canvas1.height = window.innerHeight;
+canvas1.width = window.innerWidth * 3;
+canvas1.height = window.innerHeight * 3;
 
 
 
@@ -30,13 +22,6 @@ canvas2.height = window.innerWidth;
 
 
 // ------------------- Drawing section ----------------
-rc1.rectangle(500, 100, 200, 200);
-rc1.rectangle(900, 105, 200, 400, {
-    fill: 'rgba(255,0,200,0.2)',
-    fillStyle: 'dashed' // solid fill
-});
-
-rc1.line(400, 300, 900, 100);
 
 
 //defining all buttons as variables
@@ -255,6 +240,10 @@ var radiusX = null;
 var radiusY = null;
 
 
+//update offset position
+offLeft = canvas1.offsetLeft;
+offTop = canvas1.offsetTop;
+
 // EventListener-functions
 
 function mouseDown(e) {
@@ -335,7 +324,7 @@ function mouseClick(e) {
 //Canvas_Draw-functions
 
 function dragCanvas(e) {
-
+    
     //calculate travelled distance
     deltaX = e.clientX - posX;
     deltaY = e.clientY - posY;
@@ -353,6 +342,19 @@ function dragCanvas(e) {
     offLeft = canvas1.offsetLeft;
     offTop = canvas1.offsetTop;
 
+    //limit drag-area
+    if (offLeft > 0) {
+        canvas1.style.left = 0;
+
+    } if(offLeft < -3840) {
+        canvas1.style.left = '-3840px';
+
+    } if (offTop > 0) {
+        canvas1.style.top = 0;
+
+    } if (offTop < -1004) {
+        canvas1.style.top = '-1004px';
+    }
     
 
 }

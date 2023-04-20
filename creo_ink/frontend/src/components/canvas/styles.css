@@ -53,8 +53,8 @@ body {
 
 #canvas1{
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -1920px;
+    left: -502px;
 }
 
 
