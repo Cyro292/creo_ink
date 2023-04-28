@@ -45,19 +45,28 @@ const trash = document.querySelector('.trash');
 
 dragHand.addEventListener('click', function(e) {
 
+    //manage active button animation
+    dragHand.classList.add("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.remove("selected");
+    text.classList.remove("selected");
+    square.classList.remove("selected");
+    circle.classList.remove("selected");
+    
     canvas2.classList.add("grab"); //cursor wird zu grab (fallback: move) wenn er auf canvas ist
     canvas2.classList.remove('crosshair');
-    canvas2.classList.toggle("dragHand");
 
 
     // remove other class-names
-
     canvas2.classList.remove("pointerMouse");
     canvas2.classList.remove("pen");
     canvas2.classList.remove("ereaser");
     canvas2.classList.remove("text");
     canvas2.classList.remove("square");
     canvas2.classList.remove("circle");
+    
+    
 
     console.log(canvas2.classList); // jff
 
@@ -65,6 +74,16 @@ dragHand.addEventListener('click', function(e) {
 
 pointerMouse.addEventListener('click', function(e) {
 
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.add("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.remove("selected");
+    text.classList.remove("selected");
+    square.classList.remove("selected");
+    circle.classList.remove("selected");
+
+    //manage cursor animation
     canvas2.classList.remove("crosshair"); //cursor wird zum pointer wenn auf canvas ist
     canvas2.classList.remove("grab");      // "      
     canvas2.classList.toggle("pointerMouse");
@@ -85,6 +104,16 @@ pointerMouse.addEventListener('click', function(e) {
 
 pen.addEventListener('click', function(e) {
 
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.add("selected");
+    ereaser.classList.remove("selected");
+    text.classList.remove("selected");
+    square.classList.remove("selected");
+    circle.classList.remove("selected");
+
+    //manage cursor animation
     canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
     canvas2.classList.remove("grab");   // "      
     canvas2.classList.toggle("pen");
@@ -106,7 +135,18 @@ ereaser.addEventListener('click', function(e) {
 
     // canvas.classList.add("none"); //cursor wird zum kreis wenn auf canvas ist 
                         //-> https://dev.to/mattmarquise/how-to-create-a-custom-circular-cursor-for-your-website-4i7p
+    
+    
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.add("selected");
+    text.classList.remove("selected");
+    square.classList.remove("selected");
+    circle.classList.remove("selected");
 
+    //manage cursor animation
     canvas2.classList.remove("grab"); 
     canvas2.classList.remove('crosshair');     // "      
     canvas2.classList.toggle("ereaser");
@@ -126,6 +166,16 @@ ereaser.addEventListener('click', function(e) {
 
 text.addEventListener('click', function(e) {
 
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.remove("selected");
+    text.classList.add("selected");
+    square.classList.remove("selected");
+    circle.classList.remove("selected");
+
+    //manage cursor animation
     canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
     canvas2.classList.remove("grab");   // "      
     canvas2.classList.toggle("text");
@@ -145,7 +195,17 @@ text.addEventListener('click', function(e) {
 
 
 square.addEventListener('click', function(e) {
+    
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.remove("selected");
+    text.classList.remove("selected");
+    square.classList.add("selected");
+    circle.classList.remove("selected");
 
+    //manage cursor animation
     canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
     canvas2.classList.remove("grab");   // "      
     canvas2.classList.toggle("square");
@@ -165,7 +225,17 @@ square.addEventListener('click', function(e) {
 
 
 circle.addEventListener('click', function(e) {
+    
+    //manage active button animation
+    dragHand.classList.remove("selected");
+    pointerMouse.classList.remove("selected");
+    pen.classList.remove("selected");
+    ereaser.classList.remove("selected");
+    text.classList.remove("selected");
+    square.classList.remove("selected");
+    circle.classList.add("selected");
 
+    //manage cursor animation
     canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
     canvas2.classList.remove("grab");   // "      
     canvas2.classList.toggle("circle");
@@ -334,6 +404,7 @@ function dragCanvas(e) {
 	canvas1.style.top = (canvas1.offsetTop + deltaY) + "px";
     console.log('offL: '+canvas1.offsetLeft);
     console.log('offT: '+canvas1.offsetTop);
+    
     //update position
     posX = e.clientX;
     posY = e.clientY;
