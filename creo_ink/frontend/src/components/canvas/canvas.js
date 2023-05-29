@@ -1,7 +1,7 @@
 // Definitions
 
 var windowW = window.innerWidth;    //!!!  problematic since window-alignment only takes place when refreshing
-var windowH = window.innerHeight;   //!!!!  in case you scale canvas down or up canvas2 doesen't scale accordingly and drawable section on the screen decreases
+var windowH = window.innerHeight;   //!!!!  in case you scale canvas down or up $('#canvas2') doesen't scale accordingly and drawable section on the screen decreases
 
 //temporary canvas that gets engaged by user
 const canvas2 = document.querySelector('#canvas2');
@@ -29,232 +29,238 @@ canvas1.style.top = '-502px';
 // ------------------- Drawing section ----------------
 
 
-//defining all buttons as variables
+//defining all buttons and co as variables
 
-const dragHand = document.querySelector(".dragHand");
-const pointerMouse = document.querySelector(".pointerMouse");
-const pen = document.querySelector(".pen");
-const ereaser = document.querySelector(".ereaser");
-const text = document.querySelector(".text");
-const square = document.querySelector(".square");
-const circle = document.querySelector(".circle");
-const arrowLeft = document.querySelector(".arrow-left");
-const arrowRight = document.querySelector(".arrow-right");
-const arrowDown = document.querySelector(".arrow-down");
-const copy = document.querySelector(".copy");
-const trash = document.querySelector('.trash');
+const dragHand = $(".dragHand");
+const pointerMouse = $(".pointerMouse");
+const pen = $(".pen");
+const ereaser = $(".ereaser");
+const text = $(".text");
+const square = $(".square");
+const circle = $(".circle");
+const arrowLeft = $(".arrow-left");
+const arrowRight = $(".arrow-right");
+const arrowDown = $(".arrow-down");
+const copy = $(".copy");
+const trash = $('.trash');
 
-
+const cursor = $('.circleCursor');
 
 //adding Eventlistener to each toolbar-buttons with its callback function
 
-dragHand.addEventListener('click', function(e) {
+dragHand.on('click', function(e) {
 
     //manage active button animation
-    dragHand.classList.add("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.remove("selected");
-    text.classList.remove("selected");
-    square.classList.remove("selected");
-    circle.classList.remove("selected");
+    $(".dragHand").addClass("selected");
+    $(".pointerMouse").removeClass("selected");
+    $(".pen").removeClass("selected");
+    $(".ereaser").removeClass("selected");
+    $(".text").removeClass("selected");
+    $(".square").removeClass("selected");
+    $(".circle").removeClass("selected");
     
-    canvas2.classList.add("grab"); //cursor wird zu grab (fallback: move) wenn er auf canvas ist
-    canvas2.classList.remove('crosshair');
+    $('#canvas2').addClass("grab"); //cursor wird zu grab (fallback: move) wenn er auf canvas ist
+    $('#canvas2').removeClass('crosshair');
+    $('#canvas2').removeClass("circleCursor");
 
 
     // remove other class-names
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("square");
-    canvas2.classList.remove("circle");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("square");
+    $('#canvas2').removeClass("circle");
     
     
 
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
-pointerMouse.addEventListener('click', function(e) {
+pointerMouse.on('click', function(e) {
 
     //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.add("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.remove("selected");
-    text.classList.remove("selected");
-    square.classList.remove("selected");
-    circle.classList.remove("selected");
+    dragHand.removeClass("selected");
+    pointerMouse.addClass("selected");
+    pen.removeClass("selected");
+    ereaser.removeClass("selected");
+    text.removeClass("selected");
+    square.removeClass("selected");
+    circle.removeClass("selected");
 
     //manage cursor animation
-    canvas2.classList.remove("crosshair"); //cursor wird zum pointer wenn auf canvas ist
-    canvas2.classList.remove("grab");      // "      
-    canvas2.classList.toggle("pointerMouse");
+    $('#canvas2').removeClass("crosshair"); //cursor wird zum pointer wenn auf canvas ist
+    $('#canvas2').removeClass("grab");      // "
+    $('#canvas2').removeClass("circleCursor");      
+    $('#canvas2').toggleClass("pointerMouse");
 
 
     // remove other class-names
 
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("square");
-    canvas2.classList.remove("circle");
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("square");
+    $('#canvas2').removeClass("circle");
     
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
-pen.addEventListener('click', function(e) {
+pen.on('click', function(e) {
 
     //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.add("selected");
-    ereaser.classList.remove("selected");
-    text.classList.remove("selected");
-    square.classList.remove("selected");
-    circle.classList.remove("selected");
+    dragHand.removeClass("selected");
+    pointerMouse.removeClass("selected");
+    pen.addClass("selected");
+    ereaser.removeClass("selected");
+    text.removeClass("selected");
+    square.removeClass("selected");
+    circle.removeClass("selected");
 
     //manage cursor animation
-    canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
-    canvas2.classList.remove("grab");   // "      
-    canvas2.classList.toggle("pen");
+    $('#canvas2').addClass("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
+    $('#canvas2').removeClass("grab");   // "
+    $('#canvas2').removeClass("circleCursor");      
+    $('#canvas2').toggleClass("pen");
 
 
     // remove other class-names
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("square");
-    canvas2.classList.remove("circle");
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("square");
+    $('#canvas2').removeClass("circle");
     
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
-ereaser.addEventListener('click', function(e) {
+ereaser.on('click', function(e) {
 
-    // canvas.classList.add("none"); //cursor wird zum kreis wenn auf canvas ist 
+    // canvas.addClass("none"); //cursor wird zum kreis wenn auf canvas ist 
                         //-> https://dev.to/mattmarquise/how-to-create-a-custom-circular-cursor-for-your-website-4i7p
     
     
     //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.add("selected");
-    text.classList.remove("selected");
-    square.classList.remove("selected");
-    circle.classList.remove("selected");
+    dragHand.removeClass("selected");
+    pointerMouse.removeClass("selected");
+    pen.removeClass("selected");
+    ereaser.addClass("selected");
+    text.removeClass("selected");
+    square.removeClass("selected");
+    circle.removeClass("selected");
 
     //manage cursor animation
-    canvas2.classList.remove("grab"); 
-    canvas2.classList.remove('crosshair');     // "      
-    canvas2.classList.toggle("ereaser");
+    $('#canvas2').removeClass("grab"); 
+    $('#canvas2').removeClass('crosshair');     // "      
+    $('#canvas2').toggleClass("ereaser");
 
 
     // remove other class-names
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("square");
-    canvas2.classList.remove("circle");
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("square");
+    $('#canvas2').removeClass("circle");
     
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
-text.addEventListener('click', function(e) {
+text.on('click', function(e) {
 
     //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.remove("selected");
-    text.classList.add("selected");
-    square.classList.remove("selected");
-    circle.classList.remove("selected");
+    dragHand.removeClass("selected");
+    pointerMouse.removeClass("selected");
+    pen.removeClass("selected");
+    ereaser.removeClass("selected");
+    text.addClass("selected");
+    square.removeClass("selected");
+    circle.removeClass("selected");
 
     //manage cursor animation
-    canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
-    canvas2.classList.remove("grab");   // "      
-    canvas2.classList.toggle("text");
+    $('#canvas2').addClass("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
+    $('#canvas2').removeClass("grab");   // " 
+    $('#canvas2').removeClass("circleCursor");     
+    $('#canvas2').toggleClass("text");
 
 
     // remove other class-names
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("square");
-    canvas2.classList.remove("circle");
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("square");
+    $('#canvas2').removeClass("circle");
     
-    console.log(canvas2.classList); // jff
-
-});
-
-
-square.addEventListener('click', function(e) {
-    
-    //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.remove("selected");
-    text.classList.remove("selected");
-    square.classList.add("selected");
-    circle.classList.remove("selected");
-
-    //manage cursor animation
-    canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
-    canvas2.classList.remove("grab");   // "      
-    canvas2.classList.toggle("square");
-
-
-    // remove other class-names
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("circle");
-    
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
 
-circle.addEventListener('click', function(e) {
+square.on('click', function(e) {
     
     //manage active button animation
-    dragHand.classList.remove("selected");
-    pointerMouse.classList.remove("selected");
-    pen.classList.remove("selected");
-    ereaser.classList.remove("selected");
-    text.classList.remove("selected");
-    square.classList.remove("selected");
-    circle.classList.add("selected");
+    dragHand.removeClass("selected");
+    pointerMouse.removeClass("selected");
+    pen.removeClass("selected");
+    ereaser.removeClass("selected");
+    text.removeClass("selected");
+    square.addClass("selected");
+    circle.removeClass("selected");
 
     //manage cursor animation
-    canvas2.classList.add("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
-    canvas2.classList.remove("grab");   // "      
-    canvas2.classList.toggle("circle");
+    $('#canvas2').addClass("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
+    $('#canvas2').removeClass("grab");   // " 
+    $('#canvas2').removeClass("circleCursor");     
+    $('#canvas2').toggleClass("square");
 
 
     // remove other class-names
-    canvas2.classList.remove("dragHand");
-    canvas2.classList.remove("pointerMouse");
-    canvas2.classList.remove("pen");
-    canvas2.classList.remove("ereaser");
-    canvas2.classList.remove("text");
-    canvas2.classList.remove("square");
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("circle");
     
-    console.log(canvas2.classList); // jff
+    console.log($('#canvas2').attr("class")); // jff
+
+});
+
+
+circle.on('click', function(e) {
+    
+    //manage active button animation
+    dragHand.removeClass("selected");
+    pointerMouse.removeClass("selected");
+    pen.removeClass("selected");
+    ereaser.removeClass("selected");
+    text.removeClass("selected");
+    square.removeClass("selected");
+    circle.addClass("selected");
+
+    //manage cursor animation
+    $('#canvas2').addClass("crosshair"); //cursor wird zum crosshair wenn auf canvas ist
+    $('#canvas2').removeClass("grab");   // " 
+    $('#canvas2').removeClass("circleCursor");     
+    $('#canvas2').toggleClass("circle");
+
+
+    // remove other class-names
+    $('#canvas2').removeClass("dragHand");
+    $('#canvas2').removeClass("pointerMouse");
+    $('#canvas2').removeClass("pen");
+    $('#canvas2').removeClass("ereaser");
+    $('#canvas2').removeClass("text");
+    $('#canvas2').removeClass("square");
+    
+    console.log($('#canvas2').attr("class")); // jff
 
 });
 
@@ -262,7 +268,7 @@ circle.addEventListener('click', function(e) {
 
 //add Eventlistener with its callback function to actionbar
 
-trash.addEventListener('click', function() {
+trash.on('click', function() {
 
     //clear permanent canvas (canvas1)
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -278,13 +284,13 @@ trash.addEventListener('click', function() {
 
 
 //Add Event-Listeners to canvas mouseevents
-canvas2.addEventListener('mousedown', mouseDown); 
+$('#canvas2').on('mousedown', mouseDown); 
 
-canvas2.addEventListener('mouseup', mouseUp);    
+$('#canvas2').on('mouseup', mouseUp);    
 
-canvas2.addEventListener('mousemove', mouseMove);
+$('#canvas2').on('mousemove', mouseMove);
 
-canvas2.addEventListener('click', mouseClick);   
+$('#canvas2').on('click', mouseClick);   
     
 
 
@@ -322,16 +328,16 @@ offTop = canvas1.offsetTop;
 // EventListener-functions
 
 function mouseDown(e) {
-
+    
     // define coordinates of execution
     posX = e.clientX;
     posY = e.clientY;
 
-    canvas2.classList.add('mouseDown'); //tell other functions that mouse is down -> mouseMove functions whith condition of mouseDown can now be executed
+    $('#canvas2').addClass('mouseDown'); //tell other functions that mouse is down -> mouseMove functions whith condition of mouseDown can now be executed
 
-    if (canvas2.classList.value.includes('grab') == true){   //activate grabbing cursor #dragHand
-        canvas2.classList.remove('grab');
-        canvas2.classList.add('grabbing');
+    if ($('#canvas2').hasClass('grab')){   //activate grabbing cursor #dragHand
+        $('#canvas2').removeClass('grab');
+        $('#canvas2').addClass('grabbing');
 
     } 
         
@@ -340,57 +346,60 @@ function mouseDown(e) {
 
 function mouseUp(e) {
 
-    canvas2.classList.remove('mouseDown');   // tell other functions that mouse is NOT down anymore
+    $('#canvas2').removeClass('mouseDown');   // tell other functions that mouse is NOT down anymore
 
-    if (canvas2.classList.value.includes('pointerMouse') == false){ //so selector-box doesn't dissapear when releasing mouse
-        ctx2.clearRect(0, 0, canvas2.width, canvas2.height);    //avoids overlaying effect since drawing is displayed on canvas1 and canvas2 until canvas2 is #mouseDown && #mouseMove
+    if (!$('#canvas2').hasClass('pointerMouse')){ //so selector-box doesn't dissapear when releasing mouse
+        ctx2.clearRect(0, 0, canvas2.width, canvas2.height);    //avoids overlaying effect since drawing is displayed on canvas1 and $('#canvas2') until $('#canvas2') is #mouseDown && #mouseMove
     }
 
-    if (canvas2.classList.value.includes('grabbing') == true) {  //re-activate grab cursor #dragHand
-        canvas2.classList.remove('grabbing');
-        canvas2.classList.add('grab');
+    if ($('#canvas2').hasClass('grabbing')) {  //re-activate grab cursor #dragHand
+        $('#canvas2').removeClass('grabbing');
+        $('#canvas2').addClass('grab');
 
-    } else if (canvas2.classList.value.includes('pen') == true) {   //end line to prevent 'linejumping'
+    } else if ($('#canvas2').hasClass('pen')) {   //end line to prevent 'linejumping'
         ctx1.beginPath();
 
-    } else if (canvas2.classList.value.includes('square') == true) {    //transfer rectangle to permanent canvas
+    } else if ($('#canvas2').hasClass('square')) {    //transfer rectangle to permanent canvas
         console.log('triggered');
         saveRect();
+        resetVar();
         
-    } else if(canvas2.classList.value.includes('circle') == true) {     //transfer ellipse to permanent canvas
+    } else if($('#canvas2').hasClass('circle')) {     //transfer ellipse to permanent canvas
         console.log('triggered');
         saveEllipse();
+        resetVar();
     } 
 
 }
 
 function mouseMove(e) {
 
-    if (canvas2.classList.value.includes('grabbing') == true) {
+    if ($('#canvas2').hasClass('grabbing')) {
         dragCanvas(e);
-    } else if (canvas2.classList.value.includes('pointerMouse') == true) {
+    } else if ($('#canvas2').hasClass('pointerMouse')) {
         selectorBox(e);
         
-    } else if(canvas2.classList.value.includes('pen') == true) {
+    } else if($('#canvas2').hasClass('pen')) {
         drawPen(e);
     
-    } else if (canvas2.classList.value.includes('ereaser') == true) {
+    } else if ($('#canvas2').hasClass('ereaser')) {
         erease(e);
+        ereaserCursor(e);
 
-    } else if (canvas2.classList.value.includes('square') == true) {
+    } else if ($('#canvas2').hasClass('square')) {
         drawRect(e);
 
-    } else if (canvas2.classList.value.includes('circle') == true) {
+    } else if ($('#canvas2').hasClass('circle')) {
         drawEllipse(e);
 
     } 
-    
+
 }
 
 function mouseClick(e) {
     console.log('click at: '+ e.clientX + 'X, ' + e.clientY + 'Y.');
 
-    if (canvas2.classList.value.includes('text') == true) {
+    if ($('#canvas2').hasClass('text')) {
         drawText(e);
     }
 }
@@ -437,7 +446,7 @@ function dragCanvas(e) {
 
 function selectorBox(e) {
 
-    if (canvas2.classList.value.includes('mouseDown') == true) {
+    if ($('#canvas2').hasClass('mouseDown')) {
 
         //calculate travelled distance
         deltaX = e.clientX - posX;
@@ -460,10 +469,10 @@ function selectorBox(e) {
 
 function drawPen(e) {
 
-    if (canvas2.classList.value.includes('mouseDown') == true) {
+    if ($('#canvas2').hasClass('mouseDown')) {
 
         //update color
-        colorStroke = document.querySelector('.color-stroke').value; 
+        colorStroke = $('.color-stroke').value; 
 
         //draw Pen-line
         ctx1.lineWidth = 3;
@@ -501,11 +510,11 @@ function drawText(e) {
 
 function drawRect(e)  {
 
-    if (canvas2.classList.value.includes('mouseDown') == true) {
+    if ($('#canvas2').hasClass('mouseDown')) {
 
         //update color
-        colorStroke = document.querySelector('.color-stroke').value;
-        colorBg = document.querySelector('.color-bg').value;
+        colorStroke = $('.color-stroke').value;
+        colorBg = $('.color-bg').value;
 
         //calculate travelled distance
         deltaX = e.clientX - posX;
@@ -519,7 +528,7 @@ function drawRect(e)  {
         // ctx2.lineJoin = 'round';
         // ctx2.fillStyle = colorBg;
         // ctx2.strokeStyle = colorStroke;
-        // ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+        // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
         // ctx2.beginPath();
     	// ctx2.fillRect(posX, posY, deltaX, deltaY);           
         // ctx2.rect(posX, posY, deltaX, deltaY);
@@ -535,10 +544,10 @@ function drawRect(e)  {
 
 function drawEllipse(e) {
 
-    if (canvas2.classList.value.includes('mouseDown') == true) {
+    if ($('#canvas2').hasClass('mouseDown')) {
         
         //update color
-        colorStroke = document.querySelector('.color-stroke').value;
+        colorStroke = $('.color-stroke').value;
         
         //calculate travelled distance
         deltaX = e.clientX - posX;
@@ -558,7 +567,7 @@ function drawEllipse(e) {
 
         // ctx2.lineWidth = 3;
         // ctx2.strokeStyle = colorStroke;
-        // ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+        // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
         // ctx2.beginPath();
         // ctx2.setLineDash([]);
         // ctx2.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 180);
@@ -572,7 +581,7 @@ function drawEllipse(e) {
 
 function saveRect() {
 
-    ///bring color of canvas1 and canvas2 in line
+    ///bring color of canvas1 and $('#canvas2') in line
 
     // ctx1.fillStyle = ctx2.fillStyle;    
     // ctx1.strokeStyle = ctx2.strokeStyle;
@@ -596,8 +605,8 @@ function saveEllipse() {
     console.log('Y: '+centerY + '+' + offTop);
 
     // ctx1.beginPath();
-    // ctx1.strokeStyle = ctx2.strokeStyle;    //bring color of canvas2 and canvas1 in line
-    // ctx1.lineWidth = ctx2.lineWidth;    //bring lineWidth of canvas2 and canvas1 in line
+    // ctx1.strokeStyle = ctx2.strokeStyle;    //bring color of $('#canvas2') and canvas1 in line
+    // ctx1.lineWidth = ctx2.lineWidth;    //bring lineWidth of $('#canvas2') and canvas1 in line
     // ctx1.ellipse(centerX + offLeft, centerY + offTop, radiusX, radiusY, 0, 0, 180);
     // ctx1.stroke();
 
@@ -610,7 +619,7 @@ function saveEllipse() {
 
 function erease(e) {
 
-    if (canvas2.classList.value.includes('mouseDown') == true) {
+    if ($('#canvas2').hasClass('mouseDown')) {
 
         //calculate travelled distance
         deltaX = e.clientX - posX;
@@ -630,4 +639,31 @@ function erease(e) {
 
         
     }
+}
+
+function ereaserCursor(e) {
+    console.log('works');
+
+    $('#canvas2').addClass("circleCursor");
+
+    cursor.style.left = e.pageX + "px",
+    cursor.style.top = e.pageY + "px";
+}
+
+function resetVar() {
+    centerX = null;
+    centerY = null;
+
+    deltaX = null;
+    deltaY = null;
+    
+    moveX = null;
+    moveY = null;
+
+    posX = null;
+    posY = null;
+    
+    radius = null;
+    radiusX = null;
+    radiusY = null;
 }
