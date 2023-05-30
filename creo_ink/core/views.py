@@ -91,7 +91,7 @@ def board_view(request, slug):
 
 
 @login_required
-def board_settings_view(request, slug):
+def board_settings_view(request: HttpRequest, slug):
 
     board = get_object_or_404(request.user.boards, slug=slug)
     invite_token = get_invite_token()

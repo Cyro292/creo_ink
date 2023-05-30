@@ -340,7 +340,7 @@ function dragCanvas(e) {
     deltaX = e.clientX - posX;
     deltaY = e.clientY - posY;
 
-    //move canvas  
+    //move canvas
     canvas1.style.left = (canvas1.offsetLeft + deltaX) + "px";
 	canvas1.style.top = (canvas1.offsetTop + deltaY) + "px";
     console.log('offL: '+canvas1.offsetLeft);
