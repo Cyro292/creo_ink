@@ -43,15 +43,6 @@ body {
 
 /* CANVAS */
 
-#text {
-    position: absolute;
-    border: none;
-    resize: none;
-    box-shadow: none;
-    outline: none;
-    background-color: transparent;
-}
-
 #canvas2{
     position: absolute;
     top: 0;
