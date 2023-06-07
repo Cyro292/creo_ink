@@ -1,8 +1,15 @@
+<template>
+    <button @click="setUpDragHand" class="btn btn-sm dragHand"><i class="fa-regular fa-hand"></i></button>
+</template>
+
 <script>
     export default {
         name: 'DragHand',
         mounted() {
-            $(".dragHand").on('click', function(e) {
+            
+        },
+        methods: {
+            setUpDragHand() {
                 //manage active button animation
                 $(".dragHand").addClass("selected");
                 $(".pointerMouse").removeClass("selected");
@@ -16,7 +23,6 @@
                 $('#canvas2').removeClass('crosshair');
                 $('#canvas2').removeClass("circleCursor");
 
-
                 // remove other class-names
                 $('#canvas2').removeClass("pointerMouse");
                 $('#canvas2').removeClass("pen");
@@ -28,7 +34,7 @@
 
 
                 console.log($('#canvas2').attr("class")); // jff                
-            });
+            }
         }
     }
 

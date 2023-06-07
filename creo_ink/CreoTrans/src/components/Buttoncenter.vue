@@ -3,16 +3,14 @@
     
     <div class="top container">
     
-        <button class="btn btn-sm dragHand"><i class="fa-regular fa-hand"></i></button>
-        <button class="btn btn-sm pointerMouse"><i class="fa-solid fa-arrow-pointer"></i></button>
+        <DragHand />
+        <SelectorBox />
+        <Pen />
+        <Ereaser />
+        <Textfield />
+        <Rectangle />
+        <Circle />   
         
-        <button class="btn btn-sm pen"><i class="fa-solid fa-pen"></i></button>
-        <button class="btn btn-sm ereaser"><i class="fa-solid fa-eraser"></i></button>
-        <button class="btn btn-sm text"><i class="fa-solid fa-heading"></i></button>
-    
-        <button class="btn btn-sm square"><i class="fa-regular fa-square"></i></button>
-        <button class="btn btn-sm circle"><i class="fa-regular fa-circle"></i></button>
-    
     </div>    
     <br><br>
     <div class="bottom container">
@@ -114,6 +112,7 @@
 </style>
 
 <script> 
+import Canvas from './Canvas.vue'
 import DragHand from './DragHand.vue'
 import SelectorBox from './SelectorBox.vue'
 import Pen from './Pen.vue'
@@ -122,26 +121,12 @@ import Textfield from './Textfield.vue'
 import Rectangle from './Rectangle.vue'
 import Circle from './Circle.vue'
 
-//defining all buttons etc as variables
 
-const dragHand = $(".dragHand");
-const pointerMouse = $(".pointerMouse");
-const pen = $(".pen");
-const ereaser = $(".ereaser");
-const text = $(".text");
-const square = $(".square");
-const circle = $(".circle");
-const arrowLeft = $(".arrow-left");
-const arrowRight = $(".arrow-right");
-const arrowDown = $(".arrow-down");
-const copy = $(".copy");
-const trash = $('.trash');
-
-const cursor = $('.circleCursor');
 
     export default{
         name: 'ButtonCenter',
         components: {
+            Canvas,
             DragHand,
             SelectorBox,
             Pen,
@@ -150,41 +135,64 @@ const cursor = $('.circleCursor');
             Rectangle,
             Circle,
         },
-        mounted() {
-            // create reference to coordinate-saving-place
-
-            //define vars outside of function so it is always accessible
-            var centerX = null;
-            var centerY = null;
-
-            var colorStroke = '';
-            var colorBg = '';
-
-            var deltaX = null;
-            var deltaY = null;
-
-            var moveX = null;
-            var moveY = null;
-
-            var offLeft = null;
-            var offTop = null;
-
-            var posX = null;
-            var posY = null;
-
-            var radius = null;
-            var radiusX = null;
-            var radiusY = null;
-
-
-            //update offset position
-            offLeft = canvas1.offsetLeft;
-            offTop = canvas1.offsetTop;
-
-            // EventListener-functions
-
-            function mouseDown(e) {
+        methods: {
+            
+            defineVars() {
                 
+                //defining lowerControl buttons
+                const arrowLeft = $(".arrow-left");
+                const arrowRight = $(".arrow-right");
+                const arrowDown = $(".arrow-down");
+                const copy = $(".copy");
+                const trash = $('.trash');
+        
+                const cursor = $('.circleCursor');    
+                
+                // create reference to coordinate-saving-place
+                
+        
+                //define vars outside of function so it is always accessible
+                var centerX = null;
+                var centerY = null;
+        
+                var colorStroke = '';
+                var colorBg = '';
+        
+                var deltaX = null;
+                var deltaY = null;
+        
+                var moveX = null;
+                var moveY = null;
+        
+                var offLeft = null;
+                var offTop = null;
+        
+                var posX = null;
+                var posY = null;
+        
+                var radius = null;
+                var radiusX = null;
+                var radiusY = null;
+        
+        
+                //update offset position
+                offLeft = canvas1.offsetLeft;
+                offTop = canvas1.offsetTop;
+        
+                
+            },
+            canvasListener() {
+                //Add Event-Listeners to canvas mouseevents
+                $('#canvas2').on('mousedown', mouseDown); 
+        
+                $('#canvas2').on('mouseup', mouseUp);    
+        
+                $('#canvas2').on('mousemove', mouseMove);
+        
+                $('#canvas2').on('click', mouseClick);
+            },
+            mouseDown(e) {
+        
                 // define coordinates of execution
                 posX = e.clientX;
                 posY = e.clientY;
@@ -197,14 +205,12 @@ const cursor = $('.circleCursor');
 
                 } 
                     
-            }
-
-
-            function mouseUp(e) {
+            },
+            mouseUp(e) {
 
                 $('#canvas2').removeClass('mouseDown');   // tell other functions that mouse is NOT down anymore
 
-                if (!$('#canvas2').hasClass('pointerMouse')){ //so selector-box doesn't dissapear when releasing mouse
+                if (!$('#canvas2').hasClass('$(".pointerMouse")')){ //so selector-box doesn't dissapear when releasing mouse
                     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);    //avoids overlaying effect since drawing is displayed on canvas1 and $('#canvas2') until $('#canvas2') is #mouseDown && #mouseMove
                 }
 
@@ -215,7 +221,7 @@ const cursor = $('.circleCursor');
                 } else if ($('#canvas2').hasClass('pen')) {   //end line to prevent 'linejumping'
                     ctx1.beginPath();
 
-                } else if ($('#canvas2').hasClass('square')) {    //transfer rectangle to permanent canvas
+                } else if ($('#canvas2').hasClass('$(".square")')) {    //transfer rectangle to permanent canvas
                     console.log('triggered');
                     saveRect();
                     resetVar();
@@ -226,9 +232,8 @@ const cursor = $('.circleCursor');
                     resetVar();
                 } 
 
-            }
-
-            function mouseMove(e) {
+            },
+            mouseMove(e) {
 
                 if ($('#canvas2').hasClass('grabbing')) {
                     dragCanvas(e);
@@ -250,14 +255,30 @@ const cursor = $('.circleCursor');
 
                 } 
 
-            }
-
-            function mouseClick(e) {
+            },
+            mouseClick(e) {
                 console.log('click at: '+ e.clientX + 'X, ' + e.clientY + 'Y.');
 
                 if ($('#canvas2').hasClass('text')) {
                     drawText(e);
                 }
+            },
+            resetVar() {
+                centerX = null;
+                centerY = null;
+
+                deltaX = null;
+                deltaY = null;
+                
+                moveX = null;
+                moveY = null;
+
+                posX = null;
+                posY = null;
+                
+                radius = null;
+                radiusX = null;
+                radiusY = null;
             }
 
         }
