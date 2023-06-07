@@ -1,55 +1,49 @@
 <template>
     <section id="controlCenter">
-    
-    <div class="top container">
-    
-        <DragHand />
-        <SelectorBox />
-        <Pen />
-        <Ereaser />
-        <Textfield />
-        <Rectangle />
-        <Circle />   
         
-    </div>    
-    <br><br>
-    <div class="bottom container">
-
-        <button class="btn btn-dark btn-sm arrowLeft"><i class="fa-solid fa-arrow-left"></i></button>
-        <button class="btn btn-dark btn-sm arrowRight"><i class="fa-solid fa-arrow-right"></i></button>
-        <button class="btn btn-dark btn-sm arrowDown"><i class="fa-solid fa-arrow-down"></i></button>
-        <button class="btn btn-dark btn-sm copy"><i class="fa-regular fa-clone"></i></button>
-        <button class="btn btn-dark btn-sm trash"><i class="fa-solid fa-trash"></i></button>
+        <section id="primarySection">
+            
+            <div class="top container">
+            
+                <DragHand />
+                <SelectorBox />
+                <Pen />
+                <Ereaser />
+                <Textfield />
+                <Rectangle />
+                <Circle />   
+                
+            </div>    
+            <br><br>
+            <div class="bottom container">
     
-    </div>
+                <button class="btn btn-dark btn-sm arrowLeft"><i class="fa-solid fa-arrow-left"></i></button>
+                <button class="btn btn-dark btn-sm arrowRight"><i class="fa-solid fa-arrow-right"></i></button>
+                <button class="btn btn-dark btn-sm arrowDown"><i class="fa-solid fa-arrow-down"></i></button>
+                <button class="btn btn-dark btn-sm copy"><i class="fa-regular fa-clone"></i></button>
+                <button class="btn btn-dark btn-sm trash"><i class="fa-solid fa-trash"></i></button>
+            
+            </div>
+        </section>
+        
+        <section id="secondarySection">
+            
+            <div class="color-schemes">
+            <ColorSchemes />
+            </div>
+    
+            <div class="opacity">
+                <label for="opacity">Opacity:</label>
+                <input type="range">
+            </div>
 
-
-    <div class="color-schemes">
-        <label for="color-stroke">Stroke Style</label>
-        <input type="color" name="color-stroke" class="color-stroke" value="#fff">
-        <br>
-        <label for="color-bg">Backgr Style</label>
-        <input type="color" name="color-bg" class="color-bg">
-    </div>
-
-    <div class="bgType">
-        <label for="bgType">Backgr Type:</label>
-        <button class="btn btn-dark btn-small none">N</button>
-        <button class="btn btn-dark btn-small solid">S</button>
-        <button class="btn btn-dark btn-small checked">C</button>
-    </div>
-
-    <div class="opacity">
-        <label for="opacity">Opacity:</label>
-        <input type="range">
-    </div>
-
-</section>
+        </section>
+        
+    </section>
 </template>
 
 <style scoped>
     #controlCenter {
-        text-align: center;
         margin: 1rem 0 0 1rem; 
         position: absolute;
         background-color: rgb(197, 177, 232);
@@ -57,6 +51,13 @@
         border-radius: 1rem;
     }
 
+    #primarySection {
+        text-align: center;
+    }
+
+    #secondarySection {
+        margin-left: 1.5rem;
+    }
     .container{
         background-color: rgba(42, 42, 42, 0.422);
         padding: 7px 0;
@@ -68,6 +69,7 @@
 
     .btn {
         margin: 0 10px;
+        width: 2rem;
     }
 
     .selected {
@@ -76,12 +78,6 @@
 
     .color-schemes, .bgType, .opacity {
         text-align: left;
-    }
-
-    .bgType btn {
-        width: 10px;
-        height: 10px;
-        border: solid black 2rem;
     }
 
     .none {
@@ -120,6 +116,7 @@ import Ereaser from './Ereaser.vue'
 import Textfield from './Textfield.vue'
 import Rectangle from './Rectangle.vue'
 import Circle from './Circle.vue'
+import ColorSchemes from './ColorSchemes.vue'
 
 
 
@@ -134,6 +131,7 @@ import Circle from './Circle.vue'
             Textfield,
             Rectangle,
             Circle,
+            ColorSchemes,
         },
         methods: {
             
