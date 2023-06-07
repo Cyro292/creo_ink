@@ -206,7 +206,7 @@ text.on('click', function(e) {
     console.log($('#canvas2').attr("class")); // jff
 
 });
-
+//Done↑↑
 
 square.on('click', function(e) {
     
@@ -237,7 +237,7 @@ square.on('click', function(e) {
     console.log($('#canvas2').attr("class")); // jff
 
 });
-
+//Done↑↑
 
 circle.on('click', function(e) {
     
@@ -268,7 +268,7 @@ circle.on('click', function(e) {
     console.log($('#canvas2').attr("class")); // jff
 
 });
-
+//Done↑↑
 
 
 //add Eventlistener with its callback function to actionbar
@@ -330,7 +330,7 @@ $('#canvas2').on('click', mouseClick);
     offLeft = canvas1.offsetLeft;
     offTop = canvas1.offsetTop;
 
-    // EventListener-functions
+    // EventListener-functions __> Done
 
     function mouseDown(e) {
         
@@ -410,6 +410,11 @@ $('#canvas2').on('click', mouseClick);
     }
     //Done↑↑
 
+
+
+
+
+    
 ///Canvas_Draw-functions
 
 function dragCanvas(e) {
@@ -448,17 +453,17 @@ function dragCanvas(e) {
     
 
 }
-
+// Done↑↑
 function selectorBox(e) {
-
+    
     if ($('#canvas2').hasClass('mouseDown')) {
-
+        
         //calculate travelled distance
         deltaX = e.clientX - posX;
         deltaY = e.clientY - posY;
-
+        
         console.log(deltaX, deltaY);
-
+        
         //draw rectangle
         ctx2.lineWidth = 2;
         ctx2.strokeStyle = "#ff0000";
@@ -469,8 +474,9 @@ function selectorBox(e) {
         ctx2.stroke(); 
         
     }
-
+    
 }
+// Done↑↑
 
 function drawPen(e) {
 
@@ -491,6 +497,7 @@ function drawPen(e) {
         
     }
 }
+// Done↑↑
 
 function drawText(e) {
 
@@ -512,6 +519,7 @@ function drawText(e) {
     document.body.appendChild(input);
     
 }
+//Done↑↑
 
 function drawRect(e)  {
 
@@ -544,6 +552,7 @@ function drawRect(e)  {
 
     }
 }
+//Done↑↑
 
 
 
@@ -583,6 +592,7 @@ function drawEllipse(e) {
     }
 
 }
+//Done↑↑
 
 function saveRect() {
 
@@ -603,7 +613,7 @@ function saveRect() {
     ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
 
 }
-
+//Done↑↑
 
 function saveEllipse() {
     console.log('X: '+centerX + '+' + offLeft);
@@ -619,6 +629,7 @@ function saveEllipse() {
 
     ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
 }
+//Done↑↑
 
 
 
@@ -645,6 +656,7 @@ function erease(e) {
         
     }
 }
+//Done↑↑
 
 function ereaserCursor(e) {
     console.log('works');
@@ -654,6 +666,7 @@ function ereaserCursor(e) {
     cursor.style.left = e.pageX + "px",
     cursor.style.top = e.pageY + "px";
 }
+//Done↑↑
 
 function resetVar() {
     centerX = null;
@@ -672,3 +685,4 @@ function resetVar() {
     radiusX = null;
     radiusY = null;
 }
+//Done↑↑
