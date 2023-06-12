@@ -38,26 +38,6 @@
                 console.log($('#canvas2').attr("class")); // jff
                     
             },
-            drawText(e) {
-
-                var t = document.createTextNode("this is a test");
-
-
-                // create new textarea element with its attributes
-
-                var input = document.createElement('textarea');
-                input.name = 'newText';
-                input.id = 'text';
-                input.cols = 80;
-                input.rows = 0;
-                input.style.left = posX + "px";
-                input.style.top = posY + "px";
-
-                // add the text node to the newly created div
-                input.appendChild(t);
-                document.body.appendChild(input);
-
-            }
         }
     }
 </script>

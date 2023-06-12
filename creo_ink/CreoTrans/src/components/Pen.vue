@@ -39,25 +39,7 @@
         
                    
             },
-            drawPen(e) {
-
-                if ($('#canvas2').hasClass('mouseDown')) {
-
-                    //update color
-                    colorStroke = $('.color-stroke').value; 
-
-                    //draw Pen-line
-                    ctx1.lineWidth = 3;
-                    ctx1.lineCap ='round';
-                    ctx1.strokeStyle = colorStroke;
-
-                    ctx1.lineTo(e.clientX-offLeft, e.clientY-offTop)
-                    ctx1.stroke();    
-                    ctx1.beginPath();
-                    ctx1.moveTo(e.clientX-offLeft, e.clientY-offTop);
-                    
-                }
-            }
+             
         }
     }
 </script>

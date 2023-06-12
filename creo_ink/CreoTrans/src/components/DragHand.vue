@@ -5,9 +5,7 @@
 <script>
     export default {
         name: 'DragHand',
-        mounted() {
-            
-        },
+    
         methods: {
             setUpDragHand() {
                 //manage active button animation

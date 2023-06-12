@@ -28,8 +28,8 @@
         
         <section id="secondarySection">
             
-            <div class="color-schemes">
-            <ColorSchemes />
+            <div class="style-schemes">
+            <StyleSchemes />
             </div>
     
             <div class="opacity">
@@ -116,7 +116,7 @@ import Ereaser from './Ereaser.vue'
 import Textfield from './Textfield.vue'
 import Rectangle from './Rectangle.vue'
 import Circle from './Circle.vue'
-import ColorSchemes from './ColorSchemes.vue'
+import StyleSchemes from './StyleSchemes.vue'
 
 
 
@@ -131,7 +131,7 @@ import ColorSchemes from './ColorSchemes.vue'
             Textfield,
             Rectangle,
             Circle,
-            ColorSchemes,
+            StyleSchemes,
         },
         methods: {
             
@@ -147,30 +147,6 @@ import ColorSchemes from './ColorSchemes.vue'
                 const cursor = $('.circleCursor');    
                 
                 // create reference to coordinate-saving-place
-                
-        
-                //define vars outside of function so it is always accessible
-                var centerX = null;
-                var centerY = null;
-        
-                var colorStroke = '';
-                var colorBg = '';
-        
-                var deltaX = null;
-                var deltaY = null;
-        
-                var moveX = null;
-                var moveY = null;
-        
-                var offLeft = null;
-                var offTop = null;
-        
-                var posX = null;
-                var posY = null;
-        
-                var radius = null;
-                var radiusX = null;
-                var radiusY = null;
         
         
                 //update offset position
@@ -178,88 +154,6 @@ import ColorSchemes from './ColorSchemes.vue'
                 offTop = canvas1.offsetTop;
         
                 
-            },
-            canvasListener() {
-                //Add Event-Listeners to canvas mouseevents
-                $('#canvas2').on('mousedown', mouseDown); 
-        
-                $('#canvas2').on('mouseup', mouseUp);    
-        
-                $('#canvas2').on('mousemove', mouseMove);
-        
-                $('#canvas2').on('click', mouseClick);
-            },
-            mouseDown(e) {
-        
-                // define coordinates of execution
-                posX = e.clientX;
-                posY = e.clientY;
-
-                $('#canvas2').addClass('mouseDown'); //tell other functions that mouse is down -> mouseMove functions whith condition of mouseDown can now be executed
-
-                if ($('#canvas2').hasClass('grab')){   //activate grabbing cursor #dragHand
-                    $('#canvas2').removeClass('grab');
-                    $('#canvas2').addClass('grabbing');
-
-                } 
-                    
-            },
-            mouseUp(e) {
-
-                $('#canvas2').removeClass('mouseDown');   // tell other functions that mouse is NOT down anymore
-
-                if (!$('#canvas2').hasClass('$(".pointerMouse")')){ //so selector-box doesn't dissapear when releasing mouse
-                    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);    //avoids overlaying effect since drawing is displayed on canvas1 and $('#canvas2') until $('#canvas2') is #mouseDown && #mouseMove
-                }
-
-                if ($('#canvas2').hasClass('grabbing')) {  //re-activate grab cursor #dragHand
-                    $('#canvas2').removeClass('grabbing');
-                    $('#canvas2').addClass('grab');
-
-                } else if ($('#canvas2').hasClass('pen')) {   //end line to prevent 'linejumping'
-                    ctx1.beginPath();
-
-                } else if ($('#canvas2').hasClass('$(".square")')) {    //transfer rectangle to permanent canvas
-                    console.log('triggered');
-                    saveRect();
-                    resetVar();
-                    
-                } else if($('#canvas2').hasClass('circle')) {     //transfer ellipse to permanent canvas
-                    console.log('triggered');
-                    saveEllipse();
-                    resetVar();
-                } 
-
-            },
-            mouseMove(e) {
-
-                if ($('#canvas2').hasClass('grabbing')) {
-                    dragCanvas(e);
-                } else if ($('#canvas2').hasClass('pointerMouse')) {
-                    selectorBox(e);
-                    
-                } else if($('#canvas2').hasClass('pen')) {
-                    drawPen(e);
-                
-                } else if ($('#canvas2').hasClass('ereaser')) {
-                    erease(e);
-                    ereaserCursor(e);
-
-                } else if ($('#canvas2').hasClass('square')) {
-                    drawRect(e);
-
-                } else if ($('#canvas2').hasClass('circle')) {
-                    drawEllipse(e);
-
-                } 
-
-            },
-            mouseClick(e) {
-                console.log('click at: '+ e.clientX + 'X, ' + e.clientY + 'Y.');
-
-                if ($('#canvas2').hasClass('text')) {
-                    drawText(e);
-                }
             },
             resetVar() {
                 centerX = null;

@@ -25,6 +25,14 @@
     <button class="fillSolid btn"></button>
     <button class="fillDashed1 btn"></button>
     <button class="fillDashed2 btn"></button>
+
+    <br>
+
+    <label for="">Stroke Style</label>
+    <br>
+    <button class="strokeStyleOne btn"></button>
+    <button class="strokeStyleTwo btn"></button>
+    <button class="strokeStyleThree btn"></button>
     
 </template>
 

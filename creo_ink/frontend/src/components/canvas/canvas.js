@@ -400,7 +400,7 @@ $('#canvas2').on('click', mouseClick);
         } 
 
     }
-
+    
     function mouseClick(e) {
         console.log('click at: '+ e.clientX + 'X, ' + e.clientY + 'Y.');
 

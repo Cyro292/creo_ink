@@ -37,30 +37,8 @@
 
                 console.log($('#canvas2').attr("class")); // j4f
 
-            },
-            selectorBox(e) {
-
-                if ($('#canvas2').hasClass('mouseDown')) {
-
-                    //calculate travelled distance
-                    deltaX = e.clientX - posX;
-                    deltaY = e.clientY - posY;
-
-                    console.log(deltaX, deltaY);
-
-                    //draw rectangle
-                    ctx2.lineWidth = 2;
-                    ctx2.strokeStyle = "#ff0000";
-                    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-                    ctx2.beginPath();
-                    ctx2.setLineDash([5, 5]);
-                    ctx2.rect(posX, posY, deltaX, deltaY); 
-                    ctx2.stroke(); 
-                    
-                }
-
-            }
-
+            }                
         }
+
     }
 </script>

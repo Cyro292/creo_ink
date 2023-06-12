@@ -53,6 +53,7 @@ body {
     position: absolute;
     top: -1920px;
     left: -502px;
+    cursor: none;
 }
 
 
@@ -70,10 +71,6 @@ body {
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid black;
     transform: translate(-50%, -50%);
-}
-
-#canvas1 {
-    cursor: none;
 }
 
 .crosshair {

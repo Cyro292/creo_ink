@@ -47,29 +47,6 @@
     
                 console.log($('#canvas2').attr("class")); // jff                
             },
-            erease(e) {
-
-                if ($('#canvas2').hasClass('mouseDown')) {
-
-                    //calculate travelled distance
-                    deltaX = e.clientX - posX;
-                    deltaY = e.clientY - posY;
-
-                    ctx2.clearRect(posX, posY, deltaX, deltaY)
-
-                    posX = e.clientX;
-                    posY = e.clientY;
-
-                    ctx2.clearRect(e.clientX, e.clientY, 4, 4);
-                    ctx2.beginPath();
-                    ctx2.setLineDash([]);
-                    ctx2.arc(e.clientX, e.clientX, 2, 0, 180);
-                    ctx2.stroke();
-
-
-                    
-                }
-            }
         }
     }
 </script>
