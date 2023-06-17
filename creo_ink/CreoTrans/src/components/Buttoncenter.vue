@@ -5,8 +5,8 @@
             
             <div class="top container">
             
-                <DragHand />
-                <SelectorBox />
+                <Drag-Hand />
+                <Selector-Box />
                 <Pen />
                 <Ereaser />
                 <Textfield />
@@ -29,7 +29,7 @@
         <section id="secondarySection">
             
             <div class="style-schemes">
-            <StyleSchemes />
+                <StyleSchemes />
             </div>
     
             <div class="opacity">
@@ -108,7 +108,6 @@
 </style>
 
 <script> 
-import Canvas from './Canvas.vue'
 import DragHand from './DragHand.vue'
 import SelectorBox from './SelectorBox.vue'
 import Pen from './Pen.vue'
@@ -123,7 +122,6 @@ import StyleSchemes from './StyleSchemes.vue'
     export default{
         name: 'ButtonCenter',
         components: {
-            Canvas,
             DragHand,
             SelectorBox,
             Pen,

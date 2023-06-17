@@ -4,12 +4,17 @@
 </template>
 
 <script>
+import StyleSchemes from './StyleSchemes.vue';
 
 export default {
     name: 'Canvas',
+    components: {
+        StyleSchemes
+    },
 
     data() {
         return {
+            //CANVAS
             windowW: null,
             windowH: null,
 
@@ -35,6 +40,9 @@ export default {
             offLeft: 0,
             offTop: 0,
 
+            //:root color
+            strokeClr: getComputedStyle(document.documentElement).getPropertyValue('--stroke-color'),
+            BackGClr: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
         }
     },
     
@@ -89,6 +97,8 @@ export default {
                 
             }
 
+            this.ctx1.beginPath();
+
             this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
             this.mouseIsDown = null;
             console.log(this.mouseIsDown);
@@ -97,7 +107,7 @@ export default {
 
             if(this.mouseIsDown) {
                 
-                if ($('#canvas2').hasClass('grabbing')) {
+                if ($('#canvas2').hasClass('grab')) {
                     this.dragCanvas(e);
 
                 } else if ($('#canvas2').hasClass('pointerMouse')) {
@@ -126,8 +136,8 @@ export default {
             this.deltaY = e.clientY - this.posY;
 
             //move canvas  
-            $('#canvas1').style.left = ($('#canvas1').offsetLeft + deltaX) + "px";
-            $('#canvas1').style.top = ($('#canvas1').offsetTop + deltaY) + "px";
+            this.canvas1.style.left = ($('#canvas1').offsetLeft + this.deltaX) + "px";
+            this.canvas1.style.top = ($('#canvas1').offsetTop + this.deltaY) + "px";
             console.log('offL: '+ $('#canvas1').offsetLeft);
             console.log('offT: '+ $('#canvas1').offsetTop);
             
@@ -175,12 +185,14 @@ export default {
         drawPen(e) {
         
             //update color
-            //colorStroke = $('.color-stroke').value; 
+            this.strokeClr = getComputedStyle(document.documentElement).getPropertyValue('--stroke-color');
+            this.BackGClr = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
+
 
             //draw Pen-line
-            this.ctx1.lineWidth = 3;
+            this.ctx1.lineWidth = 10;
             this.ctx1.lineCap ='round';
-            // this.ctx1.strokeStyle = colorStroke;
+            this.ctx1.strokeStyle = this.strokeClr;
 
             this.ctx1.lineTo(e.clientX-this.offLeft, e.clientY-this.offTop)
             this.ctx1.stroke();    
@@ -227,8 +239,8 @@ export default {
         drawRect(e)  {
 
             //update color
-            // colorStroke = $('.color-stroke').value;
-            // colorBg = $('.color-bg').value;
+            this.strokeClr = getComputedStyle(document.documentElement).getPropertyValue('--stroke-color');
+            this.BackGClr = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
 
             //calculate travelled distance
             this.deltaX = e.clientX - this.posX;
@@ -236,18 +248,20 @@ export default {
 
             //draw rectangle
 
-            // ctx2.lineWidth = 5;
+            this.ctx2.lineWidth = 10;
             // ctx2.lineJoin = 'round';
-            // ctx2.fillStyle = colorBg;
-            // ctx2.strokeStyle = colorStroke;
+            this.ctx2.fillStyle = this.BackGClr;
+            this.ctx2.strokeStyle = this.strokeClr;
+            console.log('this.ctx2.fillStyle: '+this.ctx2.fillStyle, this.BackGClr);
+            console.log('this.ctx2.strokeStyle: '+this.ctx2.strokeStyle, this.strokeClr);
             // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
-            // ctx2.beginPath();
-            // ctx2.fillRect(posX, posY, deltaX, deltaY);           
+            // ctx2.beginPath();          
             // ctx2.rect(posX, posY, deltaX, deltaY);
             // ctx2.stroke();
 
             this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
             this.rc2.rectangle(this.posX, this.posY, this.deltaX, this.deltaY);
+            this.ctx2.fillRect(this.posX, this.posY, this.deltaX, this.deltaY); 
 
 
         },
@@ -255,21 +269,23 @@ export default {
 
             ///bring color of canvas1 and $('#canvas2') in line
 
-            // ctx1.fillStyle = ctx2.fillStyle;    
-            // ctx1.strokeStyle = ctx2.strokeStyle;
+            this.ctx1.fillStyle = this.ctx2.fillStyle;    
+            this.ctx1.strokeStyle = this.ctx2.strokeStyle;
+            console.log(this.strokeClr, this.ctx2.strokeStyle);
+            console.log(this.BackGClr, this.ctx2.fillStyle);
 
-            // ctx1.lineWidth = ctx2.lineWidth;
+            this.ctx1.lineWidth = this.ctx2.lineWidth;
             // ctx1.lineJoin = ctx2.lineJoin;
 
-            // ctx1.fillRect(posX, posY, deltaX, deltaY);
             // ctx1.rect(posX, posY, deltaX, deltaY);
             // ctx1.stroke();
-
+            
             console.log('rect saved');
             this.rc1.rectangle(this.posX - this.offLeft, this.posY - this.offTop, this.deltaX, this.deltaY);
-
+            this.ctx1.fillRect(this.posX - this.offLeft, this.posY - this.offTop, this.deltaX, this.deltaY);
+            
             this.ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
-
+            
         },
         drawEllipse(e) {
 
@@ -293,7 +309,7 @@ export default {
             ///draw rectangle
 
             // ctx2.lineWidth = 3;
-            // ctx2.strokeStyle = colorStroke;
+            this.ctx2.strokeStyle = this.colorStroke;
             // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
             // ctx2.beginPath();
             // ctx2.setLineDash([]);
@@ -314,6 +330,9 @@ export default {
             this.rc1.ellipse(this.centerX - this.offLeft, this.centerY - this.offTop, this.radiusX, this.radiusY);
 
             this.ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
+        },
+        getActiveClr(activeClr) {
+            console.log('In Canvas: '+activeClr);
         }
 
     }

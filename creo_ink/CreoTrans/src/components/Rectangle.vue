@@ -5,9 +5,7 @@
 <script>
     export default {
         name: 'Rectangle',
-        moundet() {
             
-        },
         methods: {
             setUpRectangle() {
         
