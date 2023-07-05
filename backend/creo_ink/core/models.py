@@ -3,9 +3,12 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import models
 from django.utils.text import slugify
 
-from .exceptions import (MultipleIdenticalUserException,
-                         MultipleOwnerException, NoOtherUserException,
-                         NoOwnerException)
+from .exceptions import (
+    MultipleIdenticalUserException,
+    MultipleOwnerException,
+    NoOtherUserException,
+    NoOwnerException,
+)
 from .utils import unique_slug_generator
 
 # Create your models here.
@@ -14,7 +17,6 @@ MyUserModel = get_user_model()
 
 
 class BoardManager(models.Manager):
-    
     def create(self, name, owner, password, *args, **kwargs):
         board = Board(name=name, password=password, *args, **kwargs)
         board.save()
@@ -29,7 +31,8 @@ class Board(models.Model):
     slug = models.SlugField(max_length=12, unique=True, null=True)
     creation_date = models.DateTimeField(auto_now_add=True, null=False)
     users = models.ManyToManyField(
-        to=MyUserModel, related_name="boards", through="Participation")
+        to=MyUserModel, related_name="boards", through="Participation"
+    )
     elements = models.JSONField(null=True)
 
     objects = BoardManager()
@@ -49,7 +52,6 @@ class Board(models.Model):
             raise MultipleOwnerException
 
     def has_access(self, user, min_permission=None):
-
         if min_permission is None:
             min_permission = Participation.READER
 
@@ -60,7 +62,6 @@ class Board(models.Model):
         return False
 
     def add_user(self, user, permission=None):
-
         if permission is None:
             permission = Participation.READER
 
@@ -71,10 +72,7 @@ class Board(models.Model):
             self.set_owner(user)
             return
 
-        Participation.objects.create(
-            board=self,
-            user=user,
-            permission=permission)
+        Participation.objects.create(board=self, user=user, permission=permission)
 
     def has_user(self, user):
         if self.users.all().filter(pk=user.pk).exists():
@@ -116,7 +114,6 @@ class Board(models.Model):
         return self.participation_set.get(user=user.pk).permission
 
     def set_owner(self, user):
-
         owner = self.owner
 
         if owner is not None:
@@ -131,15 +128,13 @@ class Board(models.Model):
 
         if user_participation is None:
             Participation.objects.create(
-                board=self,
-                user=user,
-                permission=Participation.OWNER)
+                board=self, user=user, permission=Participation.OWNER
+            )
         else:
             user_participation.permission = Participation.OWNER
             user_participation.save()
 
     def change_random_owner(self, depth=1, iteration=0):
-
         if self.users.count() <= 1:
             raise NoOtherUserException
 
@@ -147,19 +142,19 @@ class Board(models.Model):
             raise NoOtherUserException
 
         if not self.participation_set.filter(permission=depth).exists():
-            return self.change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth + 1, 0)
 
         participation = self.participation_set.filter(permission=depth)
 
         try:
             participation[iteration]
         except IndexError:
-            return self.change_random_owner(depth+1, 0)
+            return self.change_random_owner(depth + 1, 0)
 
         user = participation[iteration].user
 
         if user is self.owner:
-            return self.change_random_owner(depth, iteration+1)
+            return self.change_random_owner(depth, iteration + 1)
 
         self.set_permission(user, Participation.OWNER)
         return user
@@ -184,13 +179,14 @@ class Participation(models.Model):
         (READER, "Reader"),
     ]
 
-    board = models.ForeignKey(
-        Board, on_delete=models.CASCADE, blank=False, null=False)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, blank=False, null=False)
     user = models.ForeignKey(
-        MyUserModel, on_delete=models.CASCADE, blank=False, null=False)
+        MyUserModel, on_delete=models.CASCADE, blank=False, null=False
+    )
     join_date = models.DateTimeField(auto_now_add=True)
     permission = models.IntegerField(
-        choices=permissions, default=READER, blank=False, null=False)
+        choices=permissions, default=READER, blank=False, null=False
+    )
 
     def delete(self, *args, **kwargs):
         if self.permission is Participation.OWNER:
@@ -202,13 +198,10 @@ class Participation(models.Model):
 
     class Meta:
         unique_together = [["user", "board"]]
-        permissions = (
-            ('owner', 'Owner'),
-        )
+        permissions = (("owner", "Owner"),)
 
 
 class BoardSession(models.Model):
-    user = models.ForeignKey(
-        to=MyUserModel, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(to=MyUserModel, on_delete=models.SET_NULL, null=True)
     creation_date = models.DateTimeField(auto_now_add=True)
     data = models.JSONField()
