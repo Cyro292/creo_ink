@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpCircle"  class="btn btn-sm circle"><i class="fa-regular fa-circle"></i></button>
+    <button @click="setUpCircle"  class="btn btn-sm circle"><i class="fa-regular fa-circle fa-xs"></i></button>
 </template>
 
 <script>

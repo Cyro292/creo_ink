@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpEreaser"  class="btn btn-sm ereaser"><i class="fa-solid fa-eraser"></i></button>
+    <button @click="setUpEreaser"  class="btn btn-sm ereaser"><i class="fa-solid fa-eraser fa-xs"></i></button>
 </template>
 
 <script>

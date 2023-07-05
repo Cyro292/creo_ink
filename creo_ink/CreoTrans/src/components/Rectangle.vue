@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpRectangle" class="btn btn-sm square"><i class="fa-regular fa-square"></i></button>
+    <button @click="setUpRectangle" class="btn btn-sm square"><i class="fa-regular fa-square fa-xs"></i></button>
 </template>
 
 <script>

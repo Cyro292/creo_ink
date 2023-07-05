@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpText" class="btn btn-sm text"><i class="fa-solid fa-heading"></i></button>
+    <button @click="setUpText" class="btn btn-sm text"><i class="fa-solid fa-heading fa-xs"></i></button>
 </template>
 
 <script>

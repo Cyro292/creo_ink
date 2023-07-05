@@ -5,6 +5,7 @@
 
 <script>
 import StyleSchemes from './StyleSchemes.vue';
+import { updateCanvas } from '../stores/store.js'
 
 export default {
     name: 'Canvas',
@@ -21,10 +22,15 @@ export default {
             canvas1: null,
             canvas2: null,
 
+            canvasObjects: [],
+
             ctx1: null,
             ctx2: null,
             rc1: null,
             rc2: null,
+
+            rect: null,
+            elps: null,
 
             mouseIsDown: null,
 
@@ -40,9 +46,13 @@ export default {
             offLeft: 0,
             offTop: 0,
 
-            //:root color
+            //styling
             strokeClr: getComputedStyle(document.documentElement).getPropertyValue('--stroke-color'),
             BackGClr: getComputedStyle(document.documentElement).getPropertyValue('--background-color'),
+
+            roughness: 0.5,
+            strokeWidth: 3,
+            
         }
     },
     
@@ -64,11 +74,27 @@ export default {
         // this.canvas1.style.top = '-502px';
         
         this.refreshWindow();
+
+// -------------------------------------
+
+        //temporary canvas that gets engaged by user
+        updateCanvas().canvas2 = document.querySelector('#canvas2');
+        updateCanvas().ctx2 = updateCanvas().canvas2.getContext('2d');
+        updateCanvas().rc2 = rough.canvas(document.querySelector('#canvas2'));
+        
+        //permanent canvas that holds all drawings
+        updateCanvas().canvas1 = document.querySelector('#canvas1'); 
+        updateCanvas().ctx1 = canvas1.getContext('2d');
+        updateCanvas().rc1 = rough.canvas(document.querySelector('#canvas1'));
+        
+        //align canvas1 in center
+        // this.canvas1.style.left = '-1920px';
+        // this.canvas1.style.top = '-502px';
+        
     },
   
 
     methods: {
-
         refreshWindow() {
             console.log('window freshed up');
             this.windowW = window.innerWidth;    //!!!  problematic since window-alignment only takes place when refreshing
@@ -92,7 +118,7 @@ export default {
             if ($('#canvas2').hasClass('square')) {
                 this.saveRect();
                 
-            } else if ($('#canvas2').hasClass('circle')) {
+                } else if ($('#canvas2').hasClass('circle')) {
                 this.saveEllipse();
                 
             }
@@ -101,7 +127,6 @@ export default {
 
             this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
             this.mouseIsDown = null;
-            console.log(this.mouseIsDown);
         },
         drawManager(e) {
 
@@ -190,7 +215,7 @@ export default {
 
 
             //draw Pen-line
-            this.ctx1.lineWidth = 10;
+            this.ctx1.lineWidth = this.lineWidth;
             this.ctx1.lineCap ='round';
             this.ctx1.strokeStyle = this.strokeClr;
 
@@ -237,7 +262,6 @@ export default {
 
         },  
         drawRect(e)  {
-
             //update color
             this.strokeClr = getComputedStyle(document.documentElement).getPropertyValue('--stroke-color');
             this.BackGClr = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
@@ -246,51 +270,67 @@ export default {
             this.deltaX = e.clientX - this.posX;
             this.deltaY = e.clientY - this.posY;
 
-            //draw rectangle
+            //draw rectangle            
+            this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
+            this.rc2.rectangle(this.posX, this.posY, this.deltaX, this.deltaY, {
+                roughness: this.roughness,
+                fillStyle: 'solid', //later this.fill when reading out of fillBtn works
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: 3,
+            });
 
-            this.ctx2.lineWidth = 10;
-            // ctx2.lineJoin = 'round';
-            this.ctx2.fillStyle = this.BackGClr;
-            this.ctx2.strokeStyle = this.strokeClr;
+            // this.rc2.draw(this.rect);
+            
+            
             console.log('this.ctx2.fillStyle: '+this.ctx2.fillStyle, this.BackGClr);
             console.log('this.ctx2.strokeStyle: '+this.ctx2.strokeStyle, this.strokeClr);
-            // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
-            // ctx2.beginPath();          
-            // ctx2.rect(posX, posY, deltaX, deltaY);
-            // ctx2.stroke();
-
-            this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
-            this.rc2.rectangle(this.posX, this.posY, this.deltaX, this.deltaY);
-            this.ctx2.fillRect(this.posX, this.posY, this.deltaX, this.deltaY); 
-
-
         },
         saveRect() {
 
-            ///bring color of canvas1 and $('#canvas2') in line
 
-            this.ctx1.fillStyle = this.ctx2.fillStyle;    
-            this.ctx1.strokeStyle = this.ctx2.strokeStyle;
-            console.log(this.strokeClr, this.ctx2.strokeStyle);
-            console.log(this.BackGClr, this.ctx2.fillStyle);
-
-            this.ctx1.lineWidth = this.ctx2.lineWidth;
             // ctx1.lineJoin = ctx2.lineJoin;
 
             // ctx1.rect(posX, posY, deltaX, deltaY);
             // ctx1.stroke();
             
             console.log('rect saved');
-            this.rc1.rectangle(this.posX - this.offLeft, this.posY - this.offTop, this.deltaX, this.deltaY);
-            this.ctx1.fillRect(this.posX - this.offLeft, this.posY - this.offTop, this.deltaX, this.deltaY);
+            this.rc1.rectangle(this.posX - this.offLeft, this.posY - this.offTop, this.deltaX, this.deltaY, {
+                roughness: this.roughness,
+                fillStyle: 'solid', //later this.fill when reading out of fillBtn works
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: 3,
+            });
+
+            const newRect = {
+                name: 'rect',
+                x: this.posX,
+                y: this.posY,
+                width: this.deltaX,
+                height: this.deltaY,
+                roughness: this.roughness,
+                fillStyle: this.fillStyle,
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: this.strokeWidth
+            };
+
+            updateCanvas().canvasObjects.push(newRect); //add new obj to array
+            console.log(updateCanvas().canvasObjects);
+
+            // access prop in object: this.canvasObjects[this.canvasObjects.length-1].fill;
             
             this.ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
+
+            this.resetVar();
             
         },
         drawEllipse(e) {
 
             //update color
-            // colorStroke = $('.color-stroke').value;
+            this.strokeClr = getComputedStyle(document.documentElement).getPropertyValue('--stroke-color');
+            this.BackGClr = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
 
             //calculate travelled distance
             this.deltaX = e.clientX - this.posX;
@@ -306,33 +346,64 @@ export default {
 
             console.log(this.radiusX, this.radiusY);
 
-            ///draw rectangle
-
-            // ctx2.lineWidth = 3;
-            this.ctx2.strokeStyle = this.colorStroke;
-            // ctx2.clearRect(0, 0, $('#canvas2').width, $('#canvas2').height);
-            // ctx2.beginPath();
-            // ctx2.setLineDash([]);
-            // ctx2.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 180);
-            // ctx2.stroke();     
-
             this.ctx2.clearRect(0, 0, this.canvas2.width, this.canvas2.height);
-            this.rc2.ellipse(this.centerX, this.centerY, this.radiusX, this.radiusY);
+            this.rc2.ellipse(this.centerX, this.centerY, this.radiusX, this.radiusY, {
+                roughness: this.roughness / 2,
+                fillStyle: 'solid', //later this.fill when reading out of fillBtn works
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: 3,
+            });
         },
         saveEllipse() {
             console.log('circle saved');
-            // ctx1.beginPath();
-            // ctx1.strokeStyle = ctx2.strokeStyle;    //bring color of $('#canvas2') and canvas1 in line
-            // ctx1.lineWidth = ctx2.lineWidth;    //bring lineWidth of $('#canvas2') and canvas1 in line
-            // ctx1.ellipse(centerX + offLeft, centerY + offTop, radiusX, radiusY, 0, 0, 180);
-            // ctx1.stroke();
 
-            this.rc1.ellipse(this.centerX - this.offLeft, this.centerY - this.offTop, this.radiusX, this.radiusY);
+            this.rc1.ellipse(this.centerX - this.offLeft, this.centerY - this.offTop, this.radiusX, this.radiusY, {
+                roughness: this.roughness,
+                fillStyle: 'solid', //later this.fill when reading out of fillBtn works
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: 3,
+            });
+
+            const newElipse = {
+                name: 'ellipse',
+                x: this.centerX,
+                y: this.centerY,
+                radiusX: this.radiusX,
+                radiusY: this.radiusY,
+                roughness: this.roughness,
+                fillStyle: this.fillStyle,
+                fill: this.BackGClr,
+                stroke: this.strokeClr,
+                strokeWidth: this.strokeWidth
+            };
+            this.canvasObjects.push(newElipse); //add new obj to array
+            //update :root
 
             this.ctx1.beginPath();   //to prevent 'linejumping' in case drawPen() is called afterwards
+
+            this.resetVar();
         },
         getActiveClr(activeClr) {
             console.log('In Canvas: '+activeClr);
+        },
+        resetVar() {
+            this.centerX = null;
+            this.centerY = null;
+
+            this.deltaX = null;
+            this.deltaY = null;
+            
+            this.moveX = null;
+            this.moveY = null;
+
+            this.posX = null;
+            this.posY = null;
+            
+            this.radius = null;
+            this.radiusX = null;
+            this.radiusY = null;
         }
 
     }

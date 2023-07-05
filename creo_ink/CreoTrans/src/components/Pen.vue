@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpPen" class="btn btn-sm pen"><i class="fa-solid fa-pen"></i></button>
+    <button @click="setUpPen" class="btn btn-sm pen"><i class="fa-solid fa-pen fa-xs"></i></button>
 </template>
 
 <script>

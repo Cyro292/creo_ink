@@ -11,14 +11,14 @@
                 <Ereaser />
                 <Textfield />
                 <Rectangle />
-                <Circle />   
+                <Circle />
                 
             </div>    
             <br><br>
             <div class="bottom container">
     
-                <button class="btn btn-dark btn-sm arrowLeft"><i class="fa-solid fa-arrow-left"></i></button>
-                <button class="btn btn-dark btn-sm arrowRight"><i class="fa-solid fa-arrow-right"></i></button>
+                <button @click="undo" class="btn btn-dark btn-sm arrowLeft"><i class="fa-solid fa-arrow-left"></i></button>
+                <button @click="redo" class="btn btn-dark btn-sm arrowRight"><i class="fa-solid fa-arrow-right"></i></button>
                 <button class="btn btn-dark btn-sm arrowDown"><i class="fa-solid fa-arrow-down"></i></button>
                 <button class="btn btn-dark btn-sm copy"><i class="fa-regular fa-clone"></i></button>
                 <button class="btn btn-dark btn-sm trash"><i class="fa-solid fa-trash"></i></button>
@@ -34,13 +34,14 @@
     
             <div class="opacity">
                 <label for="opacity">Opacity:</label>
-                <input type="range">
+                <input @click="getOpactiy" class='opacity_range' type="range" value="1" step="0.1" min="1" max="3">
             </div>
 
         </section>
         
     </section>
 </template>
+
 
 <style scoped>
     #controlCenter {
@@ -108,14 +109,15 @@
 </style>
 
 <script> 
-import DragHand from './DragHand.vue'
-import SelectorBox from './SelectorBox.vue'
-import Pen from './Pen.vue'
-import Ereaser from './Ereaser.vue'
-import Textfield from './Textfield.vue'
-import Rectangle from './Rectangle.vue'
-import Circle from './Circle.vue'
-import StyleSchemes from './StyleSchemes.vue'
+    import DragHand from './DragHand.vue'
+    import SelectorBox from './SelectorBox.vue'
+    import Pen from './Pen.vue'
+    import Ereaser from './Ereaser.vue'
+    import Textfield from './Textfield.vue'
+    import Rectangle from './Rectangle.vue'
+    import Circle from './Circle.vue'
+    import StyleSchemes from './StyleSchemes.vue'
+    import { updateCanvas } from '../stores/store.js'
 
 
 
@@ -131,8 +133,15 @@ import StyleSchemes from './StyleSchemes.vue'
             Circle,
             StyleSchemes,
         },
+        data() {
+            return {
+                counter: 0,
+            };
+        },
         methods: {
-            
+            getOpactiy() {
+                console.log($('opacity_range'));
+            },
             defineVars() {
                 
                 //defining lowerControl buttons
@@ -153,22 +162,15 @@ import StyleSchemes from './StyleSchemes.vue'
         
                 
             },
-            resetVar() {
-                centerX = null;
-                centerY = null;
-
-                deltaX = null;
-                deltaY = null;
-                
-                moveX = null;
-                moveY = null;
-
-                posX = null;
-                posY = null;
-                
-                radius = null;
-                radiusX = null;
-                radiusY = null;
+            undo() {
+                if (updateCanvas().canvasObjects.length > 0) {
+                    updateCanvas().undo();
+                }
+            },
+            redo() {
+                if (updateCanvas().canvasObjectsBin.length > 0) {
+                    updateCanvas().redo();
+                }
             }
 
         }

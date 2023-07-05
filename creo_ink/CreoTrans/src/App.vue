@@ -4,6 +4,7 @@
 import Canvas from './components/Canvas.vue'
 import ButtonCenter from './components/Buttoncenter.vue';
 
+
 export default {
   name:'App',
   components: {
@@ -20,5 +21,11 @@ export default {
   <ButtonCenter />
 
 </template>
+
+<style>
+  html {
+    zoom: 60%;
+  }
+</style>
 
 

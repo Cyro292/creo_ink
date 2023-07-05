@@ -44,9 +44,9 @@
 
     .btn {
         margin: 8px 7px 0;
-        height: 2rem;
-        width: 2rem;
-        border: solid black 2px;
+        height: 1rem;
+        width: 1rem;
+        /* border: solid black 2px; */
     }
 
 
@@ -117,7 +117,7 @@
 
     
     .selected {
-        border-color: rgb(255, 255, 255);
+        border: solid white 2px;
     }
 
     /* InPUT FIELD FOR HEX-CODE */
@@ -149,6 +149,7 @@
 </style>    
 
 <script>
+    
     export default{
         name: 'ColorSchemes',
         data() {
@@ -164,6 +165,7 @@
         },
         methods: {
             strokeClrManager(e) {
+                
                 this.activeStrokeClr = e.target.classList[0];
                 
                 //change :root var
@@ -237,7 +239,7 @@
                 
                 console.log('activeStrokeStyle: '+this.activeStrokeStyle);
             }
-        }        
+        }
     }
 </script>
 

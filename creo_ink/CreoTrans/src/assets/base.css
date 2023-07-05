@@ -2,6 +2,10 @@
 :root {
   --stroke-color: #f6c2c2;
   --background-color: rgb(255, 255, 255);
+
+  --canvas-objects: ;
+  --canvas-objects-bin: ;
+  --selected-index: ;
   
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;

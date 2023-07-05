@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpSelector" class="btn btn-sm pointerMouse"><i class="fa-solid fa-arrow-pointer"></i></button>
+    <button @click="setUpSelector" class="btn btn-sm pointerMouse"><i class="fa-solid fa-arrow-pointer fa-xs"></i></button>
 </template>
 
 <script>

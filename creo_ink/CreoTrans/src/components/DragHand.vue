@@ -1,5 +1,5 @@
 <template>
-    <button @click="setUpDragHand" class="btn btn-sm dragHand"><i class="fa-regular fa-hand"></i></button>
+    <button @click="setUpDragHand" class="btn btn-sm dragHand"><i class="fa-regular fa-hand fa-xs"></i></button>
 </template>
 
 <script>
