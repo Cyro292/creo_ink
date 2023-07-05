@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import datetime
 from pathlib import Path
 import os
 
@@ -35,9 +36,11 @@ ALLOWED_HOSTS = []
 
 INSTALLED_MY_APPS = [
     'core',
+    'boards',
 ]
 
 INSTALLED_EXTENSIONS = [
+    'corsheaders',
     'guardian',
     'daphne',
     'channels',
@@ -71,6 +74,7 @@ CORS_ALLOWED_ORIGINS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -166,7 +170,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # general
 
+AUTH_USER_MODEL = 'core.User'
+
 AUTHENTICATION_BACKENDS = [
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     'guardian.backends.ObjectPermissionBackend',
@@ -177,9 +184,12 @@ LOGIN_REDIRECT_URL = '/'
 
 # allauth
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_USERNAME_VALIDATORS = 'core.validators.custom_username_validators'
 
 # guest-user
+
+#JWT
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),  # Set the token expiration period
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),  # Set the refresh token expiration period
+}

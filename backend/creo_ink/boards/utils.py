@@ -46,6 +46,8 @@ def create_invite_link(board, token, **kwargs):
 
     cache.set(key=token, value={"board": board, **kwargs},
               timeout=app_settings.CORE_INVITE_LINK_MAX_AGE)
+    
+    return token
 
 
 def get_redirect_value(request, parm='next'):

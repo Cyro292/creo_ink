@@ -8,3 +8,6 @@ django-guest-user==0.5.4
 django_guardian==2.4.0
 daphne==4.0.0
 dj-rest-auth==4.0.1
+djangorestframework_simplejwt==5.2.2
+django-cors-headers==4.1.0
+

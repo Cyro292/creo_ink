@@ -1,9 +1,7 @@
 # core/routing.py
-from django.urls import re_path
-
-from . import consumers
+from django.urls import re_path, include
 
 websocket_urlpatterns = [
-    re_path(r"^/ws/board/(?P<key>\d+)/$", consumers.ChatConsumer.as_asgi()),
+    include('boards.routing'),
 ]
 
