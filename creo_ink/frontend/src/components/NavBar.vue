@@ -25,7 +25,7 @@
 					<router-link to="/joinboard">Join Board</router-link>
 				</li>
 				<li class="boards">
-					<router-link to="/boardcollection">Your Boards</router-link>
+					<router-link to="/boardsnew">Your Boards</router-link>
 				</li>
 				<li class="login"><router-link to="/login">Login</router-link></li>
 			</div>

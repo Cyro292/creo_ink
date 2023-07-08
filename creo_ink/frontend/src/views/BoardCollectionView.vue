@@ -6,8 +6,7 @@ import Notesheet from "@/components/Notesheet.vue";
 export default {
 	name: "BoardCollection",
 	components: {
-        BoardIcon,
-        Notesheet,
+        BoardNew,
 
     },
     data () {
@@ -53,7 +52,7 @@ export default {
     </div> 
     <div class="container"  :class="{ 'container-with-notesheet': visibleNotesheet }">
     <button @click="showNotesheet" class="erstellen"><div class="erstellentext" >Create new whiteboard</div></button>
-    <BoardIcon 
+    <Board
         v-for="board in boards" 
         :name = board.name
         :permission = board.permission
@@ -63,7 +62,7 @@ export default {
         :index = board.id
         :setIndex = "setIndex"
         :showNotesheet = "showNotesheet"
-        :users = board.amountofusers
+        :users = board.amountofusers 
     />
     
 
