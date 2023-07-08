@@ -1,73 +1,44 @@
 <script>
 // @ is an alias to /src
 import BoardIcon from "@/components/BoardIcon.vue";
-import Notebook from "@/components/Notebook.vue";
+import Notesheet from "@/components/Notesheet.vue";
 
 export default {
 	name: "BoardCollection",
 	components: {
         BoardIcon,
-        Notebook,
+        Notesheet,
+
     },
     data () {
         return {
             boards: [
-            {"id":1, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":2, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":3, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":4, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":5, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":6, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":7, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":8, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
-            {"id":9, "permission":"Owner", "name": "Jugend Forscht", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
+            {"id":1, "permission":"Owner", "name": "Creo", "amountofusers":1, "changedate":"1.1.2023"},
             ],
-            visibleNotebook : false,
+            visibleNotesheet : false,
             BookLeft : 0,
             BookTop : 0,
             index: 0,
             username : "Sketcher77",
-            three: [
-                {},
-                {},
-                {},
-            ],
 
 
     }
-        
-
     },
     methods: {
-        showNotebook(event){
-            this.visibleNotebook = true;
-            this.bookLeft = event.clientX + 'px';
-            this.bookTop = event.clientY + 'px';
+        showNotesheet(){
+            this.visibleNotesheet = true;
         },
-        hideNotebook(){
-            this.visibleNotebook = false;
+        hideNotesheet(){
+            this.visibleNotesheet = false;
         },
-        showNotebookstatus(event){
-            this.visibleNotebook = true;
-            this.bookLeft = event.clientX + 'px';
-            this.bookTop = event.clientY + 'px';
-        },
-        showNotebookpermission(event){
-            this.visibleNotebook = true;
-            this.bookLeft = event.clientX + 'px';
-            this.bookTop = event.clientY + 'px';
-        },
-        showNotebookusers(event){
-            this.visibleNotebook = true;
-            this.bookLeft = event.clientX + 'px';
-            this.bookTop = event.clientY + 'px';
-        },
-        publish(){
-            published != published
-        },
-        setIndex(id){
-            this.index = id
-        }
     }
 };
 </script>
@@ -75,8 +46,13 @@ export default {
 <template>
 
     <h1>Hello {{ username }}</h1>
-    <div class="container">
-    <button @click="showNotebook" class="erstellen">Create new whiteboard</button>
+    <div class="settings" v-if="visibleNotesheet" >
+        <Notesheet
+        :hideNotesheet = "hideNotesheet"
+        />
+    </div> 
+    <div class="container"  :class="{ 'container-with-notesheet': visibleNotesheet }">
+    <button @click="showNotesheet" class="erstellen"><div class="erstellentext" >Create new whiteboard</div></button>
     <BoardIcon 
         v-for="board in boards" 
         :name = board.name
@@ -86,51 +62,50 @@ export default {
         :showNotebook = "showNotebook"
         :index = board.id
         :setIndex = "setIndex"
+        :showNotesheet = "showNotesheet"
+        :users = board.amountofusers
     />
     
 
     </div>
-    <div :style="{ display: visibleNotebook ? 'block' : 'none', left: bookLeft, top: bookTop }" class="book">
-        <Notebook
-            :hideNotebook = "hideNotebook"
-            status = 1
-            permission = 'Owner'
-
-        />
-    </div>
+   
     
 </template>
 
 <style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Gluten&family=Montserrat&display=swap");
-    .erstellen {
+   
+    .settings{
+        position: fixed;
+        right: 25rem;
+        top: 14rem;
+        transform: scale(120%);
+    }
+
+.erstellen {
         font-family: 'Gluten', cursive;
         color: var(--text-accent);
-        font-size: 1.4em;
+        font-size: 1.5rem;
         text-align: center;
         border-radius: .8em;
         cursor: pointer;
         display: block;
-        width: 15rem;
-        height: 14rem;
+        width: 14rem;
+        height: 13rem;
         border-color: var(--text-accent);
         border-width: .3em;
         border-style: dashed;
         background-color: transparent;
-        margin-right: 4.2em;
+        margin-right: 5.2em;
     }
 
-    .transparent{
-    width: 15rem;
-    height: 14rem;
-    background-color: transparent;
-    margin-right: 4.2em;
-    margin-left: 4.4em;
-    border-color: transparent;
-    border-width: .3em;
-    border-style: dashed;
+    .erstellentext{
+        font-size: 1.4rem;
     }
-    .book{
+    .erstellentext:hover{
+        font-size: 1.6rem;
+    }
+    .blatt{
         position: absolute;
     }
 
@@ -144,7 +119,13 @@ export default {
 
     .container{
         display: flex;
-        justify-content:space-evenly;
+        justify-content:flex-start;
         flex-wrap: wrap;
+        text-align: left;
+        margin-right: -10rem;
     }
+
+     .container-with-notesheet {
+    margin-right: 10rem;
+  }
 </style>

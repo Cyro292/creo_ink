@@ -16,6 +16,7 @@
 
 		<ul class="nav-links">
 			<div class="menu">
+				<li class="login"><router-link to="/note">Note</router-link></li>
 				<li class="home"><router-link to="/">Home</router-link></li>
 				<li class="boards">
 					<router-link to="/drawboard">Sketchboard</router-link>

@@ -52,6 +52,10 @@ body {
 	--basic-clr: #fffbd7;
 	--accent-clr1: #a9def9;
 	--accent-clr2: #ca72ff;
+	--accent-clr3: rgb(74, 222, 74);
+	--accent-clr1-dark: #61c1f1;
+	--accent-clr2-dark: #b250ef;
+	--accent-clr3-dark: rgb(31, 202, 31);
 }
 
 </style>
