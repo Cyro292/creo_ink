@@ -1,10 +1,12 @@
 {
-	"git.ignoreLimitWarning": true,
-	"python.analysis.typeCheckingMode": "off",
-	"python.linting.pylintEnabled": true,
-	"python.linting.flake8Enabled": false,
+	"python.formatting.provider": "none",
 	"python.linting.enabled": false,
-	"env": {
-		"PYTHONDONTWRITEBYTECODE": true
-	}
+	"python.linting.flake8Enabled": false,
+	"python.linting.pylintEnabled": true,
+	"python.linting.pylintArgs": ["--load-plugins=pylint_django"],
+	"git.ignoreLimitWarning": true,
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
+	},
+	"github-actions.workflows.pinned.workflows": [".github/workflows/django.yml"]
 }

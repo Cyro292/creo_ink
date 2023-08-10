@@ -55,7 +55,7 @@ class Board(models.Model):
         if min_permission is None:
             min_permission = Participation.READER
 
-        if self.users.filter(pk=user.pk).exists():
+        if self.__class__.objects.filter(pk=user.pk).exists():
             if min_permission >= self.get_permission(user=user):
                 return True
 
@@ -65,7 +65,7 @@ class Board(models.Model):
         if permission is None:
             permission = Participation.READER
 
-        if self.users.all().filter(pk=user.pk).exists():
+        if self.__class__.objects.filter(pk=user.pk).exists():
             raise MultipleIdenticalUserException
 
         if permission is Participation.OWNER:
@@ -75,7 +75,7 @@ class Board(models.Model):
         Participation.objects.create(board=self, user=user, permission=permission)
 
     def has_user(self, user):
-        if self.users.all().filter(pk=user.pk).exists():
+        if self.__class__.objects.filter(pk=user.pk).exists():
             return True
 
         return False
@@ -135,7 +135,7 @@ class Board(models.Model):
             user_participation.save()
 
     def change_random_owner(self, depth=1, iteration=0):
-        if self.users.count() <= 1:
+        if self.__class__.objects.count() <= 1:
             raise NoOtherUserException
 
         if depth >= len(Participation.permissions):
@@ -171,6 +171,12 @@ class Participation(models.Model):
     ADMIN = 1
     WRITER = 2
     READER = 3
+    
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    
+    
+    status_choices = [("active", "Active"), ("inactive", "Inactive")]
 
     permissions = [
         (OWNER, "Owner"),
@@ -187,6 +193,7 @@ class Participation(models.Model):
     permission = models.IntegerField(
         choices=permissions, default=READER, blank=False, null=False
     )
+    status = models.CharField(max_length=10, choices=status_choices, default="active")
 
     def delete(self, *args, **kwargs):
         if self.permission is Participation.OWNER:
