@@ -36,8 +36,8 @@ class BoardMembersListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        board_id = self.kwargs["board_id"]
-        return Participation.objects.filter(board_id=board_id)
+        slug = self.kwargs["slug"]
+        return Participation.objects.filter(slug=slug)
 
 
 class BoardDetailView(RetrieveUpdateDestroyAPIView):
@@ -84,14 +84,14 @@ class CreateInviteLinkView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        board_id = self.kwargs["board_id"]
-        board = get_object_or_404(Board, pk=board_id, owner=request.user)
+        slug = self.kwargs["slug"]
+        board = get_object_or_404(Board, slug=slug, owner=request.user)
 
         link_token = generate_invite_token()
         cache_key = f"invite_link_{link_token}"
 
         # Store the link in cache with a timeout (e.g., 5 minutes)
-        cache.set(cache_key, board_id, 300)
+        cache.set(cache_key, slug, 300)
 
         return Response({"invite_link": link_token}, status=status.HTTP_201_CREATED)
 
@@ -103,15 +103,15 @@ class JoinBoardByLinkView(RetrieveAPIView):
         link_token = self.kwargs["link_token"]
         cache_key = f"invite_link_{link_token}"
 
-        board_id = cache.get(cache_key)
+        slug = cache.get(cache_key)
 
-        if board_id is None:
+        if slug is None:
             return Response(
                 {"detail": "Invalid or expired link token."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        board = get_object_or_404(Board, pk=board_id)
+        board = get_object_or_404(Board, slug=slug)
         user = request.user
 
         # Automatically add the user to the board
