@@ -11,11 +11,13 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .utils import generate_numbered_username, get_invite_token, create_invite_link, get_redirect_value
 from .exceptions import NoOwnerException
-from .models import Board
+#from .models import Board
 from . import models, forms
 from .serializers import BoardSerializer
 from .serializers import UserBoardOverviewSerializer
 from json import dumps
+
+
 
 
 class UserBoardsViewSet(viewsets.ViewSet):
@@ -31,17 +33,29 @@ class UserBoardsViewSet(viewsets.ViewSet):
 # DRF
 
 
+
+
 class BoardResticedViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSerializer
 
 
-# Create your views here.
+
+def joke_view(request):
+    return HttpResponse(status=418)
+
+
+
+# Views defined below
 
 
 @login_required
 def index_view(request):
     return render(request, 'core/index.html')
 
+
+
+
+# Board views
 
 @login_required
 def add_board_view(request):
@@ -77,7 +91,6 @@ def boards_view(request):
 
 @login_required
 def board_view(request, slug):
-
     board = get_object_or_404(request.user.boards, slug=slug)
 
     if not board.has_access(user=request.user):
@@ -99,33 +112,35 @@ def board_settings_view(request, slug):
     user_permission = board.get_permission(user=request.user)
     change_user_permission_form = forms.make_change_board_permission_form(
         board, user_permission)()
-
+    
     if request.method == "POST":
         if 'permission' in request.POST:
-            user_permission = board.get_permission(user=request.user)
             change_user_permission_form = forms.make_change_board_permission_form(
                 board, user_permission)(request.POST)
-
-            if change_user_permission_form.is_valid():
+            
+            if change_user_permission_form.is_valid(): # Check validity of form
                 target_user = change_user_permission_form.cleaned_data['user'][0]
                 target_permission = int(
                     change_user_permission_form.cleaned_data['permission'])
-
-                if not board.has_access(user=request.user, min_permission=models.Participation.ADMIN):
-                    messages.info(
-                        request, "you have to be at least admin in order to change permissions")
-
-                if not target_permission >= user_permission:
-                    messages.info(
-                        request, "you are not allowed to set higher positions then yourself")
-
-                try:
-                    board.set_permission(
-                        user=target_user, permission=target_permission)
-                except NoOwnerException:
-                    messages.info(
-                        request, "You can not set permission if you are the only Owner")
-
+                
+                if board.user_has_perm(request.user, 'can_set_role_'+str(target_permission)): # Check user's ability to set role
+                    if board.user_has_perm(request.user, 'can_modify_'+str(board.get_permission(target_user))): # Check user's ability to modify current role
+                        try:
+                            board.set_permission(
+                                user=target_user,
+                                permission=target_permission
+                            )
+                        except NoOwnerException:
+                            messages.info(
+                                request, "You can not set permissions if you are the only user"
+                            )
+                    else:
+                        messages.info(
+                            request, "You are not allowed to modify permissions of your superiors!"
+                        )
+                else:
+                    messages.info(request, "You do not have the necessary permissions!")
+        
         if 'max_usages' in request.POST:
             invite_form = forms.make_create_invitaion_link_form(
                 invite_token)(request.POST)
@@ -136,6 +151,8 @@ def board_settings_view(request, slug):
                 token = get_invite_token(link=url)
                 create_invite_link(board=board, token=token,
                                    max_usages=max_usages)
+        
+        return board_view(request, slug)
 
     content = {}
     content['board'] = board
@@ -144,6 +161,10 @@ def board_settings_view(request, slug):
 
     return render(request, "core/board_settings.html", content)
 
+
+
+
+# Other views
 
 def create_guest_user_view(request: HttpRequest):
 

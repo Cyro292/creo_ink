@@ -21,4 +21,5 @@ urlpatterns = [
     path("accounts/createguestuser/",
          views.create_guest_user_view, name="create_guest_user"),
     path('', include(router.urls)),
+    path('where-the-funny-is-at/', views.joke_view)
 ]
