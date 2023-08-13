@@ -20,6 +20,5 @@ urlpatterns = [
     path("invite/<str:token>", views.authenticate_via_link_view, name="invite"),
     path("accounts/createguestuser/",
          views.create_guest_user_view, name="create_guest_user"),
-    path('', include(router.urls)),
-    path('where-the-funny-is-at/', views.joke_view)
+    path('', include(router.urls))
 ]

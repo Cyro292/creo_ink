@@ -40,10 +40,6 @@ class BoardResticedViewSet(viewsets.ModelViewSet):
 
 
 
-def joke_view(request):
-    return HttpResponse(status=418)
-
-
 
 # Views defined below
 
