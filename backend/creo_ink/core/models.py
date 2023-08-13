@@ -25,17 +25,16 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    birthday = models.DateField()
+    username = models.CharField(blank=True, max_length=100)
+    first_name = models.CharField(null=True, max_length=100)
+    last_name = models.CharField(null=True, max_length=100)
+    birthday = models.DateField(null=True)
     settings = models.JSONField(null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "birthday"]
 
     objects = MyUserManager()
 

@@ -1,8 +1,7 @@
 <template>
+	<router-view />
 	<NavBar />
-	<div class="pad">
-		<router-view />
-	</div>
+
 </template>
 
 <script>
@@ -27,24 +26,13 @@ export default {
 	color: #2c3e50;
 }
 
-:root {
-	--text-clr: black;
-	--text-accent: grey;
-	--basic-clr: #f2f2f2;
-	--accent-clr1: #b5bed2;
-	--accent-clr2: #f0cb5c;
-}
-
-body {
-	font-family: "Gluten", cursive;
-	margin: 0;
-	margin-top: 4em;
-	background-color: var(--basic-clr);
-}
-
-.pad{
-	padding: 3em;
-}
+// :root {
+// 	--text-clr: black;
+// 	--text-accent: grey;
+// 	--basic-clr: #f2f2f2;
+// 	--accent-clr1: #b5bed2;
+// 	--accent-clr2: #f0cb5c;
+// }
 
 :root {
 	--text-clr: black;
