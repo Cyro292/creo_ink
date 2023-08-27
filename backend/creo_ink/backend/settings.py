@@ -165,7 +165,7 @@ SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
     "rest_framework_simplejwt.authentication.JWTAuthentication",
-    'guardian.backends.ObjectPermissionBackend',
+    "guardian.backends.ObjectPermissionBackend",
     "django.contrib.auth.backends.ModelBackend",
     #'allauth.account.auth_backends.AuthenticationBackend',
 ]
