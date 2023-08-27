@@ -1,103 +1,126 @@
-from django.core.cache import cache
-from django.core.exceptions import PermissionDenied
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, HttpRequest
-from guest_user.functions import maybe_create_guest_user
-from allauth import app_settings
-from rest_framework import viewsets
+from rest_framework.generics import (
+    ListAPIView,
+    CreateAPIView,
+    UpdateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    ListCreateAPIView,
+    RetrieveAPIView,
+)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .utils import generate_numbered_username, get_invite_token, create_invite_link, get_redirect_value
-from .exceptions import NoOwnerException
-#from .models import Board
-from ....creo_ink.core import models, forms
-from .serializers import BoardSerializer
-from .serializers import UserBoardOverviewSerializer
-from json import dumps
+from django.http import Http404
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from .models import Board, Participation
+from .serializers import (
+    BoardSerializer,
+    BoardMembershipSerializer,
+    UserSettingsUpdateSerializer,
+    JoinBoardSerializer,
+    ParticipationStatusSerializer,
+)
+from .utils import generate_invite_token
 
 
-
-
-class UserBoardsViewSet(viewsets.ViewSet):
-    serializer_class = UserBoardOverviewSerializer
-
-    def list(self, request):
-        if request.user.is_authenticated:
-            user = request.user
-            serializer = self.serializer_class(user)
-            return Response(serializer.data)
-        else:
-            return Response({'error': 'User not authenticated'})
-# DRF
-
-
-
-
-class BoardResticedViewSet(viewsets.ModelViewSet):
+class BoardListView(ListCreateAPIView):
     serializer_class = BoardSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Board.objects.filter(users=self.request.user)
 
 
+class BoardMembersListView(ListAPIView):
+    serializer_class = BoardMembershipSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        slug = self.kwargs["slug"]
+        return Participation.objects.filter(slug=slug)
 
 
-# Views defined below
+class BoardDetailView(RetrieveUpdateDestroyAPIView):
+    serializer_class = BoardSerializer
+    # is board owner or admin
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Board.objects.filter(users=self.request.user)
 
 
-@login_required
-def index_view(request):
-    return render(request, 'core/index.html')
+class UserSettingsUpdateView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSettingsUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.participation_set.all()
 
 
+class LeaveBoardView(UpdateAPIView):
+    serializer_class = ParticipationStatusSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        slug = self.kwargs["slug"]
+        return Participation.objects.filter(board__slug=slug, user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(status=Participation.INACTIVE)
+
+    def dispatch(self, request, *args, **kwargs):
+        # Check if a board with the given slug exists
+        slug = self.kwargs["slug"]
+        try:
+            Board.objects.get(slug=slug)
+        except Board.DoesNotExist:
+            raise Http404("Board not found")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
-# Board views
+class CreateInviteLinkView(CreateAPIView):
+    serializer_class = JoinBoardSerializer
+    permission_classes = [IsAuthenticated]
 
-@login_required
-def add_board_view(request):
-    form = forms.BoardForm()
-    if request.method == "POST":
-        form = forms.BoardForm(request.POST)
+    def create(self, request, *args, **kwargs):
+        slug = self.kwargs["slug"]
+        board = get_object_or_404(Board, slug=slug, owner=request.user)
 
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            password = form.cleaned_data['password']
+        link_token = generate_invite_token()
+        cache_key = f"invite_link_{link_token}"
 
-            models.Board.objects.create(
-                name=name, owner=request.user, password=password)
+        # Store the link in cache with a timeout (e.g., 5 minutes)
+        cache.set(cache_key, slug, 300)
 
-            return redirect('boards')
-
-    return render(request, "core/add_board.html", {'form': form})
+        return Response({"invite_link": link_token}, status=status.HTTP_201_CREATED)
 
 
-@login_required
-def boards_view(request):
-    board_list = []
-    for board in request.user.boards.all():
-        dic = {}
-        dic['pk'] = board.pk
-        dic['name'] = board.name
-        dic['slug'] = board.slug
-        dic['permission'] = board.get_permission_label(user=request.user)
-        board_list.append(dic)
+class JoinBoardByLinkView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
 
-    return render(request, "core/boards.html", {"boards": board_list})
+    def retrieve(self, request, *args, **kwargs):
+        link_token = self.kwargs["link_token"]
+        cache_key = f"invite_link_{link_token}"
 
+        slug = cache.get(cache_key)
 
-@login_required
-def board_view(request, slug):
-    board = get_object_or_404(request.user.boards, slug=slug)
+        if slug is None:
+            return Response(
+                {"detail": "Invalid or expired link token."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    if not board.has_access(user=request.user):
-        raise PermissionDenied()
+        board = get_object_or_404(Board, slug=slug)
+        user = request.user
 
-    user_permission = board.get_permission_label(user=request.user)
+        # Automatically add the user to the board
+        if not board.has_user(user):
+            board.add_user(user, Participation.READER)
 
-    key_py_to_json = dumps(board.pk)
-    return render(request, 'core/board.html',
-                  {"board": board, "permission": user_permission, "key": key_py_to_json, "slug": slug})
-
+        return Response(
+            {"message": "Successfully joined the board."}, status=status.HTTP_200_OK
+        )
 
 @login_required
 def board_settings_view(request, slug):
@@ -156,61 +179,3 @@ def board_settings_view(request, slug):
     content['invite_form'] = invite_form
 
     return render(request, "core/board_settings.html", content)
-
-
-
-
-# Other views
-
-def create_guest_user_view(request: HttpRequest):
-
-    form = forms.CreateGuestUserForm()
-
-    redirect_field_name = 'next'
-    redirect_field_value = get_redirect_value(request)
-
-    if request.method == "POST":
-        form = forms.CreateGuestUserForm(request.POST)
-
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            maybe_create_guest_user(request)
-            generate_numbered_username(username, request.user)
-            redirect_field_value = get_redirect_value(request)
-
-            if redirect_field_value:
-                return redirect(redirect_field_value)
-            return redirect('index')
-
-    return render(request, "core/create_guest_user.html",
-                  {'form': form,
-                   'login_url': app_settings.LOGIN_REDIRECT_URL,
-                   'redirect_field_value': redirect_field_value,
-                   'redirect_field_name': redirect_field_name})
-
-
-@login_required(login_url="create_guest_user")
-def authenticate_via_link_view(request, token):
-
-    data = cache.get(token)
-    if data is None:
-        return HttpResponse("Link invalid/expired")
-
-    board = data['board']
-
-    if board.has_user(request.user):
-        return HttpResponse(f"{request.user} is already member of {board.name}(board))")
-
-    board.add_user(request.user)
-
-    if 'max_usages' in data.keys():
-        data['max_usages'] -= 1
-
-        if data['max_usages'] > 0:
-            cache.set(token, data)
-        else:
-            cache.delete(token)
-    else:
-        cache.delete(token)
-
-    return HttpResponse("Nice")

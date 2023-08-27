@@ -19,8 +19,6 @@ class BoardForm(forms.ModelForm):
         return self.cleaned_data['password']
 
 
-class CreateGuestUserForm(forms.Form):
-    username = forms.CharField(max_length=64)
 
 
 def make_change_board_permission_form(board, user_permission):

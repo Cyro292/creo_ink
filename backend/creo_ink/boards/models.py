@@ -67,7 +67,7 @@ class Board(models.Model):
         if permission is None:
             permission = Participation.READER
 
-        if self.users.all().filter(pk=user.pk).exists():
+        if self.__class__.objects.filter(pk=user.pk).exists():
             raise MultipleIdenticalUserException
 
         if permission is Participation.OWNER:
@@ -82,8 +82,22 @@ class Board(models.Model):
         self.assign_user_perms(user, permission)
 
     def has_user(self, user):
-        if self.users.all().filter(pk=user.pk).exists():
+        if self.__class__.objects.filter(pk=user.pk).exists():
             return True
+
+        return False
+
+
+    # Functions concerning perms + access
+
+    def has_access(self, user, min_permission=None):
+
+        if min_permission is None:
+            min_permission = Participation.READER
+
+        if self.users.filter(pk=user.pk).exists():
+            if min_permission >= self.get_permission(user=user):
+                return True
 
         return False
 
@@ -230,6 +244,12 @@ class Participation(models.Model):
     ADMIN = ADMIN_RANK
     WRITER = WRITER_RANK
     READER = READER_RANK
+    
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    
+    
+    status_choices = [("active", "Active"), ("inactive", "Inactive")]
 
     permissions = [
         (OWNER, "Owner"),
@@ -259,6 +279,7 @@ class Participation(models.Model):
     join_date = models.DateTimeField(auto_now_add=True)
     permission = models.IntegerField(
         choices=permissions, default=READER, blank=False, null=False)
+    status = models.CharField(max_length=10, choices=status_choices, default="active")
 
     def delete(self, *args, **kwargs):
         if self.permission is Participation.OWNER:

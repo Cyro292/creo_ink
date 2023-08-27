@@ -1,35 +1,33 @@
 from rest_framework import serializers
-from core.models import Board, MyUserModel
-
+from .models import Board, Participation
 
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ('name', 'elements')
+        fields = "__all__"
 
-class BoardRestrictedOverviewSerializer(serializers.ModelSerializer):
+class BoardMembershipSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Board
-        fields = ('name', 'elements')
+        model = Participation
+        fields = "__all__"
+        read_only_fields = ["__all__"]
 
-class BoardOverviewSerializer(serializers.ModelSerializer):
+class UserSettingsUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Board
-        fields = ('name', 'creation_date', 'users')
+        model = Participation
+        fields = ["settings"]
         
-class UserSerializer(serializers.ModelSerializer):
+class ParticipationStatusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUserModel
-        fields = ('name', 'creation_date', 'users')
+        model = Participation
+        fields = ['status']
 
-class UserBoardOverviewSerializer(serializers.ModelSerializer):
-    boards = BoardOverviewSerializer(many=True, read_only=True)
-
-    def to_representation(self, instance):
-        user: MyUserModel = instance
-        boards = user.boards.all()
-        return {'boards': self.fields['boards'].to_representation(boards)}
-
+class JoinBoardSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUserModel
-        fields = ('boards',)
+        model = Participation
+        fields = []
+
+class LeaveBoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Participation
+        fields = []

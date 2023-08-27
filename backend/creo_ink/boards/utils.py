@@ -19,39 +19,9 @@ def generate_numbered_username(username, user, iteration=0) -> str:
     return user
 
 
-def get_lower_permission_list(user_permission):
-    return list(filter(lambda t: t[0] >= user_permission, models.Participation.permissions))
-
-
-def get_invite_token(link=None):
-    if link is None:
-        token = secrets.token_urlsafe(nbytes=32)
-    else:
-        token = link.rsplit('/', 1)[-1]
-
+def generate_invite_token(link=None):
+    token = secrets.token_urlsafe(nbytes=32)
     return token
-
-
-def get_invite_link(token=None):
-    if token is None:
-        token = secrets.token_urlsafe(nbytes=32)
-
-    link = f"http://127.0.0.1:8000/invite/{token}"
-    return link
-
-
-def create_invite_link(board, token, **kwargs):
-    if '/' in token:
-        token = token.rsplit('/', 1)[-1]
-
-    cache.set(key=token, value={"board": board, **kwargs},
-              timeout=app_settings.CORE_INVITE_LINK_MAX_AGE)
-    
-    return token
-
-
-def get_redirect_value(request, parm='next'):
-    return request.GET.get(parm) or request.POST.get(parm)
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
