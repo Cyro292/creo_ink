@@ -1,21 +1,12 @@
 {
-	"git.ignoreLimitWarning": true,
-	"python.analysis.typeCheckingMode": "off",
-	"python.linting.pylintEnabled": true,
+	"python.formatting.provider": "none",
+	"python.linting.enabled": false,
 	"python.linting.flake8Enabled": false,
-	"python.linting.enabled": true,
-	"env": {
-		"PYTHONDONTWRITEBYTECODE": true
+	"python.linting.pylintEnabled": true,
+	"python.linting.pylintArgs": ["--load-plugins=pylint_django"],
+	"git.ignoreLimitWarning": true,
+	"[python]": {
+		"editor.defaultFormatter": "ms-python.black-formatter"
 	},
-	"python.linting.pylintArgs": [
-		"--load-plugins",
-		"pylint_django",
-		"--load-plugins",
-		"pylint_django.checkers.migrations",
-		"--disable=C0111, C0114, C0115, W0222",
-		"--disable=imported-auth-user",
-		"--disable=invalid-name",
-		"--disable=line-too-long",
-		"--disable=django-not-configured"
-	]
+	"github-actions.workflows.pinned.workflows": [".github/workflows/django.yml"]
 }
