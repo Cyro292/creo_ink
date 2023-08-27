@@ -122,7 +122,7 @@ class JoinBoardByLinkView(RetrieveAPIView):
             {"message": "Successfully joined the board."}, status=status.HTTP_200_OK
         )
 
-@login_required
+
 def board_settings_view(request, slug):
 
     board = get_object_or_404(request.user.boards, slug=slug)

@@ -41,6 +41,7 @@ INSTALLED_MY_APPS = [
 INSTALLED_EXTENSIONS = [
     "rest_framework",
     "rest_framework_simplejwt",
+    "guardian",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -164,6 +165,7 @@ SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
     "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'guardian.backends.ObjectPermissionBackend',
     "django.contrib.auth.backends.ModelBackend",
     #'allauth.account.auth_backends.AuthenticationBackend',
 ]
