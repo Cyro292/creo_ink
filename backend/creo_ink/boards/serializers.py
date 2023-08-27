@@ -31,5 +31,3 @@ class LeaveBoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participation
         fields = []
-
-# Other serializers for invite links, join codes, etc.

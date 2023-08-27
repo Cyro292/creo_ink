@@ -2,3 +2,4 @@ venv
 pycache/
 *.py[cod]
 *$py.class
+*.pyc
