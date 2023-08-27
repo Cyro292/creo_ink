@@ -1,5 +1,7 @@
 venv/pyvenv.cfg
+venv/
 
 pycache/
 *.py[cod]
 *$py.class
+*.pyc
