@@ -1,7 +1,7 @@
 <template>
 	<NavBar />
 	<OpenUpWrapper>
-		<div class="container">
+		<div class="form-container">
 			<h2 class="text-center">Please Sign In</h2>
 			<form @submit.prevent="login">
 				<div class="form-group">
@@ -28,7 +28,9 @@
 					>Don't have an account? Sign up here!</router-link
 				>
 				<div class="text-danger" v-if="errorMessage">{{ errorMessage }}</div>
-				<button type="submit" class="btn btn-primary">Login</button>
+				<div class="submit-button-wrapper">
+					<button type="submit" class="btn btn-primary">Login</button>
+				</div>
 			</form>
 			<h2>&nbsp;</h2>
 		</div>
@@ -46,7 +48,6 @@ export default {
 			email: "",
 			password: "",
 			errorMessage: "",
-			animationActive: false,
 		};
 	},
 	components: {
@@ -90,11 +91,6 @@ export default {
 	background: #333;
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-}
-
 input {
 	width: 100%;
 	min-width: 300px;
@@ -103,6 +99,12 @@ input {
 	border-radius: 1px;
 	border: 1px solid #ccc;
 	font-family: inherit;
+}
+
+.submit-button-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .text-danger {

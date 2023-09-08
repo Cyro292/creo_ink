@@ -35,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/components/ExcalidrawIntegration.jsx"  ],
   "exclude": [
     "node_modules"
   ]

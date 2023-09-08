@@ -1,15 +1,16 @@
 <template>
 	<div class="drawboard">
-		<ExcalidrawVue></ExcalidrawVue>
+		<ExcalidrawVue />
 	</div>
 </template>
+
 <script>
-import { applyReactInVue } from "veaury";
-import { Excalidraw } from "@excalidraw/excalidraw";
+import { applyPureReactInVue } from "veaury";
+import ExcalidrawIntegration from "@/components/ExcalidrawIntegration.jsx";
 
 export default {
 	components: {
-		ExcalidrawVue: applyReactInVue(Excalidraw),
+		ExcalidrawVue: applyPureReactInVue(ExcalidrawIntegration),
 	},
 };
 </script>
@@ -21,9 +22,5 @@ export default {
 	width: 100vw;
 	height: 100vh;
 	position: static;
-}
-
-.body {
-	margin: 0px;
 }
 </style>
