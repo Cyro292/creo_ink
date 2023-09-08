@@ -31,10 +31,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   height: fit-content;
   width: fit-content;
   padding: 20px;

@@ -16,7 +16,14 @@ export default {
 
 <style>
 .drawboard {
+	top: 0px;
+	left: 0px;
 	width: 100vw;
 	height: 100vh;
+	position: static;
+}
+
+.body {
+	margin: 0px;
 }
 </style>

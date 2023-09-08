@@ -10,7 +10,5 @@ export default {
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Gluten&display=swap");
-@import '@/assets/scss/theme.scss';
-
-
+@import "@/assets/scss/theme.scss";
 </style>
