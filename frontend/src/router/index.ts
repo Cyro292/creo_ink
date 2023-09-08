@@ -20,40 +20,16 @@ const routes = [
 			import(/* webpackChunkName: "about" */ "../views/SignupView.vue"),
 	},
 	{
-		path: "/resetPassword",
-		name: "resetPassword",
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/ResetPasswordView.vue"),
-	},
-	{
-		path: "/newPassword",
-		name: "newPassword",
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/NewPasswordView.vue"),
-	},
-	{
 		path: "/drawboard",
 		name: "drawboard",
 		component: () =>
 			import(/* webpackChunkName: "about" */ "../views/DrawBoardView.vue"),
 	},
 	{
-		path: "/notepadtest",
-		name: "Notepadtest",
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/NotepadView.vue"),
-	},
-	{
 		path: "/boardcollection",
 		name: "BoardCollection",
 		component: () =>
 			import(/* webpackChunkName: "about" */ "../views/BoardCollectionView.vue"),
-	},
-	{
-		path: "/joinboard",
-		name: "BoardJoinen",
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/BoardJoinenView.vue"),
 	},
 ];
 

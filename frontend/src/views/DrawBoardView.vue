@@ -1,17 +1,22 @@
 <template>
-	<div>
-		<DrawBoard />
+	<div class="drawboard">
+		<ExcalidrawVue></ExcalidrawVue>
 	</div>
 </template>
-
 <script>
-// @ is an alias to /src
-import DrawBoard from "@/components/DrawBoard.vue";
+import { applyReactInVue } from "veaury";
+import { Excalidraw } from "@excalidraw/excalidraw";
 
 export default {
-	name: "DrawBoardView",
 	components: {
-		DrawBoard,
+		ExcalidrawVue: applyReactInVue(Excalidraw),
 	},
 };
 </script>
+
+<style>
+.drawboard {
+	width: 100vw;
+	height: 100vh;
+}
+</style>

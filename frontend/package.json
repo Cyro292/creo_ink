@@ -7,9 +7,13 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.15.3",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
     "core-js": "^3.8.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "veaury": "^2.3.12",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-demi": "^0.13.11",

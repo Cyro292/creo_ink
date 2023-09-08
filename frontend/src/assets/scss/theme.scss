@@ -1,0 +1,19 @@
+:root {
+	--text-clr: black;
+	--text-accent: rgb(232, 212, 183);
+	--text-accent2: grey;
+    --navbar-clr: #000000;
+	--accent-clr1: #ffdca8;
+	--accent-clr2: #d0f4de;
+	--accent-clr3: #ffaaaa;
+	--accent-clr4: #a9def9;
+	--accent-clr5: #b4ffa8;
+	--accent-clr6: #fffbd7;
+}
+
+#app {
+	font-family: "Gluten", cursive;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: var(--text-clr);
+}

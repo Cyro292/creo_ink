@@ -21,9 +21,6 @@
 					<router-link to="/drawboard">Sketchboard</router-link>
 				</li>
 				<li class="boards">
-					<router-link to="/joinboard">Join Board</router-link>
-				</li>
-				<li class="boards">
 					<router-link to="/boardcollection">Your Boards</router-link>
 				</li>
 				<li class="login"><router-link to="/login">Login</router-link></li>
@@ -33,13 +30,9 @@
 </template>
 
 <script>
-import TopLogo from "@/components/TopLogo.vue";
-
 export default {
 	name: "NavBar",
-	components: {
-		TopLogo,
-	},
+	components: {},
 };
 </script>
 
@@ -61,13 +54,11 @@ li {
 }
 
 .text-logo {
-	font-family: "Gluten", cursive;
 	font-size: 0.7em;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
 	margin-right: 100px;
-	color: var(--basic-clr);
+	color: var(--text-accent);
 }
 
 .logo img {
@@ -87,22 +78,22 @@ li {
 }
 
 .navbar {
-	font-family: "Gluten", cursive;
 	position: fixed;
 	top: 0px;
+	left: 0px;
 	width: 100%;
 	opacity: 82%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 20px;
-	background-color: rgb(0, 0, 0);
+	background-color: var(--navbar-clr);
 	color: var(--basic-clr);
-	z-index: 10;
+	z-index: 9999;
 }
 
 .nav-links a {
-	color: var(--basic-clr);
+	color: var(--text-accent);
 }
 
 .logo {
@@ -121,7 +112,6 @@ li {
 
 .menu li {
 	line-height: 1.5em;
-	padding: 5px 14px;
 	text-align: center;
 }
 
